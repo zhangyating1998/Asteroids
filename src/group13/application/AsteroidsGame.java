@@ -1,8 +1,11 @@
 package group13.application;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -10,10 +13,19 @@ import java.io.IOException;
 public class AsteroidsGame extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(AsteroidsGame.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
+        Polygon ship = new Polygon();
+        ship.setFill(Color.WHITE);
+        ship.getPoints().addAll(new Double[]{
+                0.0, 0.0,
+                20.0, 0.0,
+                10.0, 20.0
+        });
+        StackPane pane = new StackPane(
+                new Rectangle(800, 600, Color.BLACK),
+                ship
+        );
+
+        stage.setScene(new Scene(pane, 800, 600));
         stage.show();
     }
 
