@@ -1,5 +1,7 @@
 # Project exclude paths
 /out/
+# local libraries
 /lib
+# IntelliJ files
 /.idea
 /*.iml
