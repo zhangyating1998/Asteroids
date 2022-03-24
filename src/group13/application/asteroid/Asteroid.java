@@ -1,6 +1,8 @@
-package group13.application;
+package group13.application.asteroid;
 
-public class Asteroid implements Splitable {
+import group13.application.Splittable;
+
+public class Asteroid implements Splittable {
     @Override
     public void split() {
 

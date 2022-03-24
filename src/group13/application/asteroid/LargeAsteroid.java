@@ -1,4 +1,4 @@
-package group13.application;
+package group13.application.asteroid;
 
-public class LargeAsteroid extends Asteroid{
+public class LargeAsteroid extends Asteroid {
 }
