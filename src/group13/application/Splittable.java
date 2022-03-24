@@ -1,5 +1,5 @@
 package group13.application;
 
-public interface Splitable {
+public interface Splittable {
     void split();
 }
