@@ -1,4 +1,4 @@
-package group13.appliation;
+package group13.application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
