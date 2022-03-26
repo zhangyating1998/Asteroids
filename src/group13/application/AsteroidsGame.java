@@ -1,11 +1,14 @@
 package group13.application;
 
-import group13.application.common.GameLevel;
+import group13.application.asteroid.LargeAsteroid;
+import group13.application.ship.Ship;
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -15,122 +18,82 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
+import static group13.application.common.Constants.*;
+
+/**
+ * Main program that starts the game.
+ *
+ * @author yulong
+ */
 public class AsteroidsGame extends Application {
-    private GameLevel gameLevel;
 
-    @Override
-    public void start(Stage stage) throws IOException {
-        Polygon ship = new Polygon();
-        ship.setFill(Color.WHITE);
-        ship.getPoints().addAll(new Double[]{
-                0.0, 0.0,
-                20.0, 0.0,
-                10.0, -20.0
-        });
+    // Game level starts from GAME_LEVEL_START, which is 1
+    private int gameLevel = GAME_LEVEL_START;
 
-        Polygon ship2 = new Polygon();
-        ship2.setFill(Color.WHITE);
-        ship2.getPoints().addAll(new Double[]{
-                -50.0, -50.0,
-                -70.0, -50.0,
-                -80.0, -70.0
-        });
-        final Rectangle rectPath = new Rectangle (0, 0, 40, 40);
-        rectPath.setArcHeight(10);
-        rectPath.setArcWidth(10);
-        rectPath.setFill(Color.ORANGE);
-        Path path = new Path();
-        path.getElements().add(new MoveTo(500,300));
-        path.getElements().add(new CubicCurveTo(380, 0, 380, 120, 200, 120));
-        path.getElements().add(new CubicCurveTo(0, 120, 0, 240, 380, 240));
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(4000));
-        pathTransition.setPath(path);
-        pathTransition.setNode(rectPath);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(Timeline.INDEFINITE);
-        pathTransition.setAutoReverse(true);
-        pathTransition.play();
+    private Ship playerShip;
 
-        Rectangle rectParallel = new Rectangle(10,200,50, 50);
-        rectParallel.setArcHeight(15);
-        rectParallel.setArcWidth(15);
-        rectParallel.setFill(Color.DARKBLUE);
-        rectParallel.setTranslateX(50);
-        rectParallel.setTranslateY(75);
-
-        FadeTransition fadeTransition =
-                new FadeTransition(Duration.millis(3000), rectParallel);
-        fadeTransition.setFromValue(1.0f);
-        fadeTransition.setToValue(0.3f);
-        fadeTransition.setCycleCount(2);
-        fadeTransition.setAutoReverse(true);
-        TranslateTransition translateTransition =
-                new TranslateTransition(Duration.millis(2000), rectParallel);
-        translateTransition.setFromX(50);
-        translateTransition.setToX(350);
-        translateTransition.setCycleCount(2);
-        translateTransition.setAutoReverse(true);
-        RotateTransition rotateTransition =
-                new RotateTransition(Duration.millis(3000), rectParallel);
-        rotateTransition.setByAngle(180f);
-        rotateTransition.setCycleCount(4);
-        rotateTransition.setAutoReverse(true);
-        ScaleTransition scaleTransition =
-                new ScaleTransition(Duration.millis(2000), rectParallel);
-        scaleTransition.setToX(2f);
-        scaleTransition.setToY(2f);
-        scaleTransition.setCycleCount(2);
-        scaleTransition.setAutoReverse(true);
-
-        ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.getChildren().addAll(
-                fadeTransition,
-                translateTransition,
-                rotateTransition,
-                scaleTransition
-        );
-        parallelTransition.setCycleCount(Timeline.INDEFINITE);
-        parallelTransition.play();
-
-        final Rectangle rectBasicTimeline = new Rectangle(100, 50, 100, 50);
-        rectBasicTimeline.setFill(Color.RED);
-
-        StackPane pane = new StackPane(
-                new Rectangle(800, 600, Color.BLACK),
-                ship,
-                ship2,
-                rectPath,
-                rectParallel,
-                rectBasicTimeline
-        );
-
-        // detect collision
-//        Polygon.intersect(ship, ship2);
-        stage.setScene(new Scene(pane, 800, 600));
-
-        ship.fireEvent(new Event(EventType.ROOT));
-
-        pane.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                event.consume();
-            }
-        });
-
-        stage.show();
-
-        final Timeline timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setAutoReverse(true);
-        final KeyValue kv = new KeyValue(rectBasicTimeline.xProperty(), 300);
-        final KeyFrame kf = new KeyFrame(Duration.millis(3500), kv);
-        timeline.getKeyFrames().add(kf);
-        timeline.play();
-
-    }
+    private int i = 0;
 
     public static void main(String[] args) {
         launch();
+    }
+
+    @Override
+    public void start(Stage stage) {
+        // Asteroids should be able to move randomly, and split when crashes
+        LargeAsteroid largeAsteroid = new LargeAsteroid();
+
+        // enemy ship should be able to move randomly, and shoot towards player ship
+        // TODO enemy ship should be add into scene after a period of time
+        Ship enemyShip = new Ship();
+
+        // player ship should be able to move by keyboard, and can shoot bullets.
+        playerShip = new Ship();
+
+        // TODO the location of the player ship should be calculated based on the other objects in the scene
+        // set the location of the player ship
+
+        StackPane pane = new StackPane(
+                // add more asteroids
+                largeAsteroid,
+                // add enemy ship
+                enemyShip,
+                // add player ship
+                playerShip
+        );
+
+        stage.show();
+        stage.setTitle("Asteroids");
+        stage.setScene(new Scene(pane, SCENE_WIDTH, SCENE_HEIGHT));
+
+        // Start the game time line, which is running forever
+        // This is used to detect game events such as collision
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                i++;
+                System.out.println("The current frame number: " + i);
+                // TODO detect collision
+                detectCollision(pane);
+            }
+        };
+        KeyFrame keyFrame = new KeyFrame(Duration.INDEFINITE);
+        //add the keyframe to the timeline
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.play();
+        timer.start();
+    }
+
+    // TODO
+    private void detectCollision(StackPane pane) {
+        ObservableList<Node> observableList = pane.getChildren();
+        for (Node node : observableList) {
+            if (!(node instanceof Ship)) {
+                Shape nodeShape = (Shape) node;
+//                Polygon.intersect(playerShip, nodeShape);
+            }
+        }
     }
 }
