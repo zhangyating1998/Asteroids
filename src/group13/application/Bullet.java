@@ -1,4 +1,10 @@
 package group13.application;
 
-public class Bullet implements Collidable {
+import javafx.scene.shape.Polygon;
+
+public class Bullet extends Polygon implements Destroyable {
+    @Override
+    public void destroy() {
+
+    }
 }

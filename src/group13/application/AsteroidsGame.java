@@ -1,22 +1,22 @@
 package group13.application;
 
+import group13.application.asteroid.Asteroid;
 import group13.application.asteroid.LargeAsteroid;
+import group13.application.ship.EnemyShip;
+import group13.application.ship.PlayerShip;
 import group13.application.ship.Ship;
-import javafx.animation.*;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.io.IOException;
 
 import static group13.application.common.Constants.*;
 
@@ -45,10 +45,10 @@ public class AsteroidsGame extends Application {
 
         // enemy ship should be able to move randomly, and shoot towards player ship
         // TODO enemy ship should be add into scene after a period of time
-        Ship enemyShip = new Ship();
+        Ship enemyShip = new EnemyShip();
 
         // player ship should be able to move by keyboard, and can shoot bullets.
-        playerShip = new Ship();
+        playerShip = new PlayerShip();
 
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
@@ -74,9 +74,12 @@ public class AsteroidsGame extends Application {
             @Override
             public void handle(long l) {
                 i++;
-                System.out.println("The current frame number: " + i);
+//                System.out.println("The current frame number: " + i);
                 // TODO detect collision
-                detectCollision(pane);
+                boolean hasCollision = detectCollision(pane);
+                if (hasCollision) {
+                    // check
+                }
             }
         };
         KeyFrame keyFrame = new KeyFrame(Duration.INDEFINITE);
@@ -86,14 +89,54 @@ public class AsteroidsGame extends Application {
         timer.start();
     }
 
-    // TODO
-    private void detectCollision(StackPane pane) {
+    /**
+     A collision cause the objects involved to be destroyed.
+
+     Types of collision:
+     1. Ship vs asteroid
+     2. Ship vs ship
+     3. Bullet vs asteroid
+     4. Bullet vs ship
+    */
+    private boolean detectCollision(StackPane pane) {
         ObservableList<Node> observableList = pane.getChildren();
-        for (Node node : observableList) {
-            if (!(node instanceof Ship)) {
-                Shape nodeShape = (Shape) node;
-//                Polygon.intersect(playerShip, nodeShape);
+        for (int i = 0; i < observableList.size(); i++) {
+            Node node1 = observableList.get(i);
+            if (node1 instanceof Destroyable) {
+                for (int j = i + 1; j < observableList.size(); j++) {
+                    Node node2 = observableList.get(j);
+                    if (node2 instanceof Destroyable) {
+                        // detect collision by checking the overlap between two objects
+                        if (node1.intersects(node2.getLayoutBounds())) {
+                            // 1. Ship vs asteroid
+                            boolean isShipVSAsteroid = node1 instanceof Ship && node2 instanceof Asteroid;
+                            boolean isAsteroidVSShip = node1 instanceof Asteroid && node2 instanceof Ship;
+                            // 2. Ship vs ship
+                            boolean isShipVSShip = node1 instanceof Ship && node2 instanceof Ship;
+                            // 3. Bullet vs asteroid
+                            boolean isBulletVSAsteroid = node1 instanceof Bullet && node2 instanceof Asteroid;
+                            boolean isAsteroidVSBullet = node1 instanceof Asteroid && node2 instanceof Bullet;
+                            // 4. Bullet vs ship
+                            boolean isBulletVSShip = node1 instanceof Bullet && node2 instanceof Ship;
+                            boolean isShipVSBullet = node1 instanceof Ship && node2 instanceof Bullet;
+
+                            if (isShipVSAsteroid || isAsteroidVSShip
+                                    || isShipVSShip
+                                    || isBulletVSAsteroid || isAsteroidVSBullet
+                                    || isBulletVSShip || isShipVSBullet) {
+                                // TODO fire an event, include the objects destroyed
+                                System.out.println("Collision detected");
+                                // destroy both objects
+                                Destroyable destroyable1 = (Destroyable) node1;
+                                Destroyable destroyable2 = (Destroyable) node2;
+                                destroyable1.destroy();
+                                destroyable2.destroy();
+                            }
+                        }
+                    }
+                }
             }
         }
+        return false;
     }
 }
