@@ -22,7 +22,7 @@ public class test extends Application {
         SmallAsteroid smallAs = new SmallAsteroid();
         smallAs.Translate(0, 300, 500, 0, 200 );
 
-        root.getChildren().addAll(mediAs.asteroid, largeAs.asteroid, smallAs.asteroid);
+        root.getChildren().addAll(mediAs, largeAs, smallAs);
         Scene scene = new Scene(root, 800, 600, Color.BLACK);
         stage.setScene(scene);
         stage.show();
