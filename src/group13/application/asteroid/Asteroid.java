@@ -1,29 +1,22 @@
 package group13.application.asteroid;
-
 import group13.application.Splittable;
-import group13.application.common.GameLevel;
-import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
-public class Asteroid implements Splittable {
-    Polygon asteroid;
-    double speed;
+public class Asteroid extends Polygon implements Splittable  {
+
     public Asteroid(Double[] coors){
-        this.asteroid = new Polygon();
-        asteroid.getPoints().addAll(coors);
-        asteroid.setFill(Color.BLACK);
-        asteroid.setStroke(Color.WHITE);
+        super();
+        this.getPoints().addAll(coors);
+        this.setFill(Color.BLACK);
+        this.setStroke(Color.WHITE);
     }
-    public double getSpeed(){
-        return this.speed;
-    }
+
+    /* This method defends how an asteroid moves by given a start position and an end position and the translation speed
+    * the asteroid will move from the start point to the end point with this speed. the startX is the x coordinate of the start position*/
     public void Translate (double startX, double startY, double stopX, double stopY, double speed ){
         TranslateTransition translate = new TranslateTransition();
         Point2D startPoint = new Point2D(startX, startY);
@@ -35,7 +28,7 @@ public class Asteroid implements Splittable {
         translate.setFromY(startY);
         translate.setToX(stopX);
         translate.setToY(stopY);
-        translate.setNode(this.asteroid);
+        translate.setNode(this);
         translate.play();
     }
 
