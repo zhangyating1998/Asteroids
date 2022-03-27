@@ -1,4 +1,5 @@
 package group13.application.asteroid;
+import group13.application.Destroyable;
 import group13.application.Splittable;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
@@ -6,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 
-public class Asteroid extends Polygon implements Splittable  {
+public class Asteroid extends Polygon implements Destroyable, Splittable  {
 
     public Asteroid(Double[] coors){
         super();
@@ -34,6 +35,11 @@ public class Asteroid extends Polygon implements Splittable  {
 
     @Override
     public void split() {
+
+    }
+
+    @Override
+    public void destroy() {
 
     }
 }
