@@ -13,10 +13,15 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static group13.application.common.Constants.*;
 
@@ -27,15 +32,25 @@ import static group13.application.common.Constants.*;
  */
 public class AsteroidsGame extends Application {
 
+    // Hashmap for keyboard inputs
+    Map<KeyCode, Boolean> pressedKeys = new HashMap<>();
+
     // Game level starts from GAME_LEVEL_START, which is 1
     private int gameLevel = GAME_LEVEL_START;
 
-    private Ship playerShip;
+    private Character playerShip;
 
     private int i = 0;
 
+    // Main method with exception handling
     public static void main(String[] args) {
-        launch();
+        try {
+            launch(args);
+        } catch (Exception error) {
+            error.printStackTrace();
+        } finally {
+            System.exit(0);
+        }
     }
 
     @Override
@@ -48,25 +63,40 @@ public class AsteroidsGame extends Application {
         Ship enemyShip = new EnemyShip();
 
         // player ship should be able to move by keyboard, and can shoot bullets.
-        playerShip = new PlayerShip();
+        playerShip = new Character(150, 100);
 
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
 
-        StackPane pane = new StackPane(
-                // add more asteroids
-                largeAsteroid,
-                // add enemy ship
-                enemyShip,
-                // add player ship
-                playerShip
+        // Replaced StackPane with Pane
+        Pane pane = new Pane(
+//                // add more asteroids
+//                largeAsteroid,
+//                // add enemy ship
+//                enemyShip,
+//                // add player ship
+//                playerShip
         );
+        // Set size of Pane and add player ship object to Pane
+        pane.setPrefSize(800, 600);
+        pane.getChildren().add(playerShip.getCharacter());
 
         stage.show();
         stage.setTitle("Asteroids");
-        stage.setScene(new Scene(pane, SCENE_WIDTH, SCENE_HEIGHT));
+        // Remove SCENE_WIDTH and SCENE_WIDTH parameters as not available in file. Added scene variable for later use.
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
 
-        // Start the game time line, which is running forever
+        // Create key press event to check if keys are pressed or not, stored in hashmap declared at top
+        scene.setOnKeyPressed(event -> {
+            pressedKeys.put(event.getCode(), Boolean.TRUE);
+        });
+
+        scene.setOnKeyReleased(event -> {
+            pressedKeys.put(event.getCode(), Boolean.FALSE);
+        });
+
+        // Start the game Timeline, which is running forever
         // This is used to detect game events such as collision
         Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -80,8 +110,21 @@ public class AsteroidsGame extends Application {
                 if (hasCollision) {
                     // check
                 }
+
+                // Call movement commands from Character Class based on keyboard inputs
+                if (pressedKeys.getOrDefault(KeyCode.LEFT, false)) {
+                    playerShip.turnLeft();
+                }
+                if (pressedKeys.getOrDefault(KeyCode.RIGHT, false)) {
+                    playerShip.turnRight();
+                }
+                if (pressedKeys.getOrDefault(KeyCode.UP, false)) {
+                    playerShip.accelerate();
+                }
+                playerShip.move();
             }
         };
+
         KeyFrame keyFrame = new KeyFrame(Duration.INDEFINITE);
         //add the keyframe to the timeline
         timeline.getKeyFrames().add(keyFrame);
@@ -90,15 +133,17 @@ public class AsteroidsGame extends Application {
     }
 
     /**
-     A collision cause the objects involved to be destroyed.
+     * A collision cause the objects involved to be destroyed.
+     * <p>
+     * Types of collision:
+     * 1. Ship vs asteroid
+     * 2. Ship vs ship
+     * 3. Bullet vs asteroid
+     * 4. Bullet vs ship
+     */
 
-     Types of collision:
-     1. Ship vs asteroid
-     2. Ship vs ship
-     3. Bullet vs asteroid
-     4. Bullet vs ship
-    */
-    private boolean detectCollision(StackPane pane) {
+    // Replaced StackPane parameter with Pane as changed previously
+    private boolean detectCollision(Pane pane) {
         ObservableList<Node> observableList = pane.getChildren();
         for (int i = 0; i < observableList.size(); i++) {
             Node node1 = observableList.get(i);
