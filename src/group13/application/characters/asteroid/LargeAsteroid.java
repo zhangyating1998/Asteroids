@@ -1,6 +1,4 @@
-package group13.application.asteroid;
-
-import javafx.scene.Group;
+package group13.application.characters.asteroid;
 
 public class LargeAsteroid extends Asteroid {
     Double[] coors ;

@@ -6,7 +6,7 @@ package group13.application.common;
  */
 public enum Events {
     // control logic should check the crash and destroy objects accordingly
-    CRASH,
+    COLLISION,
 
     // control logic should destroy the current play ship, decrement the player lives
     // and create a new player ship

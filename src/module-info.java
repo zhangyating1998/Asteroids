@@ -7,9 +7,8 @@ module group13.application {
     exports group13.application;
     exports group13.application.common;
     opens group13.application.common to javafx.fxml;
-    exports group13.application.asteroid;
-    opens group13.application.asteroid to javafx.fxml;
+    exports group13.application.characters;
+    opens group13.application.characters to javafx.fxml;
     exports group13.application.examples;
-    exports group13.application.ship;
-    opens group13.application.ship to javafx.fxml;
+    opens group13.application.examples to javafx.fxml;
 }
