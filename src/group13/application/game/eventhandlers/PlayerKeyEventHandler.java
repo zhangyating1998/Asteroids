@@ -18,10 +18,14 @@ public class PlayerKeyEventHandler implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case LEFT: playerShip.turnLeft();
-            case RIGHT: playerShip.turnRight();
-            case UP: playerShip.accelerate();
+        if (keyEvent.getCode() == KeyCode.LEFT) {
+            playerShip.turnLeft();
+        }
+        if (keyEvent.getCode() == KeyCode.RIGHT) {
+            playerShip.turnRight();
+        }
+        if (keyEvent.getCode() == KeyCode.UP) {
+            playerShip.accelerate();
         }
     }
 }

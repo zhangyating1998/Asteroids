@@ -73,7 +73,6 @@ public class AsteroidsGame extends Application {
                 // add player ship
                 playerShip
         );
-
         stage.show();
         stage.setTitle("Asteroids");
         Scene scene = new Scene(pane, SCENE_WIDTH, SCENE_HEIGHT, Color.WHITE);
