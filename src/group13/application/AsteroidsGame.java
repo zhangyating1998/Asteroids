@@ -9,6 +9,7 @@ import group13.application.characters.ship.Ship;
 import group13.application.game.eventhandlers.CollisionEventHandler;
 import group13.application.game.eventhandlers.DummyGameEventHandler;
 import group13.application.game.eventhandlers.PlayerKeyEventHandler;
+import group13.application.game.events.CollisionEvent;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -19,6 +20,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -119,8 +122,11 @@ public class AsteroidsGame extends Application {
             Node node1 = observableList.get(i);
             for (int j = i + 1; j < observableList.size(); j++) {
                 Node node2 = observableList.get(j);
-                // detect collision by checking the overlap between two objects
-                if (node1.getBoundsInParent().intersects(node2.getBoundsInParent())) {
+                // detect collision by checking the overlap between two objects, this is based on the x and y bound
+                Path path = (Path) Shape.intersect((Shape) node1, (Shape) node2);
+                // to precisely check the overlap by the shape of the node, we should count the number of common
+                // elements between the two nodes, a positive number means they overlap in shape
+                if (path.getElements().size() > 0) {
                     // 1. Ship vs asteroid
                     boolean isShipVSAsteroid = node1 instanceof Ship && node2 instanceof Asteroid;
                     boolean isAsteroidVSShip = node1 instanceof Asteroid && node2 instanceof Ship;
@@ -139,8 +145,10 @@ public class AsteroidsGame extends Application {
                             || isBulletVSShip || isShipVSBullet) {
                         // TODO fire an event, include the objects destroyed
                         System.out.println("Collision detected");
+                        pane.fireEvent(new CollisionEvent(COLLISION, pane, node1, node2));
                     }
                 }
+
             }
         }
         return false;
