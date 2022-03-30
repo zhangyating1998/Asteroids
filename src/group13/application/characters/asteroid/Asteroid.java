@@ -1,16 +1,17 @@
-package group13.application.asteroid;
-import group13.application.Destroyable;
-import group13.application.Splittable;
+package group13.application.characters.asteroid;
+import group13.application.characters.Character;
+import group13.application.characters.Splittable;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 
-public class Asteroid extends Polygon implements Destroyable, Splittable  {
+public class Asteroid extends Character implements Splittable  {
 
     public Asteroid(Double[] coors){
-        super();
+        super(0, 0);
         this.getPoints().addAll(coors);
         this.setFill(Color.BLACK);
         this.setStroke(Color.WHITE);
@@ -31,15 +32,16 @@ public class Asteroid extends Polygon implements Destroyable, Splittable  {
         translate.setToY(stopY);
         translate.setNode(this);
         translate.play();
+        translate.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Deal with out of scene");
+            }
+        });
     }
 
     @Override
     public void split() {
-
-    }
-
-    @Override
-    public void destroy() {
 
     }
 }

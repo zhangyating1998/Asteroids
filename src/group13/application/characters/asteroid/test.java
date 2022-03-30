@@ -1,4 +1,4 @@
-package group13.application.asteroid;
+package group13.application.characters.asteroid;
 
 import javafx.application.Application;
 import javafx.scene.Group;
