@@ -1,8 +1,10 @@
 package group13.application.ship;
 
-/**
- * @author longyu
- * @date 2022/3/26 15:21
- */
-public class PlayerShip extends Ship {
+import javafx.scene.shape.Polygon;
+
+public class PlayerShip extends group13.application.Character {
+
+    public PlayerShip(int x, int y) {
+        super(new Polygon(-15, -15, 30, 0, -15, 15), x, y);
+    }
 }
