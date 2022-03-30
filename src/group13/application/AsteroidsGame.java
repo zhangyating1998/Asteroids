@@ -10,13 +10,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -63,7 +60,7 @@ public class AsteroidsGame extends Application {
         Ship enemyShip = new EnemyShip();
 
         // player ship should be able to move by keyboard, and can shoot bullets.
-        playerShip = new Character(150, 100);
+        playerShip = new PlayerShip(150, 100);
 
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
@@ -119,7 +116,7 @@ public class AsteroidsGame extends Application {
                     playerShip.turnRight();
                 }
                 if (pressedKeys.getOrDefault(KeyCode.UP, false)) {
-                    playerShip.accelerate();
+                    playerShip.accelerate(0.05);
                 }
                 playerShip.move();
             }

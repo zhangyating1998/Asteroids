@@ -5,11 +5,11 @@ import javafx.scene.shape.Polygon;
 
 public class Character {
 
-    private Polygon Character;
+    protected Polygon Character;
     private Point2D velocity;
 
-    public Character(int x, int y) {
-        this.Character = new Polygon(-5, -5, 10, 0, -5, 5);
+    public Character(Polygon shape, int x, int y) {
+        this.Character = shape;
         this.Character.setTranslateX(x);
         this.Character.setTranslateY(y);
 
@@ -33,12 +33,12 @@ public class Character {
         this.Character.setTranslateY(this.Character.getTranslateY() + this.velocity.getY());
     }
 
-    public void accelerate() {
+    public void accelerate(double m) {
         double changeX = Math.cos(Math.toRadians(this.Character.getRotate()));
         double changeY = Math.sin(Math.toRadians(this.Character.getRotate()));
 
-        changeX *= 0.05;
-        changeY *= 0.05;
+        changeX *= m;
+        changeY *= m;
 
         this.velocity = this.velocity.add(changeX, changeY);
     }

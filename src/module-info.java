@@ -10,4 +10,6 @@ module group13.application {
     exports group13.application.asteroid;
     opens group13.application.asteroid to javafx.fxml;
     exports group13.application.examples;
+    exports group13.application.ship;
+    opens group13.application.ship to javafx.fxml;
 }
