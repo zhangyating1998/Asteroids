@@ -126,6 +126,7 @@ public class AsteroidsGame extends Application {
                 Path path = (Path) Shape.intersect((Shape) node1, (Shape) node2);
                 // to precisely check the overlap by the shape of the node, we should count the number of common
                 // elements between the two nodes, a positive number means they overlap in shape
+                // reference: https://gist.github.com/james-d/8149902
                 if (path.getElements().size() > 0) {
                     // 1. Ship vs asteroid
                     boolean isShipVSAsteroid = node1 instanceof Ship && node2 instanceof Asteroid;
