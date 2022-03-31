@@ -1,6 +1,7 @@
 package group13.application.characters;
 
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class Character extends Polygon {
@@ -10,6 +11,7 @@ public class Character extends Polygon {
         super(points);
         setTranslateX(x);
         setTranslateY(y);
+        setFill(Color.WHITE);
 
         this.velocity = new Point2D(0, 0);
     }

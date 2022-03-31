@@ -11,7 +11,7 @@ public class Constants {
 
     public static final int GAME_LEVEL_MAX = 3;
 
-    public static final int DEFAULT_NUMBER_OF_LIVES = 3;
+    public static final int DEFAULT_NUMBER_OF_LIVES = 2;
 
     public static final int SCENE_WIDTH = 800;
 

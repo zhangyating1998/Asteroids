@@ -6,6 +6,6 @@ package group13.application.characters.ship;
  */
 public class EnemyShip extends Ship {
     public EnemyShip(int x, int y) {
-        super(x, y);
+        super(x, y, -15, -15, 30, 0, -15, 15);
     }
 }
