@@ -1,4 +1,4 @@
-package group13.application.game.eventhandlers;
+package group13.application.game.events.handlers;
 
 import group13.application.common.Constants;
 import javafx.event.Event;
