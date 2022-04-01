@@ -41,7 +41,7 @@ public class test extends Application {
         LargeAsteroid l1 = new LargeAsteroid();
         MediumAsteroid m1 = new MediumAsteroid();
         SmallAsteroid s = new SmallAsteroid();
-        root.getChildren().addAll(m1);
+        root.getChildren().addAll(l1, m1, s);
         Scene scene = new Scene(root, 800, 600, Color.BLACK);
         stage.setScene(scene);
         stage.show();
