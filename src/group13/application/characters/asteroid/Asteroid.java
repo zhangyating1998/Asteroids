@@ -20,14 +20,31 @@ public class Asteroid extends Character implements Splittable  {
         super();
         this.getPoints().addAll(generateShape());
         this.getTransforms().add(resize());
+
+        //set the initial position of the asteroid
+        this.setLayoutX(start().getX());
+        this.setLayoutY(start().getY());
         this.setFill(Color.BLACK);
         this.setStroke(Color.WHITE);
+        setWidth();
     }
 
     // randomly generate the start position of an asteroid
     public Point2D start(){
         Random r = new Random();
-        return new Point2D(r.nextInt(SCENE_WIDTH), r.nextInt(SCENE_HEIGHT));
+        return new Point2D(r.nextInt(SCENE_WIDTH-100), r.nextInt(SCENE_HEIGHT-100));
+    }
+
+    public void setWidth(){
+        if(this instanceof LargeAsteroid){
+            this.setStrokeWidth(0.15);
+        }
+        else if(this instanceof MediumAsteroid){
+            this.setStrokeWidth(0.3);
+        }
+        else{
+            this.setStrokeWidth(0.6);
+        }
     }
 
     // randomly generate the coordinates of a polygon, return a Double[] as a coordinate
@@ -45,21 +62,9 @@ public class Asteroid extends Character implements Splittable  {
     // resize an asteroid based on the type of it
     public Scale resize(){
         Scale s = new Scale();
-        if(this instanceof LargeAsteroid){
-            s.setX(4);
-            s.setY(4);
-            return s;
-        }
-        else if(this instanceof MediumAsteroid){
-            s.setX(2);
-            s.setY(2);
-            return s;
-        }
-        else{
-            s.setX(1);
-            s.setY(1);
-            return s;
-        }
+        s.setX(1);
+        s.setY(1);
+        return s;
     }
 
     @Override
