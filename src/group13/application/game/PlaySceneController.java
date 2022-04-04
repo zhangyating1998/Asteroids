@@ -30,8 +30,10 @@ public class PlaySceneController extends AnimationTimer {
     }
 
     @Override
-    public void handle(long l) {
+    public void handle(long timeInNanoseconds) {
         detectCollision(playScene.getPane());
+
+        playScene.addAlienShips(timeInNanoseconds);
 
         // move the Characters
         for (Node node : playScene.getPane().getChildren()) {
