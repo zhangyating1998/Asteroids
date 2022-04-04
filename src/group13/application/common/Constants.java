@@ -19,11 +19,11 @@ public class Constants {
 
     public static final int BASE_NUMBER_OF_ASTEROIDS = 3;
 
-    public static final int BASE_FREQ_OF_ALIEN_SHIP = 30;
+    public static final int BASE_FREQ_OF_ALIEN_SHIP = 20;
 
-    public static final int MULTIPLIER_OF_ASTEROIDS = 1;
+    public static final int MULTIPLIER_OF_ASTEROIDS = 2;
 
-    public static final int FREQ_MULTIPLIER_OF_ALIEN_SHIP = 3;
+    public static final int FREQ_MULTIPLIER_OF_ALIEN_SHIP = 2;
 
     public static final EventType COLLISION = new EventType("collision");
 

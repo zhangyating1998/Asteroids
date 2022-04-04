@@ -17,11 +17,11 @@ public class Character extends Polygon {
     }
 
     public void turnLeft() {
-        setRotate(getRotate() - 5);
+        setRotate(getRotate() - 15);
     }
 
     public void turnRight() {
-        setRotate(getRotate() + 5);
+        setRotate(getRotate() + 15);
     }
 
     public void move() {
@@ -37,8 +37,8 @@ public class Character extends Polygon {
         double changeX = Math.cos(Math.toRadians(getRotate()));
         double changeY = Math.sin(Math.toRadians(getRotate()));
 
-        changeX *= 0.05;
-        changeY *= 0.05;
+        changeX *= 0.15;
+        changeY *= 0.15;
 
         this.velocity = this.velocity.add(changeX, changeY);
     }
