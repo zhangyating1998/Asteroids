@@ -32,11 +32,11 @@ public class Character extends Polygon {
     }
 
     public void turnLeft() {
-        setRotate(getRotate() - 5);
+        setRotate(getRotate() - 15);
     }
 
     public void turnRight() {
-        setRotate(getRotate() + 5);
+        setRotate(getRotate() + 15);
     }
 
     //make movement
@@ -61,9 +61,10 @@ public class Character extends Polygon {
         double changeX = Math.cos(Math.toRadians(this.getRotate()));
         double changeY = Math.sin(Math.toRadians(this.getRotate()));
 
-        changeX *= m;
-        changeY *= m;
+        changeX *= 0.15;
+        changeY *= 0.15;
 
         this.velocity = this.velocity.add(changeX, changeY);
     }
+
 }

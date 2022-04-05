@@ -5,6 +5,7 @@ import group13.application.characters.Character;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.ship.Ship;
 import group13.application.game.events.CollisionEvent;
+import group13.application.game.scene.PlayScene;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -22,21 +23,20 @@ import static group13.application.common.Constants.COLLISION;
  * @date 2022/3/28 22:52
  */
 public class PlaySceneController extends AnimationTimer {
-    private Pane pane;
+    private PlayScene playScene;
 
-    public PlaySceneController(Pane pane) {
-        this.pane = pane;
+    public PlaySceneController(PlayScene playScene) {
+        this.playScene = playScene;
     }
 
     @Override
-    public void handle(long l) {
-        boolean hasCollision = detectCollision(pane);
-        if (hasCollision) {
-            // check
-        }
+    public void handle(long timeInNanoseconds) {
+        detectCollision(playScene.getPane());
+
+        playScene.addAlienShips(timeInNanoseconds);
 
         // move the Characters
-        for (Node node : pane.getChildren()) {
+        for (Node node : playScene.getPane().getChildren()) {
             if (node instanceof Character) {
                 ((Character) node).move();
             }
@@ -54,7 +54,7 @@ public class PlaySceneController extends AnimationTimer {
      */
 
     // Replaced StackPane parameter with Pane as changed previously
-    private boolean detectCollision(Pane pane) {
+    private void detectCollision(Pane pane) {
         ObservableList<Node> observableList = pane.getChildren();
         for (int i = 0; i < observableList.size(); i++) {
             Node node1 = observableList.get(i);
@@ -89,6 +89,5 @@ public class PlaySceneController extends AnimationTimer {
 
             }
         }
-        return false;
     }
 }
