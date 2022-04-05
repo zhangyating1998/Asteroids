@@ -38,6 +38,15 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
             this.playScene.decrementLives();
         }
 
+        //test splittable use user ship
+        if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof PlayerShip) {
+            pane.getChildren().addAll(((Asteroid) event.getNode1()).split()[0], ((Asteroid) event.getNode1()).split()[1]);
+        }
+
+        if (event.getNode2() instanceof Asteroid && event.getNode1() instanceof PlayerShip) {
+            pane.getChildren().addAll(((Asteroid) event.getNode2()).split()[0], ((Asteroid) event.getNode2()).split()[1]);
+        }
+
         // if number of Asteroids is equal to 0, then upgrade game
         // else if number of Asteroids is greater than 1, then game continue
         for (Node node : pane.getChildren()) {
