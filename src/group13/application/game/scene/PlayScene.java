@@ -23,7 +23,6 @@ public class PlayScene extends BaseScene {
     public void createScene() {
         // Asteroids should be able to move randomly, and split when crashes
         LargeAsteroid largeAsteroid = new LargeAsteroid();
-        largeAsteroid.Translate(0, 0, 700, 500, 80);
 
         // enemy ship should be able to move randomly, and shoot towards player ship
         // TODO enemy ship should be add into scene after a period of time

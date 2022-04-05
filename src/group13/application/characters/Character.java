@@ -7,13 +7,21 @@ import javafx.scene.shape.Polygon;
 public class Character extends Polygon {
     private Point2D velocity;
 
-    public Character(int x, int y, double... points) {
+    public Character(double x, double y, double... points) {
         super(points);
         setTranslateX(x);
         setTranslateY(y);
         setFill(Color.WHITE);
-
         this.velocity = new Point2D(0, 0);
+    }
+
+    public Character(){
+        super();
+        this.velocity = new Point2D(0, 0);
+    }
+
+    public void setVelocity(Point2D v){
+        this.velocity = v;
     }
 
     public void turnLeft() {
@@ -24,6 +32,7 @@ public class Character extends Polygon {
         setRotate(getRotate() + 5);
     }
 
+    //make movement
     public void move() {
         setTranslateX(getTranslateX() + this.velocity.getX());
         setTranslateY(getTranslateY() + this.velocity.getY());
@@ -33,6 +42,7 @@ public class Character extends Polygon {
         // todo
     }
 
+    // change velocity
     public void accelerate() {
         double changeX = Math.cos(Math.toRadians(getRotate()));
         double changeY = Math.sin(Math.toRadians(getRotate()));
