@@ -27,7 +27,7 @@ public class PlayerKeyEventHandler implements EventHandler<KeyEvent> {
             keyEvent.consume();
         }
         if (keyEvent.getCode() == KeyCode.UP) {
-            playerShip.accelerate();
+            playerShip.accelerate(0.5);
             keyEvent.consume();
         }
     }
