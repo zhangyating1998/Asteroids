@@ -7,7 +7,11 @@ import javafx.scene.shape.Polygon;
 
 
 public class Character extends Polygon {
+    protected Polygon Character;
     private Point2D velocity;
+    private double counter;
+    private boolean isTimeOut = false;
+    private double timeToLive;
 
     public Character(int x, int y, double... points) {
         super(points);
@@ -16,6 +20,16 @@ public class Character extends Polygon {
         setFill(Color.WHITE);
 
         this.velocity = new Point2D(0, 0);
+    }
+
+    public Character(int x, int y, boolean isTimeOut, double timeToLive, double... points) {
+        this(x, y, points);
+        this.isTimeOut = isTimeOut;
+        this.timeToLive = timeToLive;
+    }
+
+    public Polygon getCharacter() {
+        return Character;
     }
 
     public void turnLeft() {
@@ -27,8 +41,8 @@ public class Character extends Polygon {
     }
 
     public void move() {
-        setTranslateX(getTranslateX() + this.velocity.getX());
-        setTranslateY(getTranslateY() + this.velocity.getY());
+        this.setTranslateX(this.getTranslateX() + this.velocity.getX());
+        this.setTranslateY(this.getTranslateY() + this.velocity.getY());
 
         if (this.getTranslateX() + this.getLayoutBounds().getWidth() < 0)
             this.setTranslateX(Constants.SCENE_WIDTH);
@@ -42,18 +56,22 @@ public class Character extends Polygon {
         if (this.getTranslateY() > Constants.SCENE_HEIGHT)
             this.setTranslateY(-this.getLayoutBounds().getHeight());
 
+        if (isTimeOut) {
+            this.counter += 0.01666;
+            if (this.counter > timeToLive) {
+                //TODO Add event handler to remove
+//            t.remove?(b);
+//            pane.getChildren().remove(b.getCharacter());
+            }
+        }
     }
 
-    private void checkEdge() {
-        // todo
-    }
+    public void accelerate(double m) {
+        double changeX = Math.cos(Math.toRadians(this.getRotate()));
+        double changeY = Math.sin(Math.toRadians(this.getRotate()));
 
-    public void accelerate() {
-        double changeX = Math.cos(Math.toRadians(getRotate()));
-        double changeY = Math.sin(Math.toRadians(getRotate()));
-
-        changeX *= 0.05;
-        changeY *= 0.05;
+        changeX *= m;
+        changeY *= m;
 
         this.velocity = this.velocity.add(changeX, changeY);
     }
