@@ -5,7 +5,7 @@ import javafx.scene.transform.Scale;
 public class LargeAsteroid extends Asteroid {
     double speed;
     public LargeAsteroid(){
-        super();
+        super(0.5);
         this.speed = 80;
     }
 
