@@ -6,42 +6,77 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Scale;
 import javafx.util.Duration;
+
+import java.util.Random;
+
+import static group13.application.common.Constants.SCENE_HEIGHT;
+import static group13.application.common.Constants.SCENE_WIDTH;
 
 public class Asteroid extends Character implements Splittable  {
 
-    public Asteroid(Double[] coors){
-        super(0, 0);
-        this.getPoints().addAll(coors);
+    public Asteroid(){
+        super();
+        this.getPoints().addAll(generateShape());
+        this.getTransforms().add(resize());
+
+        //set the initial position of the asteroid
+        this.setLayoutX(start().getX());
+        this.setLayoutY(start().getY());
         this.setFill(Color.BLACK);
         this.setStroke(Color.WHITE);
+        setWidth();
     }
 
-    /* This method defends how an asteroid moves by given a start position and an end position and the translation speed
-    * the asteroid will move from the start point to the end point with this speed. the startX is the x coordinate of the start position*/
-    public void Translate (double startX, double startY, double stopX, double stopY, double speed ){
-        TranslateTransition translate = new TranslateTransition();
-        Point2D startPoint = new Point2D(startX, startY);
-        Point2D endPoint = new Point2D(stopX, stopY);
-        double distance = startPoint.distance(endPoint);
-        double duration = (distance/speed) * 1000;
-        translate.setDuration(Duration.millis(duration));
-        translate.setFromX(startX);
-        translate.setFromY(startY);
-        translate.setToX(stopX);
-        translate.setToY(stopY);
-        translate.setNode(this);
-        translate.play();
-        translate.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                System.out.println("Deal with out of scene");
-            }
-        });
+    // randomly generate the start position of an asteroid
+    public Point2D start(){
+        Random r = new Random();
+        return new Point2D(r.nextInt(SCENE_WIDTH-100), r.nextInt(SCENE_HEIGHT-100));
+    }
+
+    public void setWidth(){
+        if(this instanceof LargeAsteroid){
+            this.setStrokeWidth(0.15);
+        }
+        else if(this instanceof MediumAsteroid){
+            this.setStrokeWidth(0.3);
+        }
+        else{
+            this.setStrokeWidth(0.6);
+        }
+    }
+
+    // randomly generate the coordinates of a polygon, return a Double[] as a coordinate
+    public Double[] generateShape(){
+        Random r = new Random();
+        int shape = r.nextInt(4);
+        return switch (shape) {
+            case 0 -> new Double[]{8.0, 0.0, 15.0, 3.0, 13.0, 13.0, 9.0, 15.0, 0.0, 10.0};
+            case 1 -> new Double[]{7.0, 0.0, 9.0, 3.0, 12.0, 0.0, 15.0, 10.0, 13.0, 14.0, 0.0, 12.0, 5.0, 8.0, 0.0, 3.0};
+            case 2 -> new Double[]{0.0, 8.0, 10.0, 0.0, 15.0, 4.0, 12.0, 7.0, 15.0, 13.0, 9.0, 15.0};
+            default -> new Double[]{3.0, 0.0, 10.0, 3.0, 10.0, 8.0, 15.0, 9.0, 13.0, 15.0, 2.0, 13.0, 0.0, 8.0};
+        };
+    }
+
+    // resize an asteroid based on the type of it
+    public Scale resize(){
+        Scale s = new Scale();
+        s.setX(1);
+        s.setY(1);
+        return s;
     }
 
     @Override
-    public void split() {
-
+    public Asteroid[] split() {
+        if(this instanceof LargeAsteroid){
+            return new MediumAsteroid[]{ new MediumAsteroid(), new MediumAsteroid()};
+        }
+        else if(this instanceof MediumAsteroid){
+            return new SmallAsteroid[]{new SmallAsteroid(), new SmallAsteroid()};
+        }
+        else{
+            return null;
+        }
     }
 }

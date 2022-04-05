@@ -4,7 +4,7 @@ public class SmallAsteroid extends Asteroid {
     Double[] coors;
     double speed;
     public SmallAsteroid(){
-        super(new Double[]{8.0, 0.0, 15.0, 3.0, 13.0, 13.0, 9.0, 15.0, 0.0, 10.0});
+        super();
         this.speed = 300;
     }
 
