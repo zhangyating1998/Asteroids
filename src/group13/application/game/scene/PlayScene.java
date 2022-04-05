@@ -35,8 +35,8 @@ public class PlayScene extends BaseScene {
     private void createSceneByGameLevel() {
         for (int i = 0; i < this.playSceneParams.getNumberOfAsteroids(); i++) {
             LargeAsteroid largeAsteroid = new LargeAsteroid();
-            largeAsteroid.Translate(random.nextInt(SCENE_WIDTH), random.nextInt(SCENE_HEIGHT),
-                    random.nextInt(SCENE_WIDTH), random.nextInt(SCENE_HEIGHT), 80);
+//            largeAsteroid.Translate(random.nextInt(SCENE_WIDTH), random.nextInt(SCENE_HEIGHT),
+//                    random.nextInt(SCENE_WIDTH), random.nextInt(SCENE_HEIGHT), 80);
             getPane().getChildren().add(largeAsteroid);
         }
 
