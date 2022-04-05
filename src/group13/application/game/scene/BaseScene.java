@@ -33,4 +33,13 @@ public abstract class BaseScene extends Scene {
     public Pane getPane() {
         return pane;
     }
+
+    /**
+     * Disable the current pane and create a new pane for the scene
+     */
+    public void newPane() {
+        this.pane.setDisable(true);
+        this.pane = new Pane();
+        this.setRoot(this.pane);
+    }
 }
