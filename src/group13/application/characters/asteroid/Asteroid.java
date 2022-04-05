@@ -22,11 +22,11 @@ public class Asteroid extends Character implements Splittable  {
         this.getTransforms().add(resize());
 
         //set the initial position of the asteroid
-        this.setLayoutX(start().getX());
-        this.setLayoutY(start().getY());
+        this.setTranslateX(start().getX());
+        this.setTranslateY(start().getY());
         this.setFill(Color.BLACK);
         this.setStroke(Color.WHITE);
-        //super.getCharacter().setRotate(new Random().nextInt(360));
+        setRotate(new Random().nextInt(360));
         accelerate(speed);
         setWidth();
     }
