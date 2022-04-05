@@ -43,12 +43,12 @@ public class Character extends Polygon {
     }
 
     // change velocity
-    public void accelerate() {
+    public void accelerate(double m) {
         double changeX = Math.cos(Math.toRadians(getRotate()));
         double changeY = Math.sin(Math.toRadians(getRotate()));
 
-        changeX *= 0.05;
-        changeY *= 0.05;
+        changeX *= m;
+        changeY *= m;
 
         this.velocity = this.velocity.add(changeX, changeY);
     }

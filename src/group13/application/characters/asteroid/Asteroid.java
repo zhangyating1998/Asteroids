@@ -16,7 +16,7 @@ import static group13.application.common.Constants.SCENE_WIDTH;
 
 public class Asteroid extends Character implements Splittable  {
 
-    public Asteroid(){
+    public Asteroid(double speed){
         super();
         this.getPoints().addAll(generateShape());
         this.getTransforms().add(resize());
@@ -26,6 +26,8 @@ public class Asteroid extends Character implements Splittable  {
         this.setLayoutY(start().getY());
         this.setFill(Color.BLACK);
         this.setStroke(Color.WHITE);
+        //super.getCharacter().setRotate(new Random().nextInt(360));
+        accelerate(speed);
         setWidth();
     }
 
