@@ -24,6 +24,23 @@ public class Asteroid extends Character implements Splittable  {
         //set the initial position of the asteroid
         this.setTranslateX(start().getX());
         this.setTranslateY(start().getY());
+
+        this.setFill(Color.BLACK);
+        this.setStroke(Color.WHITE);
+        setRotate(new Random().nextInt(360));
+        accelerate(speed);
+        setWidth();
+    }
+
+    public Asteroid(double speed, Point2D position){
+        super();
+        this.getPoints().addAll(generateShape());
+        this.getTransforms().add(resize());
+
+        //set the initial position of the asteroid
+        this.setTranslateX(position.getX());
+        this.setTranslateY(position.getY());
+
         this.setFill(Color.BLACK);
         this.setStroke(Color.WHITE);
         setRotate(new Random().nextInt(360));
@@ -69,13 +86,25 @@ public class Asteroid extends Character implements Splittable  {
         return s;
     }
 
+    // set the initial position of the asteroid
+    public void setInitialPosition(Point2D position){
+        this.setTranslateX(position.getX());
+        this.setTranslateY(position.getY());
+    }
+
+
+    public Point2D getCurrentPosition(){
+        return new Point2D(this.getTranslateX(), this.getTranslateY());
+    }
+
+
     @Override
     public Asteroid[] split() {
         if(this instanceof LargeAsteroid){
-            return new MediumAsteroid[]{ new MediumAsteroid(), new MediumAsteroid()};
+            return new MediumAsteroid[]{new MediumAsteroid(getCurrentPosition(), new Random().nextDouble()*0.5 + 0.5), new MediumAsteroid(getCurrentPosition(), new Random().nextDouble()*0.5 + 0.5)};
         }
         else if(this instanceof MediumAsteroid){
-            return new SmallAsteroid[]{new SmallAsteroid(), new SmallAsteroid()};
+            return new SmallAsteroid[]{new SmallAsteroid(getCurrentPosition(), new Random().nextDouble()), new SmallAsteroid(getCurrentPosition(), new Random().nextDouble())};
         }
         else{
             return null;
