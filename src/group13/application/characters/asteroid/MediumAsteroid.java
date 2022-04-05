@@ -6,7 +6,7 @@ public class MediumAsteroid extends Asteroid {
     double speed;
     Double[] coors ;
     public MediumAsteroid(){
-        super();
+        super(1.0);
         this.speed = 100;
     }
 
