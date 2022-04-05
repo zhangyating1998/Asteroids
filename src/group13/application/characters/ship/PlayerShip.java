@@ -13,4 +13,5 @@ public class PlayerShip extends Ship {
         super(x, y, -15, -15, 30, 0, -15, 15);
     }
 
+
 }

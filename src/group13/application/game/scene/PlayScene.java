@@ -1,5 +1,6 @@
 package group13.application.game.scene;
 
+import group13.application.characters.Bullet;
 import group13.application.characters.asteroid.LargeAsteroid;
 import group13.application.characters.ship.EnemyShip;
 import group13.application.characters.ship.PlayerShip;
@@ -8,6 +9,9 @@ import group13.application.game.events.handlers.CollisionEventHandler;
 import group13.application.game.events.handlers.DummyGameEventHandler;
 import group13.application.game.events.handlers.PlayerKeyEventHandler;
 import javafx.scene.input.KeyEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static group13.application.common.Constants.COLLISION;
 import static group13.application.common.Constants.DEFAULT_NUMBER_OF_LIVES;
@@ -18,6 +22,8 @@ import static group13.application.common.Constants.DEFAULT_NUMBER_OF_LIVES;
 public class PlayScene extends BaseScene {
     private int numberOfLives = DEFAULT_NUMBER_OF_LIVES;
     private int gameLevel = DEFAULT_NUMBER_OF_LIVES;
+    List<Bullet> bullets = new ArrayList<>();
+
 
     @Override
     public void createScene() {
