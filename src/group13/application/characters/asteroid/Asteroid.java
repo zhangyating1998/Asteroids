@@ -101,10 +101,10 @@ public class Asteroid extends Character implements Splittable  {
     @Override
     public Asteroid[] split() {
         if(this instanceof LargeAsteroid){
-            return new MediumAsteroid[]{new MediumAsteroid(getCurrentPosition(), new Random().nextDouble()*0.5 + 0.5), new MediumAsteroid(getCurrentPosition(), new Random().nextDouble()*0.5 + 0.5)};
+            return new MediumAsteroid[]{new MediumAsteroid(getCurrentPosition(), new Random().nextDouble()+0.8), new MediumAsteroid(getCurrentPosition(), new Random().nextDouble()+ 0.8)};
         }
         else if(this instanceof MediumAsteroid){
-            return new SmallAsteroid[]{new SmallAsteroid(getCurrentPosition(), new Random().nextDouble()), new SmallAsteroid(getCurrentPosition(), new Random().nextDouble())};
+            return new SmallAsteroid[]{new SmallAsteroid(getCurrentPosition(), new Random().nextDouble()+1.5), new SmallAsteroid(getCurrentPosition(), new Random().nextDouble()+1.5)};
         }
         else{
             return null;
