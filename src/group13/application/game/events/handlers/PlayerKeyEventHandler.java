@@ -20,13 +20,18 @@ public class PlayerKeyEventHandler implements EventHandler<KeyEvent> {
     public void handle(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.LEFT) {
             playerShip.turnLeft();
+            keyEvent.consume();
         }
         if (keyEvent.getCode() == KeyCode.RIGHT) {
             playerShip.turnRight();
+            keyEvent.consume();
         }
         if (keyEvent.getCode() == KeyCode.UP) {
             playerShip.accelerate(0.5);
+
+            keyEvent.consume();
         }
+
         if (keyEvent.getCode() == KeyCode.SPACE) {
            playerShip.fire();
         }
