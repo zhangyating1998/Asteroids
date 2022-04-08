@@ -1,12 +1,22 @@
 package group13.application.game.scene;
 
+import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.asteroid.LargeAsteroid;
+import group13.application.characters.asteroid.MediumAsteroid;
 import group13.application.characters.ship.EnemyShip;
 import group13.application.characters.ship.PlayerShip;
 import group13.application.game.events.handlers.CollisionEventHandler;
 import group13.application.game.events.handlers.PlayerKeyEventHandler;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -24,19 +34,43 @@ public class PlayScene extends BaseScene {
     private long lastSecondsAlienShipAdded = 0;
     private PlaySceneParams playSceneParams;
     private boolean isGameContinue = true;
+    private int score=0;
+    private Label scoreLabel;
+    private Label lifeLabel;
 
     @Override
     public void createScene() {
         this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
         createSceneByGameLevel();
         this.addEventFilter(COLLISION, new CollisionEventHandler(this));
+        displayScore();
+        displayLife();
+        this.getPane().setStyle("-fx-background-color: black");
+    }
+    public void displayScore(){
+        scoreLabel = new Label();
+        scoreLabel.setTextFill(Color.WHITE);
+        scoreLabel.setText("SCORES : "+ Integer.toString(score));
+        scoreLabel.setAlignment(Pos.TOP_LEFT);
+        scoreLabel.setPadding(new Insets(10));
+        scoreLabel.setFont(Font.font(20));
+        this.getPane().getChildren().addAll(scoreLabel);
+    }
+
+    public void displayLife() {
+        lifeLabel = new Label();
+        lifeLabel.setTextFill(Color.WHITE);
+        lifeLabel.setText("LIVES : "+ Integer.toString(DEFAULT_NUMBER_OF_LIVES));
+        lifeLabel.setAlignment(Pos.TOP_LEFT);
+        lifeLabel.setPadding(new Insets(35));
+        lifeLabel.setFont(Font.font(20));
+        this.getPane().getChildren().addAll(lifeLabel);
+
     }
 
     private void createSceneByGameLevel() {
         for (int i = 0; i < this.playSceneParams.getNumberOfAsteroids(); i++) {
             LargeAsteroid largeAsteroid = new LargeAsteroid();
-//            largeAsteroid.Translate(random.nextInt(SCENE_WIDTH), random.nextInt(SCENE_HEIGHT),
-//                    random.nextInt(SCENE_WIDTH), random.nextInt(SCENE_HEIGHT), 80);
             getPane().getChildren().add(largeAsteroid);
         }
 
@@ -88,12 +122,36 @@ public class PlayScene extends BaseScene {
         this.isGameContinue = false;
     }
 
+    public void setLifeLabel() {
+        lifeLabel.setText("LIVES : "+Integer.toString(numberOfLives));
+    }
+
+    public void setScoreLabel() {
+        scoreLabel.setText("SCORES : "+Integer.toString(score));
+    }
+
+
+    // add score according to the level of the asteroid that the user has destroyed
+    public void AddScore(Asteroid as) {
+        if (this.isGameContinue) {
+            System.out.println("Current total score: " + score);
+            if (as instanceof LargeAsteroid){
+                score += 10;
+            } else if (as instanceof MediumAsteroid){
+                score += 15;
+            } else{
+                score += 20;
+            }
+        }
+    }
+
+
     public void decrementLives() {
         if (this.isGameContinue) {
             System.out.println("Current number of lives: " + numberOfLives);
-            if (numberOfLives > 1) {
+            if (numberOfLives >= 1) {
                 removePlayerKeyListener();
-                numberOfLives--;
+                numberOfLives-=1;
                 System.out.println("Number of lives after decrement: " + numberOfLives);
                 createNewPlayerShip();
             } else {
