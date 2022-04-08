@@ -1,5 +1,6 @@
 package group13.application.game;
 
+import group13.application.characters.ship.PlayerShip;
 import group13.application.game.scene.PlayScene;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -46,10 +47,10 @@ public class GameEngine {
     }
 
     public void newGame() {
-        Scene scene = new PlayScene();
+        PlayScene scene = new PlayScene();
         stage.setScene(scene);
 
-        AnimationTimer timer = new PlaySceneController((Pane) scene.getRoot());
+        AnimationTimer timer = new PlaySceneController(scene);
         timer.start();
     }
 

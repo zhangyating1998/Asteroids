@@ -5,20 +5,24 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
-
 public class Character extends Polygon {
+
     protected Polygon Character;
     private Point2D velocity;
     private double counter;
     private boolean isTimeOut = false;
     private double timeToLive;
 
-    public Character(int x, int y, double... points) {
+    public Character(double x, double y, double... points) {
         super(points);
         setTranslateX(x);
         setTranslateY(y);
         setFill(Color.WHITE);
+        this.velocity = new Point2D(0, 0);
+    }
 
+    public Character(){
+        super();
         this.velocity = new Point2D(0, 0);
     }
 
@@ -32,14 +36,19 @@ public class Character extends Polygon {
         return Character;
     }
 
+    public void setVelocity(Point2D v){
+        this.velocity = v;
+    }
+
     public void turnLeft() {
-        setRotate(getRotate() - 5);
+        setRotate(getRotate() - 15);
     }
 
     public void turnRight() {
-        setRotate(getRotate() + 5);
+        setRotate(getRotate() + 15);
     }
 
+    //make movement
     public void move() {
         this.setTranslateX(this.getTranslateX() + this.velocity.getX());
         this.setTranslateY(this.getTranslateY() + this.velocity.getY());
