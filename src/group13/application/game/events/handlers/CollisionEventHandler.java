@@ -35,14 +35,18 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
 
         // if either node is a PlayerShip, then decrement lives
         if (event.getNode1() instanceof PlayerShip || event.getNode2() instanceof PlayerShip) {
-            this.playScene.decrementLives();
+            //this.playScene.decrementLives();
         }
 
-        //test splittable use user ship
+        //test splittable use user ship, in reality the split() should be triggered by a bullet
         if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof PlayerShip) {
             Asteroid[] asteroids = ((Asteroid) event.getNode1()).split();
             if (asteroids != null) {
                 pane.getChildren().addAll(((Asteroid) event.getNode1()).split()[0], ((Asteroid) event.getNode1()).split()[1]);
+                this.playScene.AddScore((Asteroid)event.getNode1());
+                this.playScene.setScoreLabel();
+                this.playScene.decrementLives();
+                this.playScene.setLifeLabel();
             }
         }
 
@@ -50,8 +54,13 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
             Asteroid[] asteroids = ((Asteroid) event.getNode2()).split();
             if (asteroids != null) {
                 pane.getChildren().addAll( asteroids[0], asteroids[1]);
+                this.playScene.AddScore((Asteroid)event.getNode2());
+                this.playScene.setScoreLabel();
+                this.playScene.decrementLives();
+                this.playScene.setLifeLabel();
             }
         }
+
 
         // if number of Asteroids is equal to 0, then upgrade game
         // else if number of Asteroids is greater than 1, then game continue
