@@ -38,7 +38,7 @@ public class GameEngine {
     }
 
     public void welcome() {
-        WelcomeScene welcome = new WelcomeScene();
+        WelcomeScene welcome = new WelcomeScene(this);
         stage.setScene(welcome);
 
     }
