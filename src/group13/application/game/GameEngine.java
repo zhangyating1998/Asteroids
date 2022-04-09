@@ -2,6 +2,7 @@ package group13.application.game;
 
 import group13.application.characters.ship.PlayerShip;
 import group13.application.game.scene.PlayScene;
+import group13.application.game.scene.WelcomeScene;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -37,9 +38,9 @@ public class GameEngine {
     }
 
     public void welcome() {
-        // TODO
-//        createStartScene();
-        this.newGame();
+        WelcomeScene welcome = new WelcomeScene();
+        stage.setScene(welcome);
+
     }
 
     public void newGame() {
