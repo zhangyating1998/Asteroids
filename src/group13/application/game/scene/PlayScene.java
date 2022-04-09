@@ -5,6 +5,7 @@ import group13.application.characters.asteroid.LargeAsteroid;
 import group13.application.characters.asteroid.MediumAsteroid;
 import group13.application.characters.ship.EnemyShip;
 import group13.application.characters.ship.PlayerShip;
+import group13.application.game.GameEngine;
 import group13.application.game.events.handlers.CollisionEventHandler;
 import group13.application.game.events.handlers.PlayerKeyEventHandler;
 import javafx.event.EventHandler;
@@ -18,6 +19,12 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +34,7 @@ import static group13.application.common.Constants.*;
  * This scene manages the life cycle of a game.
  */
 public class PlayScene extends BaseScene {
-    private int numberOfLives = DEFAULT_NUMBER_OF_LIVES;
+    private int numberOfLives = 3;//DEFAULT_NUMBER_OF_LIVES;
     private int gameLevel = GAME_LEVEL_START;
     private EventHandler playerKeyHandler;
     private final static Random random = new Random();
@@ -37,6 +44,11 @@ public class PlayScene extends BaseScene {
     private int score=0;
     private Label scoreLabel;
     private Label lifeLabel;
+    private GameEngine gameEngine;
+
+    public PlayScene(GameEngine gameEngine) {
+        this.gameEngine = gameEngine;
+    }
 
     @Override
     public void createScene() {
@@ -47,6 +59,7 @@ public class PlayScene extends BaseScene {
         displayLife();
         this.getPane().setStyle("-fx-background-color: black");
     }
+
     public void displayScore(){
         scoreLabel = new Label();
         scoreLabel.setTextFill(Color.WHITE);
@@ -57,15 +70,18 @@ public class PlayScene extends BaseScene {
         this.getPane().getChildren().addAll(scoreLabel);
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public void displayLife() {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
-        lifeLabel.setText("LIVES : "+ Integer.toString(DEFAULT_NUMBER_OF_LIVES));
+        lifeLabel.setText("LIVES : "+ Integer.toString(3));
         lifeLabel.setAlignment(Pos.TOP_LEFT);
         lifeLabel.setPadding(new Insets(35));
         lifeLabel.setFont(Font.font(20));
         this.getPane().getChildren().addAll(lifeLabel);
-
     }
 
     private void createSceneByGameLevel() {
@@ -114,7 +130,35 @@ public class PlayScene extends BaseScene {
 
     public void end() {
         System.out.println("GAME OVER!");
+        addRecord();
+        gameEngine.gameOver();
         this.isGameContinue = false;
+    }
+
+    private void addRecord() {
+        System.out.println("write score into the file");
+        String scoreFilePath = "./Score.txt";
+        File file = new File(scoreFilePath);
+        System.out.println("file path:"+file.getPath());
+        if(file.exists()){
+            try{
+                // referred from https://javatutorialhq.com/java/example-source-code/io/file/append-string-existing-file-java/
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+                bw.append(Integer.toString(getScore()));
+                bw.append(dtf.format(now));
+                bw.flush();
+                bw.close();
+                System.out.println("complete writing");
+            }catch (IOException e){
+                System.out.println("write failed");
+                e.printStackTrace();
+            }
+        }
+        else{
+            System.out.println("can't find file");
+        }
     }
 
     public void pass() {
@@ -148,14 +192,13 @@ public class PlayScene extends BaseScene {
 
     public void decrementLives() {
         if (this.isGameContinue) {
-            System.out.println("Current number of lives: " + numberOfLives);
-            if (numberOfLives >= 1) {
+            if (numberOfLives == 1) {
+                end();
+            }
+            else if (numberOfLives > 1) {
                 removePlayerKeyListener();
                 numberOfLives-=1;
-                System.out.println("Number of lives after decrement: " + numberOfLives);
                 createNewPlayerShip();
-            } else {
-                end();
             }
         }
     }
