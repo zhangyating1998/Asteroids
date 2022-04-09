@@ -13,9 +13,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -23,6 +20,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
@@ -34,7 +33,7 @@ import static group13.application.common.Constants.*;
  * This scene manages the life cycle of a game.
  */
 public class PlayScene extends BaseScene {
-    private int numberOfLives = 3;//DEFAULT_NUMBER_OF_LIVES;
+    private int numberOfLives = 2;//DEFAULT_NUMBER_OF_LIVES;
     private int gameLevel = GAME_LEVEL_START;
     private EventHandler playerKeyHandler;
     private final static Random random = new Random();
@@ -77,7 +76,7 @@ public class PlayScene extends BaseScene {
     public void displayLife() {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
-        lifeLabel.setText("LIVES : "+ Integer.toString(3));
+        lifeLabel.setText("LIVES : "+ Integer.toString(2));
         lifeLabel.setAlignment(Pos.TOP_LEFT);
         lifeLabel.setPadding(new Insets(35));
         lifeLabel.setFont(Font.font(20));
@@ -134,22 +133,40 @@ public class PlayScene extends BaseScene {
         gameEngine.gameOver();
         this.isGameContinue = false;
     }
-
-    private void addRecord() {
-        System.out.println("write score into the file");
-        String scoreFilePath = "./Score.txt";
-        File file = new File(scoreFilePath);
-        System.out.println("file path:"+file.getPath());
+    public static void main(String[] args) {
+        URL url = PlayScene.class.getClassLoader().getResource("Score.txt");
+        File file = new File(url.getPath());
         if(file.exists()){
             try{
-                // referred from https://javatutorialhq.com/java/example-source-code/io/file/append-string-existing-file-java/
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss");
-                LocalDateTime now = LocalDateTime.now();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
-                bw.append(Integer.toString(getScore()));
-                bw.append(dtf.format(now));
+                FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write("data");
                 bw.flush();
                 bw.close();
+                fw.close();
+                System.out.println("finished successfully");
+            }catch (IOException e){
+                e.printStackTrace();
+                System.out.println("failed");
+            }
+        }else{
+            System.out.println("can't find file");
+        }
+
+
+    }
+    private void addRecord() {
+        URL url = PlayScene.class.getClassLoader().getResource("Score.txt");
+        File file = new File(url.getPath());
+        if(file.exists()){
+            try{
+                //referred from https://javatutorialhq.com/java/example-source-code/io/file/append-string-existing-file-java/
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                FileWriter fw = new FileWriter(file, true);
+                //bw.write(Integer.toString(getScore()));
+                fw.write("gagagagagga");
+                fw.close();
                 System.out.println("complete writing");
             }catch (IOException e){
                 System.out.println("write failed");
