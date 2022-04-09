@@ -1,6 +1,7 @@
 package group13.application.game;
 
 import group13.application.characters.ship.PlayerShip;
+import group13.application.game.scene.GameOverScene;
 import group13.application.game.scene.PlayScene;
 import group13.application.game.scene.WelcomeScene;
 import javafx.animation.AnimationTimer;
@@ -40,15 +41,21 @@ public class GameEngine {
     public void welcome() {
         WelcomeScene welcome = new WelcomeScene(this);
         stage.setScene(welcome);
-
+        AnimationTimer timer = new WelcomeSceneBackgroundController(welcome);
+        timer.start();
     }
 
     public void newGame() {
-        PlayScene scene = new PlayScene();
+        PlayScene scene = new PlayScene(this);
         stage.setScene(scene);
 
         AnimationTimer timer = new PlaySceneController(scene);
         timer.start();
+    }
+
+    public void gameOver() {
+        GameOverScene gameOver = new GameOverScene(this);
+        stage.setScene(gameOver);
     }
 
 }
