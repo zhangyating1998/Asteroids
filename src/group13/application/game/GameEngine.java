@@ -37,6 +37,9 @@ public class GameEngine {
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
+    public Stage getStage() {
+        return stage;
+    }
 
     public void welcome() {
         WelcomeScene welcome = new WelcomeScene(this);

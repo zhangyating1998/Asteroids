@@ -24,6 +24,6 @@ public class AsteroidsGame extends Application {
     @Override
     public void start(Stage stage) {
         GameEngine engine = new GameEngine(stage);
-        engine.gameOver();
+        engine.welcome();
     }
 }
