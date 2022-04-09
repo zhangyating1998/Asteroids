@@ -8,4 +8,8 @@ public class SmallAsteroid extends Asteroid {
         super(speed, position);
     }
 
+    public SmallAsteroid() {
+        super(1.5);
+    }
+
 }

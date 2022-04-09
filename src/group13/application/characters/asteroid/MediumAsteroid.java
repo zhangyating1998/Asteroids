@@ -8,6 +8,10 @@ public class MediumAsteroid extends Asteroid {
         super(speed, position);
     }
 
+    public MediumAsteroid() {
+        super(0.8);
+    }
+
 
 
     @Override

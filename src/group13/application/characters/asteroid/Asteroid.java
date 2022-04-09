@@ -97,7 +97,6 @@ public class Asteroid extends Character implements Splittable  {
         return new Point2D(this.getTranslateX(), this.getTranslateY());
     }
 
-
     @Override
     public Asteroid[] split() {
         if(this instanceof LargeAsteroid){
