@@ -1,14 +1,9 @@
 package group13.application.game;
 
-import group13.application.characters.ship.PlayerShip;
-import group13.application.game.scene.GameOverScene;
-import group13.application.game.scene.PlayScene;
-import group13.application.game.scene.WelcomeScene;
+import group13.application.game.scene.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -37,9 +32,6 @@ public class GameEngine {
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
-    public Stage getStage() {
-        return stage;
-    }
 
     public void welcome() {
         WelcomeScene welcome = new WelcomeScene(this);
@@ -47,7 +39,15 @@ public class GameEngine {
         AnimationTimer timer = new WelcomeSceneBackgroundController(welcome);
         timer.start();
     }
+    public void scoreDisplay() {
+        ScoreRecordScene scoreRecordScene = new ScoreRecordScene(this);
+        stage.setScene(scoreRecordScene);
+    }
 
+    public void instruction() {
+        InstructionScene instructionScene = new InstructionScene(this);
+        stage.setScene(instructionScene);
+    }
     public void newGame() {
         PlayScene scene = new PlayScene(this);
         stage.setScene(scene);
@@ -56,8 +56,10 @@ public class GameEngine {
         timer.start();
     }
 
-    public void gameOver() {
-        GameOverScene gameOver = new GameOverScene(this);
+    public void gameOver(int score_) {
+        System.out.println("game over"+score_);
+        GameOverScene gameOver = new GameOverScene(this, score_);
+        System.out.println("game over"+score_);
         stage.setScene(gameOver);
     }
 
