@@ -16,15 +16,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static group13.application.common.Constants.*;
@@ -33,7 +30,7 @@ import static group13.application.common.Constants.*;
  * This scene manages the life cycle of a game.
  */
 public class PlayScene extends BaseScene {
-    private int numberOfLives = 2;//DEFAULT_NUMBER_OF_LIVES;
+    private int numberOfLives = 3;//DEFAULT_NUMBER_OF_LIVES;
     private int gameLevel = GAME_LEVEL_START;
     private EventHandler playerKeyHandler;
     private final static Random random = new Random();
@@ -43,10 +40,15 @@ public class PlayScene extends BaseScene {
     private int score=0;
     private Label scoreLabel;
     private Label lifeLabel;
-    private GameEngine gameEngine;
+    final private GameEngine gameEngine;
+    private ArrayList<Integer> scores;
+    private HashMap<Integer, String> score_time;
+    private int TopScores = 5;
 
     public PlayScene(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
+        this.scores = new ArrayList<>();
+        this.score_time = new HashMap<>();
     }
 
     @Override
@@ -76,7 +78,7 @@ public class PlayScene extends BaseScene {
     public void displayLife() {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
-        lifeLabel.setText("LIVES : "+ Integer.toString(2));
+        lifeLabel.setText("LIVES : "+ Integer.toString(3));
         lifeLabel.setAlignment(Pos.TOP_LEFT);
         lifeLabel.setPadding(new Insets(35));
         lifeLabel.setFont(Font.font(20));
@@ -116,7 +118,6 @@ public class PlayScene extends BaseScene {
                 pass();
                 return;
             }
-
             resetScene();
             System.out.println("Current game level: " + this.gameLevel);
             this.gameLevel++;
@@ -133,48 +134,71 @@ public class PlayScene extends BaseScene {
         gameEngine.gameOver();
         this.isGameContinue = false;
     }
-    public static void main(String[] args) {
+
+    private String getCurrentTime(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return dtf.format(now);
+    }
+
+    private void AddAndMaintain(){
+        // read all the scores and add new score, and rank them
         URL url = PlayScene.class.getClassLoader().getResource("Score.txt");
         File file = new File(url.getPath());
-        if(file.exists()){
-            try{
-                FileWriter fw = new FileWriter(file, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                bw.write("data");
-                bw.flush();
-                bw.close();
-                fw.close();
-                System.out.println("finished successfully");
-            }catch (IOException e){
-                e.printStackTrace();
-                System.out.println("failed");
+        try{
+            Scanner scanner = new Scanner(file);
+            while(scanner.hasNextLine()){
+                String nextLIne = scanner.nextLine();
+                if(! nextLIne.equals(" ")){
+                    String[] line = nextLIne.split(" ");
+                    score_time.put(Integer.parseInt(line[0]), line[1] + " " + line[2]);
+                }
             }
-        }else{
-            System.out.println("can't find file");
         }
-
+        catch(IOException e){
+            System.out.println("failed to read in");
+        }
+        score_time.put(getScore(), getCurrentTime());
+        System.out.println("scores in the map:"+score_time.size());
+        scores.addAll(score_time.keySet());
+        scores.sort(Collections.reverseOrder());
 
     }
-    private void addRecord() {
+    private void writeMapToFile() {
         URL url = PlayScene.class.getClassLoader().getResource("Score.txt");
         File file = new File(url.getPath());
-        if(file.exists()){
-            try{
-                //referred from https://javatutorialhq.com/java/example-source-code/io/file/append-string-existing-file-java/
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss");
-                LocalDateTime now = LocalDateTime.now();
-                FileWriter fw = new FileWriter(file, true);
-                //bw.write(Integer.toString(getScore()));
-                fw.write("gagagagagga");
-                fw.close();
-                System.out.println("complete writing");
-            }catch (IOException e){
-                System.out.println("write failed");
-                e.printStackTrace();
+        try {
+            // clear the previous records
+            FileWriter fwClean = new FileWriter(file, false);
+            fwClean.write(" \n");
+            fwClean.close();
+
+            // write the map to the file
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < scores.size(); i++) {
+                bw.write(scores.get(i) + " " + score_time.get(scores.get(i))+"\n");
+
             }
+            bw.close();
+            fw.close();
+
+        } catch(IOException e){
+            System.out.println("failed to write");
         }
-        else{
-            System.out.println("can't find file");
+    }
+
+    private void addRecord() {
+        AddAndMaintain();
+        if(score_time.size() != scores.size()){
+            System.out.println("big error!");
+        }
+        else {
+            if(score_time.size() == TopScores+1){
+                int remove = scores.remove(TopScores);
+                score_time.remove(remove);
+            }
+            writeMapToFile();
         }
     }
 
