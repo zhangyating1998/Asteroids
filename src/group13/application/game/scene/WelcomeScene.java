@@ -8,8 +8,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
@@ -20,13 +23,19 @@ import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Scanner;
+
 /**
- * @author yating
+ * @author Yating
  * @date 2022/4/09 14:19
  */
 public class WelcomeScene extends BaseScene {
     Button NewGame;
     Button Rank;
+    Button Instruction;
     GameEngine gameEngine;
 
     public WelcomeScene(GameEngine gameEngine){
@@ -35,10 +44,11 @@ public class WelcomeScene extends BaseScene {
 
     @Override
     public void createScene() {
-        setGameName();
         addBackgroundAsteroids(new Integer[]{3,4,5});
+        setGameName();
         setNewGameButton();
         setRantingListButton();
+        setInstructionButton();
         this.getPane().setStyle("-fx-background-color: black");
     }
 
@@ -74,25 +84,26 @@ public class WelcomeScene extends BaseScene {
         this.getPane().getChildren().add(NewGame);
     }
 
+
+    // read score from the Score.text and rank them and display in a text
     private void setRantingListButton() {
         Rank = getButton(new Point2D(290, 380), "Ranting List");
         this.getPane().getChildren().add(Rank);
-        Popup popup = new Popup();
-        popup.setX(300);
-        popup.setY(400);
         Rank.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (!popup.isShowing()) {
-                    Pane pane = new Pane();
-                    pane.setStyle("-fx-background-color: white");
-                    pane.getChildren().add(new Text("Score Rank"));
-                    popup.getContent().add(pane);
-                    popup.show(gameEngine.getStage());
-                }
-                else{
-                    popup.hide();
-                }
+                gameEngine.scoreDisplay();
+            }
+        });
+    }
+
+    private void setInstructionButton() {
+        Instruction = getButton(new Point2D(290, 460), "Instruction");
+        this.getPane().getChildren().add(Instruction);
+        Instruction.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                gameEngine.instruction();
             }
         });
     }

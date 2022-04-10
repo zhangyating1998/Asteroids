@@ -131,7 +131,7 @@ public class PlayScene extends BaseScene {
     public void end() {
         System.out.println("GAME OVER!");
         addRecord();
-        gameEngine.gameOver();
+        gameEngine.gameOver(getScore());
         this.isGameContinue = false;
     }
 

@@ -56,7 +56,7 @@ public abstract class BaseScene extends Scene {
         button.setLayoutY(position.getY());
         button.setWrapText(false);
         button.setShape(new Polygon(100.0, 250.0, 700.0, 250.0, 600.0, 350.0, 0.0, 350.0));
-        button.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white");
+        button.setStyle("-fx-background-color: black; -fx-border-color: white; -fx-text-fill: white");
         button.setPadding(new Insets(5, 30, 5, 30));
         button.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 20));
         return button;
