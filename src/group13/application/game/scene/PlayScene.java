@@ -43,7 +43,7 @@ public class PlayScene extends BaseScene {
     final private GameEngine gameEngine;
     private ArrayList<Integer> scores;
     private HashMap<Integer, String> score_time;
-    private int TopScores = 5;
+    private int TopScores = 10;
 
     public PlayScene(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
@@ -170,7 +170,7 @@ public class PlayScene extends BaseScene {
         try {
             // clear the previous records
             FileWriter fwClean = new FileWriter(file, false);
-            fwClean.write(" \n");
+            fwClean.write("");
             fwClean.close();
 
             // write the map to the file

@@ -52,6 +52,8 @@ public class GameOverScene extends BaseScene{
         t.setFill(Color.WHITE);
         Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 40);
         t.setFont(font);
+        float age = 0.4f;
         this.getPane().getChildren().addAll(t);
     }
+
 }
