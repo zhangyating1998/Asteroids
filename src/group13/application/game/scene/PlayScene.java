@@ -64,7 +64,7 @@ public class PlayScene extends BaseScene {
     public void displayScore(){
         scoreLabel = new Label();
         scoreLabel.setTextFill(Color.WHITE);
-        scoreLabel.setText("SCORES : "+ Integer.toString(score));
+        scoreLabel.setText("SCORES : "+ score);
         scoreLabel.setAlignment(Pos.TOP_LEFT);
         scoreLabel.setPadding(new Insets(10));
         scoreLabel.setFont(Font.font(20));
@@ -149,21 +149,22 @@ public class PlayScene extends BaseScene {
             Scanner scanner = new Scanner(file);
             while(scanner.hasNextLine()){
                 String nextLIne = scanner.nextLine();
-                if(! nextLIne.equals(" ")){
+                if(! nextLIne.equals("")){
                     String[] line = nextLIne.split(" ");
-                    score_time.put(Integer.parseInt(line[0]), line[1] + " " + line[2]);
+                    score_time.put(Integer.parseInt(line[0]), " "+line[1] + " " + line[2]+" "+line[3]);
+                    System.out.println(line[0]+line[1]);
                 }
             }
         }
         catch(IOException e){
             System.out.println("failed to read in");
         }
-        score_time.put(getScore(), getCurrentTime());
+        score_time.put(getScore(), " Date: "+getCurrentTime());
         System.out.println("scores in the map:"+score_time.size());
         scores.addAll(score_time.keySet());
         scores.sort(Collections.reverseOrder());
-
     }
+
     private void writeMapToFile() {
         URL url = PlayScene.class.getClassLoader().getResource("Score.txt");
         File file = new File(url.getPath());
@@ -177,8 +178,7 @@ public class PlayScene extends BaseScene {
             FileWriter fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
             for (int i = 0; i < scores.size(); i++) {
-                bw.write(scores.get(i) + " " + score_time.get(scores.get(i))+"\n");
-
+                bw.write(scores.get(i) + score_time.get(scores.get(i))+"\n");
             }
             bw.close();
             fw.close();
