@@ -30,21 +30,29 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
         System.out.format("Node 1: %s \nNode 2: %s\n", event.getNode1(), event.getNode2());
         // remove the nodes that collide
         Pane pane = (Pane)event.getTarget();
+        event.getNode1().setDisable(true);
+        event.getNode2().setDisable(true);
         pane.getChildren().remove(event.getNode1());
         pane.getChildren().remove(event.getNode2());
+
+        try {
+            //test splittable use user ship
+            if (event.getNode1() instanceof Asteroid) {
+                Asteroid[] split = ((Asteroid) event.getNode1()).split();
+                pane.getChildren().addAll(split[0], split[1]);
+            }
+
+            if (event.getNode2() instanceof Asteroid) {
+                Asteroid[] split = ((Asteroid) event.getNode2()).split();
+                pane.getChildren().addAll(split[0], split[1]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // if either node is a PlayerShip, then decrement lives
         if (event.getNode1() instanceof PlayerShip || event.getNode2() instanceof PlayerShip) {
             this.playScene.decrementLives();
-        }
-
-        //test splittable use user ship
-        if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof PlayerShip) {
-            pane.getChildren().addAll(((Asteroid) event.getNode1()).split()[0], ((Asteroid) event.getNode1()).split()[1]);
-        }
-
-        if (event.getNode2() instanceof Asteroid && event.getNode1() instanceof PlayerShip) {
-            pane.getChildren().addAll(((Asteroid) event.getNode2()).split()[0], ((Asteroid) event.getNode2()).split()[1]);
         }
 
         // if number of Asteroids is equal to 0, then upgrade game
