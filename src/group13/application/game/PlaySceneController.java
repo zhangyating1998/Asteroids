@@ -38,7 +38,10 @@ public class PlaySceneController extends AnimationTimer {
         // move the Characters
         for (Node node : playScene.getPane().getChildren()) {
             if (node instanceof Character) {
-                ((Character) node).move();
+                Character character = (Character) node;
+                character.move();
+//                System.out.format("Current position:, %s\n", character.getCurrentPosition());
+//                System.out.format("Future position:, %s\n", character.getFuturePosition());
             }
         }
     }
@@ -60,33 +63,34 @@ public class PlaySceneController extends AnimationTimer {
             Node node1 = observableList.get(i);
             for (int j = i + 1; j < observableList.size(); j++) {
                 Node node2 = observableList.get(j);
-                // detect collision by checking the overlap between two objects, this is based on the x and y bound
-                Path path = (Path) Shape.intersect((Shape) node1, (Shape) node2);
-                // to precisely check the overlap by the shape of the node, we should count the number of common
-                // elements between the two nodes, a positive number means they overlap in shape
-                // reference: https://gist.github.com/james-d/8149902
-                if (path.getElements().size() > 0) {
-                    // 1. Ship vs asteroid
-                    boolean isShipVSAsteroid = node1 instanceof Ship && node2 instanceof Asteroid;
-                    boolean isAsteroidVSShip = node1 instanceof Asteroid && node2 instanceof Ship;
-                    // 2. Ship vs ship
-                    boolean isShipVSShip = node1 instanceof Ship && node2 instanceof Ship;
-                    // 3. Bullet vs asteroid
-                    boolean isBulletVSAsteroid = node1 instanceof Bullet && node2 instanceof Asteroid;
-                    boolean isAsteroidVSBullet = node1 instanceof Asteroid && node2 instanceof Bullet;
-                    // 4. Bullet vs ship
-                    boolean isBulletVSShip = node1 instanceof Bullet && node2 instanceof Ship;
-                    boolean isShipVSBullet = node1 instanceof Ship && node2 instanceof Bullet;
 
-                    if (isShipVSAsteroid || isAsteroidVSShip
-                            || isShipVSShip
-                            || isBulletVSAsteroid || isAsteroidVSBullet
-                            || isBulletVSShip || isShipVSBullet) {
+                // 1. Ship vs asteroid
+                boolean isShipVSAsteroid = node1 instanceof Ship && node2 instanceof Asteroid;
+                boolean isAsteroidVSShip = node1 instanceof Asteroid && node2 instanceof Ship;
+                // 2. Ship vs ship
+                boolean isShipVSShip = node1 instanceof Ship && node2 instanceof Ship;
+                // 3. Bullet vs asteroid
+                boolean isBulletVSAsteroid = node1 instanceof Bullet && node2 instanceof Asteroid;
+                boolean isAsteroidVSBullet = node1 instanceof Asteroid && node2 instanceof Bullet;
+                // 4. Bullet vs ship
+                boolean isBulletVSShip = node1 instanceof Bullet && node2 instanceof Ship;
+                boolean isShipVSBullet = node1 instanceof Ship && node2 instanceof Bullet;
+
+                if (isShipVSAsteroid || isAsteroidVSShip
+                        || isShipVSShip
+                        || isBulletVSAsteroid || isAsteroidVSBullet
+                        || isBulletVSShip || isShipVSBullet) {
+                    // detect collision by checking the overlap between two objects, this is based on the x and y bound
+                    Path path = (Path) Shape.intersect((Shape) node1, (Shape) node2);
+                    // to precisely check the overlap by the shape of the node, we should count the number of common
+                    // elements between the two nodes, a positive number means they overlap in shape
+                    // reference: https://gist.github.com/james-d/8149902
+                    if (path.getElements().size() > 0) {
                         System.out.println("Collision detected");
                         pane.fireEvent(new CollisionEvent(COLLISION, pane, node1, node2));
+                        break;
                     }
                 }
-
             }
         }
     }
