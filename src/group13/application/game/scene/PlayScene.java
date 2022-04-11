@@ -1,5 +1,6 @@
 package group13.application.game.scene;
 
+import group13.application.characters.Character;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.asteroid.LargeAsteroid;
 import group13.application.characters.asteroid.MediumAsteroid;
@@ -12,13 +13,17 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -30,7 +35,7 @@ import static group13.application.common.Constants.*;
  * This scene manages the life cycle of a game.
  */
 public class PlayScene extends BaseScene {
-    private int numberOfLives = 3;//DEFAULT_NUMBER_OF_LIVES;
+    private int numberOfLives = DEFAULT_NUMBER_OF_LIVES;
     private int gameLevel = GAME_LEVEL_START;
     private EventHandler playerKeyHandler;
     private final static Random random = new Random();
@@ -99,7 +104,8 @@ public class PlayScene extends BaseScene {
         // set the location of the player ship
 
         // player ship should be able to move by keyboard, and can shoot bullets.
-        PlayerShip playerShip = new PlayerShip(250, 200);
+        PlayerShip playerShip = new PlayerShip(SCENE_WIDTH / 2, SCENE_HEIGHT / 2);
+        findASafePoint(playerShip);
         this.getPane().getChildren().addAll(playerShip);
 
         this.playerKeyHandler = new PlayerKeyEventHandler(playerShip);
@@ -281,5 +287,38 @@ public class PlayScene extends BaseScene {
                 this.lastSecondsAlienShipAdded = currentTimeInSeconds;
             }
         }
+    }
+
+    public void findASafePoint(Character target) {
+        for (int y = (int) SCENE_HEIGHT - 50; y > 0; y--) {
+            boolean found = true;
+            for (Node node : getPane().getChildren()) {
+                if (node instanceof Character) {
+                    Character character = (Character) node;
+                    Point2D futurePosition = character.getFuturePosition();
+//                    System.out.format("Current position:, %s\n", character.getCurrentPosition());
+//                    System.out.format("Future position:, %s\n", futurePosition);
+
+                    boolean currentOverlap = target.getBoundsInParent().intersects(character.getBoundsInParent());
+                    boolean futureOverlap = target.getBoundsInParent().intersects(
+                            futurePosition.getX(),
+                            futurePosition.getY(),
+                            character.getBoundsInParent().getWidth() + 50,
+                            character.getBoundsInParent().getHeight() + 50);
+
+                    if (currentOverlap || futureOverlap) {
+                        System.out.println("overlapped");
+                        target.setTranslateY(y);
+                        found = false;
+                        break;
+                    }
+                }
+            }
+            if (found) {
+                System.out.println("found a safe place");
+                return;
+            }
+        }
+        System.out.println("Error: Didn't find a safe place!!!");
     }
 }
