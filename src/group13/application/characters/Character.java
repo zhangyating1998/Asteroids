@@ -7,7 +7,6 @@ import javafx.scene.shape.Polygon;
 
 public class Character extends Polygon {
 
-    protected Polygon Character;
     private Point2D velocity;
 
     public Character(double x, double y, double... points) {
@@ -21,10 +20,6 @@ public class Character extends Polygon {
     public Character(){
         super();
         this.velocity = new Point2D(0, 0);
-    }
-
-    public Polygon getCharacter() {
-        return Character;
     }
 
     public void setVelocity(Point2D v){
@@ -61,8 +56,8 @@ public class Character extends Polygon {
         double changeX = Math.cos(Math.toRadians(this.getRotate()));
         double changeY = Math.sin(Math.toRadians(this.getRotate()));
 
-        changeX *= 0.15;
-        changeY *= 0.15;
+        changeX *= m;
+        changeY *= m;
 
         this.velocity = this.velocity.add(changeX, changeY);
     }
