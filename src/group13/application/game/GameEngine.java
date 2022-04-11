@@ -57,9 +57,7 @@ public class GameEngine {
     }
 
     public void gameOver(int score_) {
-        System.out.println("game over"+score_);
         GameOverScene gameOver = new GameOverScene(this, score_);
-        System.out.println("game over"+score_);
         stage.setScene(gameOver);
     }
 
