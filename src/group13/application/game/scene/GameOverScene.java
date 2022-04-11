@@ -15,15 +15,16 @@ public class GameOverScene extends BaseScene{
     GameEngine gameEngine;
     Button returnMainHall;
     int score_;
+
     public GameOverScene(GameEngine gameEngine, int score_) {
         this.gameEngine = gameEngine;
         this.score_ = score_;
+        disPlayScore();
     }
 
     @Override
     public void createScene() {
         setGameOver();
-        disPlayScore();
         setReturnButton();
         this.getPane().setStyle("-fx-background-color: black");
     }
@@ -47,7 +48,6 @@ public class GameOverScene extends BaseScene{
         });
     }
     private void disPlayScore() {
-        System.out.println("display"+score_);
         Text t = new Text(220, 350, "Your Score Is: "+ Integer.toString(score_));
         t.setFill(Color.WHITE);
         Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 40);
