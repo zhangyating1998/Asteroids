@@ -51,14 +51,18 @@ public abstract class BaseScene extends Scene {
     }
 
     public Button getButton(Point2D position, String text) {
+        String hoverStyle = "-fx-background_color:white; -fx-text-fill: black";
+        String exitStyle = "-fx-background-color: black; -fx-border-color: white; -fx-text-fill: white";
         Button button = new Button(text);
         button.setLayoutX(position.getX());
         button.setLayoutY(position.getY());
         button.setWrapText(false);
         button.setShape(new Polygon(100.0, 250.0, 700.0, 250.0, 600.0, 350.0, 0.0, 350.0));
-        button.setStyle("-fx-background-color: black; -fx-border-color: white; -fx-text-fill: white");
+        button.setStyle(exitStyle);
         button.setPadding(new Insets(5, 30, 5, 30));
         button.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 20));
+        button.setOnMouseEntered(e-> button.setStyle(hoverStyle));
+        button.setOnMouseExited(e -> button.setStyle(exitStyle));
         return button;
     }
 }

@@ -34,12 +34,16 @@ public class ScoreRecordScene extends BaseScene{
     private void displayScore() {
         URL url = PlayScene.class.getClassLoader().getResource("Score.txt");
         File file = new File(url.getPath());
+        Text title = new Text(280, 40,"10 best scores");
+        title.setFill(Color.WHITE);
+        title.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 30));
+        this.getPane().getChildren().addAll(title);
         try {
             Scanner scanner = new Scanner(file);
-            int start = -10;
-            int rank = 0;
+            int start = 90;
+            int rank = 1;
             while(scanner.hasNextLine()){
-                Text text = new Text(10, start, Integer.toString(rank)+". "+scanner.nextLine());
+                Text text = new Text(250, start,rank+". "+scanner.nextLine());
                 text.setFill(Color.GREEN);
                 Font font = Font.font("Verdana", FontPosture.ITALIC, 20);
                 text.setTextAlignment(TextAlignment.LEFT);
@@ -54,7 +58,7 @@ public class ScoreRecordScene extends BaseScene{
     }
 
     private void backButton() {
-        Button button = getButton(new Point2D(330, 450), "Back");
+        Button button = getButton(new Point2D(330, 550), "Back");
         getPane().getChildren().add(button);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
