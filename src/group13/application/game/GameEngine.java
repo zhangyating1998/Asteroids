@@ -1,12 +1,9 @@
 package group13.application.game;
 
-import group13.application.characters.ship.PlayerShip;
-import group13.application.game.scene.PlayScene;
+import group13.application.game.scene.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -37,17 +34,31 @@ public class GameEngine {
     }
 
     public void welcome() {
-        // TODO
-//        createStartScene();
-        this.newGame();
+        WelcomeScene welcome = new WelcomeScene(this);
+        stage.setScene(welcome);
+        AnimationTimer timer = new WelcomeSceneBackgroundController(welcome);
+        timer.start();
+    }
+    public void scoreDisplay() {
+        ScoreRecordScene scoreRecordScene = new ScoreRecordScene(this);
+        stage.setScene(scoreRecordScene);
     }
 
+    public void instruction() {
+        InstructionScene instructionScene = new InstructionScene(this);
+        stage.setScene(instructionScene);
+    }
     public void newGame() {
-        PlayScene scene = new PlayScene();
+        PlayScene scene = new PlayScene(this);
         stage.setScene(scene);
 
         AnimationTimer timer = new PlaySceneController(scene);
         timer.start();
+    }
+
+    public void gameOver(int score_) {
+        GameOverScene gameOver = new GameOverScene(this, score_);
+        stage.setScene(gameOver);
     }
 
 }

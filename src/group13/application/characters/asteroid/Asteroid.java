@@ -15,7 +15,6 @@ import static group13.application.common.Constants.SCENE_HEIGHT;
 import static group13.application.common.Constants.SCENE_WIDTH;
 
 public class Asteroid extends Character implements Splittable  {
-
     public Asteroid(double speed){
         super();
         this.getPoints().addAll(generateShape());
@@ -97,14 +96,15 @@ public class Asteroid extends Character implements Splittable  {
         return new Point2D(this.getTranslateX(), this.getTranslateY());
     }
 
-
     @Override
     public Asteroid[] split() {
         if(this instanceof LargeAsteroid){
-            return new MediumAsteroid[]{new MediumAsteroid(getCurrentPosition(), new Random().nextDouble()*0.5 + 0.5), new MediumAsteroid(getCurrentPosition(), new Random().nextDouble()*0.5 + 0.5)};
+            // speed is between 0.5-0.7
+            return new MediumAsteroid[]{new MediumAsteroid(getCurrentPosition(), 2 * Math.random()+0.5), new MediumAsteroid(getCurrentPosition(), 2*Math.random()+ 0.5)};
         }
         else if(this instanceof MediumAsteroid){
-            return new SmallAsteroid[]{new SmallAsteroid(getCurrentPosition(), new Random().nextDouble()), new SmallAsteroid(getCurrentPosition(), new Random().nextDouble())};
+            // speed is between 0.8-1.0
+            return new SmallAsteroid[]{new SmallAsteroid(getCurrentPosition(), 2 * Math.random()+0.8), new SmallAsteroid(getCurrentPosition(), 2*Math.random()+0.8)};
         }
         else{
             return null;
