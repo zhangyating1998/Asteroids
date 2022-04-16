@@ -1,5 +1,8 @@
 package group13.application.game.scene;
 
+import group13.application.game.GameEngine;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -20,17 +23,22 @@ import static group13.application.common.Constants.SCENE_WIDTH;
  */
 public abstract class BaseScene extends Scene {
     private Pane pane;
+    private GameEngine gameEngine;
 
     /**
      * Convenient constructor for subclasses.
      */
-    public BaseScene() {
+    public BaseScene(GameEngine gameEngine) {
         // create the default scene
         super(new Pane(), SCENE_WIDTH, SCENE_HEIGHT, Color.BLACK);
+        this.gameEngine = gameEngine;
         this.pane = (Pane) this.getRoot();
         this.createScene();
     }
 
+    public GameEngine getGameEngin(){
+        return gameEngine;
+    }
     /**
      * Create the characters and add them to the root node.
      * The concrete implementation depends on the subclass.
@@ -64,5 +72,18 @@ public abstract class BaseScene extends Scene {
         button.setOnMouseEntered(e-> button.setStyle(hoverStyle));
         button.setOnMouseExited(e -> button.setStyle(exitStyle));
         return button;
+    }
+
+    // arguments: the position of the button, the text that will be written on the label
+    // return: a button that will load to the main hall(welcome scene) when being clicking
+    public Button ReturnButton(Point2D position, String text) {
+        Button returnMainHall = getButton(position,text);
+        returnMainHall.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                gameEngine.welcome();
+            }
+        });
+        return returnMainHall;
     }
 }
