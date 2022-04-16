@@ -1,10 +1,7 @@
 package group13.application.game.scene;
 
 import group13.application.game.GameEngine;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 
@@ -13,10 +10,9 @@ import javafx.scene.text.*;
  * @date 2022/4/09 14:19
  */
 public class InstructionScene extends BaseScene{
-    GameEngine gameEngine;
 
     public InstructionScene(GameEngine gameEngine) {
-        this.gameEngine = gameEngine;
+        super(gameEngine);
     }
 
     @Override
@@ -56,13 +52,6 @@ public class InstructionScene extends BaseScene{
 
     }
     private void backButton() {
-        Button button = getButton(new Point2D(330, 540), "Back");
-        getPane().getChildren().add(button);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                gameEngine.welcome();
-            }
-        });
+        getPane().getChildren().add(ReturnButton(new Point2D(330, 540), "Back"));
     }
 }

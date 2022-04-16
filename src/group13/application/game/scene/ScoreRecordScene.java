@@ -1,13 +1,9 @@
 package group13.application.game.scene;
 
 import group13.application.game.GameEngine;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -18,16 +14,15 @@ import java.util.Scanner;
  * @date 2022/4/09 14:19
  */
 public class ScoreRecordScene extends BaseScene{
-    GameEngine gameEngine;
 
     public ScoreRecordScene(GameEngine gameEngine){
-        this.gameEngine = gameEngine;
+        super(gameEngine);
     }
 
     @Override
     public void createScene() {
         displayScore();
-        backButton();
+        setbackButton();
         this.getPane().setStyle("-fx-background-color: black");
     }
 
@@ -57,15 +52,8 @@ public class ScoreRecordScene extends BaseScene{
         }
     }
 
-    private void backButton() {
-        Button button = getButton(new Point2D(330, 540), "Back");
-        getPane().getChildren().add(button);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                gameEngine.welcome();
-            }
-        });
+    private void setbackButton() {
+        getPane().getChildren().add(ReturnButton(new Point2D(330, 540), "Back"));
     }
 
 }
