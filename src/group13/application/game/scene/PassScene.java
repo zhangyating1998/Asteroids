@@ -12,12 +12,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class PassScene extends BaseScene{
-    GameEngine gameEngine;
     Button returnMainHall;
     int score_;
 
     public PassScene(GameEngine gameEngine, int score_){
-        this.gameEngine = gameEngine;
+        super(gameEngine);
         this.score_ = score_;
         disPlayScore();
     }
@@ -35,16 +34,11 @@ public class PassScene extends BaseScene{
         t.setFont(font);
         this.getPane().getChildren().addAll(t);
     }
+
     private void setReturnButton () {
-        this.returnMainHall = getButton(new Point2D(310, 430), "Main Hall");
-        this.getPane().getChildren().add(returnMainHall);
-        returnMainHall.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                gameEngine.welcome();
-            }
-        });
+        this.getPane().getChildren().add(ReturnButton(new Point2D(310, 430), "Main Hall"));
     }
+
     private void disPlayScore() {
         Text t = new Text(210, 370, "Your Score Is: "+ score_);
         t.setFill(Color.WHITE);
