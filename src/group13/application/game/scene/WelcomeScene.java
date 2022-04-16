@@ -87,7 +87,7 @@ public class WelcomeScene extends BaseScene {
 
     // read score from the Score.text and rank them and display in a text
     private void setRantingListButton() {
-        Rank = getButton(new Point2D(290, 380), "Ranting List");
+        Rank = getButton(new Point2D(290, 380), "Ranking List");
         Rank.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
