@@ -1,8 +1,15 @@
 package group13.application.game.scene;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 import static group13.application.common.Constants.SCENE_HEIGHT;
 import static group13.application.common.Constants.SCENE_WIDTH;
@@ -41,5 +48,21 @@ public abstract class BaseScene extends Scene {
         this.pane.setDisable(true);
         this.pane = new Pane();
         this.setRoot(this.pane);
+    }
+
+    public Button getButton(Point2D position, String text) {
+        String hoverStyle = "-fx-background_color:white; -fx-text-fill: black";
+        String exitStyle = "-fx-background-color: black; -fx-border-color: white; -fx-text-fill: white";
+        Button button = new Button(text);
+        button.setLayoutX(position.getX());
+        button.setLayoutY(position.getY());
+        button.setWrapText(false);
+        button.setShape(new Polygon(100.0, 250.0, 700.0, 250.0, 600.0, 350.0, 0.0, 350.0));
+        button.setStyle(exitStyle);
+        button.setPadding(new Insets(5, 30, 5, 30));
+        button.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 20));
+        button.setOnMouseEntered(e-> button.setStyle(hoverStyle));
+        button.setOnMouseExited(e -> button.setStyle(exitStyle));
+        return button;
     }
 }
