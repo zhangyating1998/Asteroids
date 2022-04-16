@@ -18,7 +18,6 @@ import javafx.scene.text.Font;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -30,8 +29,8 @@ import static group13.application.common.Constants.*;
  * This scene manages the life cycle of a game.
  */
 public class PlayScene extends BaseScene {
-    private int numberOfLives = DEFAULT_NUMBER_OF_LIVES;
-    private int gameLevel = GAME_LEVEL_START;
+    private int numberOfLives;
+    private int gameLevel;
     private EventHandler playerKeyHandler;
     private final static Random random = new Random();
     private long lastSecondsAlienShipAdded = 0;
@@ -40,25 +39,24 @@ public class PlayScene extends BaseScene {
     private int score=0;
     private Label scoreLabel;
     private Label lifeLabel;
-    final private GameEngine gameEngine;
     private ArrayList<Integer> scores;
     private HashMap<Integer, String> score_time;
     private int TopScores = 10;
 
     public PlayScene(GameEngine gameEngine) {
-        this.gameEngine = gameEngine;
+        super(gameEngine);
         this.scores = new ArrayList<>();
         this.score_time = new HashMap<>();
     }
 
     @Override
     public void createScene() {
+        numberOfLives = DEFAULT_NUMBER_OF_LIVES;
+        gameLevel = GAME_LEVEL_START;
         this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
         createSceneByGameLevel();
         this.addEventFilter(COLLISION, new CollisionEventHandler(this));
-        displayScore();
-        displayLife();
-        this.getPane().setStyle("-fx-background-color: black");
+        System.out.println("GAMELEVEL"+gameLevel);
     }
 
     private void displayScore(){
@@ -80,6 +78,7 @@ public class PlayScene extends BaseScene {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
         lifeLabel.setText("LIVES : "+ numberOfLives);
+        System.out.println("the total number of lives"+numberOfLives);
         lifeLabel.setAlignment(Pos.TOP_LEFT);
         lifeLabel.setPadding(new Insets(35));
         lifeLabel.setFont(Font.font(20));
@@ -91,8 +90,11 @@ public class PlayScene extends BaseScene {
             LargeAsteroid largeAsteroid = new LargeAsteroid();
             getPane().getChildren().add(largeAsteroid);
         }
-
         createNewPlayerShip();
+        displayScore();
+        displayLife();
+        this.getPane().setStyle("-fx-background-color: black");
+
     }
 
     private void createNewPlayerShip() {
@@ -132,7 +134,7 @@ public class PlayScene extends BaseScene {
     public void end() {
         System.out.println("GAME OVER!");
         addRecord();
-        gameEngine.gameOver(getScore());
+        getGameEngin().gameOver(getScore());
         this.isGameContinue = false;
     }
 
@@ -204,7 +206,8 @@ public class PlayScene extends BaseScene {
 
     public void pass() {
         System.err.println("Congratulation! You have passed all the levels!");
-        gameEngine.gamePass(getScore());
+        addRecord();
+        getGameEngin().gamePass(getScore());
         this.isGameContinue = false;
     }
 
@@ -255,9 +258,6 @@ public class PlayScene extends BaseScene {
     private void resetScene() {
         removePlayerKeyListener();
         this.newPane();
-        displayLife();
-        displayScore();
-        this.getPane().setStyle("-fx-background-color: black");
         this.lastSecondsAlienShipAdded = 0;
     }
 

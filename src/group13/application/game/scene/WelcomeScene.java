@@ -6,27 +6,14 @@ import group13.application.characters.asteroid.SmallAsteroid;
 import group13.application.game.GameEngine;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Scanner;
 
 /**
  * @author Yating
@@ -36,10 +23,9 @@ public class WelcomeScene extends BaseScene {
     Button NewGame;
     Button Rank;
     Button Instruction;
-    GameEngine gameEngine;
 
     public WelcomeScene(GameEngine gameEngine){
-        this.gameEngine = gameEngine;
+        super(gameEngine);
     }
 
     @Override
@@ -78,7 +64,7 @@ public class WelcomeScene extends BaseScene {
         NewGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                gameEngine.newGame();
+                getGameEngin().newGame();
             }
         });
         this.getPane().getChildren().add(NewGame);
@@ -91,7 +77,7 @@ public class WelcomeScene extends BaseScene {
         Rank.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                gameEngine.scoreDisplay();
+                getGameEngin().scoreDisplay();
             }
         });
         this.getPane().getChildren().add(Rank);
@@ -103,7 +89,7 @@ public class WelcomeScene extends BaseScene {
         Instruction.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                gameEngine.instruction();
+                getGameEngin().instruction();
             }
         });
     }
