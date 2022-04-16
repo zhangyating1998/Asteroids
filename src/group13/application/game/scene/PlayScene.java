@@ -30,7 +30,7 @@ import static group13.application.common.Constants.*;
  * This scene manages the life cycle of a game.
  */
 public class PlayScene extends BaseScene {
-    private int numberOfLives = 3;//DEFAULT_NUMBER_OF_LIVES;
+    private int numberOfLives = DEFAULT_NUMBER_OF_LIVES;
     private int gameLevel = GAME_LEVEL_START;
     private EventHandler playerKeyHandler;
     private final static Random random = new Random();
@@ -61,7 +61,7 @@ public class PlayScene extends BaseScene {
         this.getPane().setStyle("-fx-background-color: black");
     }
 
-    public void displayScore(){
+    private void displayScore(){
         scoreLabel = new Label();
         scoreLabel.setTextFill(Color.WHITE);
         scoreLabel.setText("SCORES : "+ score);
@@ -74,11 +74,12 @@ public class PlayScene extends BaseScene {
     public int getScore() {
         return score;
     }
+    public int getLives(){return numberOfLives;}
 
-    public void displayLife() {
+    private void displayLife() {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
-        lifeLabel.setText("LIVES : "+ Integer.toString(3));
+        lifeLabel.setText("LIVES : "+ numberOfLives);
         lifeLabel.setAlignment(Pos.TOP_LEFT);
         lifeLabel.setPadding(new Insets(35));
         lifeLabel.setFont(Font.font(20));
@@ -127,7 +128,7 @@ public class PlayScene extends BaseScene {
             createSceneByGameLevel();
         }
     }
-
+    // will be called when there are no lives
     public void end() {
         System.out.println("GAME OVER!");
         addRecord();
@@ -152,7 +153,6 @@ public class PlayScene extends BaseScene {
                 if(! nextLIne.equals("")){
                     String[] line = nextLIne.split(" ");
                     score_time.put(Integer.parseInt(line[0]), " "+line[1] + " " + line[2]+" "+line[3]);
-                    System.out.println(line[0]+line[1]);
                 }
             }
         }
@@ -160,11 +160,11 @@ public class PlayScene extends BaseScene {
             System.out.println("failed to read in");
         }
         score_time.put(getScore(), " Date: "+getCurrentTime());
-        System.out.println("scores in the map:"+score_time.size());
         scores.addAll(score_time.keySet());
         scores.sort(Collections.reverseOrder());
     }
 
+    // write the content from score_time hashmap to the Score file
     private void writeMapToFile() {
         URL url = PlayScene.class.getClassLoader().getResource("Score.txt");
         File file = new File(url.getPath());
@@ -204,15 +204,16 @@ public class PlayScene extends BaseScene {
 
     public void pass() {
         System.err.println("Congratulation! You have passed all the levels!");
+        gameEngine.gamePass(getScore());
         this.isGameContinue = false;
     }
 
-    public void setLifeLabel() {
-        lifeLabel.setText("LIVES : "+Integer.toString(numberOfLives));
+    private void setLifeLabel() {
+        lifeLabel.setText("LIVES : "+ numberOfLives);
     }
 
-    public void setScoreLabel() {
-        scoreLabel.setText("SCORES : "+Integer.toString(score));
+    private void setScoreLabel() {
+        scoreLabel.setText("SCORES : "+ score );
     }
 
 
@@ -228,6 +229,7 @@ public class PlayScene extends BaseScene {
                 score += 20;
             }
         }
+        setScoreLabel();
     }
 
 
@@ -240,6 +242,7 @@ public class PlayScene extends BaseScene {
                 removePlayerKeyListener();
                 numberOfLives-=1;
                 createNewPlayerShip();
+                setLifeLabel();
             }
         }
     }
@@ -252,6 +255,9 @@ public class PlayScene extends BaseScene {
     private void resetScene() {
         removePlayerKeyListener();
         this.newPane();
+        displayLife();
+        displayScore();
+        this.getPane().setStyle("-fx-background-color: black");
         this.lastSecondsAlienShipAdded = 0;
     }
 
