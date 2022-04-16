@@ -61,4 +61,9 @@ public class GameEngine {
         stage.setScene(gameOver);
     }
 
+    public void gamePass(int score_){
+        PassScene passScene = new PassScene(this, score_);
+        stage.setScene(passScene);
+    }
+
 }
