@@ -1,12 +1,9 @@
 package group13.application.characters;
 
 import group13.application.common.Constants;
-import group13.application.game.scene.PlayScene;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-
-import static group13.application.game.PlaySceneController.playScene;
 
 public class Character extends Polygon {
 
@@ -73,15 +70,6 @@ public class Character extends Polygon {
 
         if (this.getTranslateY() > Constants.SCENE_HEIGHT)
             this.setTranslateY(-this.getLayoutBounds().getHeight());
-
-        // Also increments the timer for and character with lime to live limit  and removes them if this is exceeded
-        if (isTimeOut) {
-            this.counter += 0.01666;
-            if (this.counter > timeToLive) {
-                PlayScene.bullets.remove(this);
-                playScene.getPane().getChildren().remove(this);
-            }
-        }
     }
 
     // Allows forward movement of object, changes the characters velocity based on cos and tan angles and applies
@@ -96,4 +84,11 @@ public class Character extends Polygon {
         this.velocity = this.velocity.add(changeX, changeY);
     }
 
+    public boolean getIsTimeOut() {
+        return isTimeOut;
+    }
+
+    public boolean checkTimeOut() {
+        return this.counter > this.timeToLive;
+    }
 }
