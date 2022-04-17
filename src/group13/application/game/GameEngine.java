@@ -60,5 +60,4 @@ public class GameEngine {
         GameOverScene gameOver = new GameOverScene(this, score_);
         stage.setScene(gameOver);
     }
-
 }
