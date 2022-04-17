@@ -56,7 +56,7 @@ public class PlayScene extends BaseScene {
         this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
         createSceneByGameLevel();
         this.addEventFilter(COLLISION, new CollisionEventHandler(this));
-        System.out.println("GAMELEVEL"+gameLevel);
+        //System.out.println("GAMELEVEL"+gameLevel);
     }
 
     private void displayScore(){
@@ -86,8 +86,10 @@ public class PlayScene extends BaseScene {
     }
 
     private void createSceneByGameLevel() {
+        System.out.println("number of ads should be created:"+this.playSceneParams.getNumberOfAsteroids());
         for (int i = 0; i < this.playSceneParams.getNumberOfAsteroids(); i++) {
             LargeAsteroid largeAsteroid = new LargeAsteroid();
+            System.out.println("creating an asteroid now");
             getPane().getChildren().add(largeAsteroid);
         }
         createNewPlayerShip();
@@ -122,11 +124,12 @@ public class PlayScene extends BaseScene {
                 return;
             }
             resetScene();
-            System.out.println("Current game level: " + this.gameLevel);
+            //System.out.println("Current game level: " + this.gameLevel);
             this.gameLevel++;
             this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
-            System.out.println("Upgraded game level: " + this.gameLevel);
+            //System.out.println("Upgraded game level: " + this.gameLevel);
             // create a new scene of the next level
+            System.err.println("upgraded"+gameLevel);
             createSceneByGameLevel();
         }
     }
