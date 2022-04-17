@@ -8,19 +8,14 @@ import group13.application.characters.ship.EnemyShip;
 import group13.application.characters.ship.PlayerShip;
 import group13.application.game.GameEngine;
 import group13.application.game.events.handlers.CollisionEventHandler;
-import group13.application.game.events.handlers.PlayerKeyEventHandler;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -32,9 +27,9 @@ import static group13.application.common.Constants.*;
  * This scene manages the life cycle of a game.
  */
 public class PlayScene extends BaseScene {
-    private int numberOfLives = 3;//DEFAULT_NUMBER_OF_LIVES;
-    private int gameLevel = GAME_LEVEL_START;
-//    private EventHandler playerKeyHandler;
+
+    private int numberOfLives;
+    private int gameLevel;
     private final static Random random = new Random();
     private long lastSecondsAlienShipAdded = 0;
     private PlaySceneParams playSceneParams;
@@ -42,7 +37,6 @@ public class PlayScene extends BaseScene {
     private int score=0;
     private Label scoreLabel;
     private Label lifeLabel;
-    final private GameEngine gameEngine;
     private ArrayList<Integer> scores;
     private HashMap<Integer, String> score_time;
     private int TopScores = 10;
@@ -51,22 +45,22 @@ public class PlayScene extends BaseScene {
 
 
     public PlayScene(GameEngine gameEngine) {
-        this.gameEngine = gameEngine;
+        super(gameEngine);
         this.scores = new ArrayList<>();
         this.score_time = new HashMap<>();
     }
 
     @Override
     public void createScene() {
+        numberOfLives = DEFAULT_NUMBER_OF_LIVES;
+        gameLevel = GAME_LEVEL_START;
         this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
         createSceneByGameLevel();
         this.addEventFilter(COLLISION, new CollisionEventHandler(this));
-        displayScore();
-        displayLife();
-        this.getPane().setStyle("-fx-background-color: black");
+        System.out.println("GAMELEVEL"+gameLevel);
     }
 
-    public void displayScore(){
+    private void displayScore(){
         scoreLabel = new Label();
         scoreLabel.setTextFill(Color.WHITE);
         scoreLabel.setText("SCORES : "+ score);
@@ -79,11 +73,13 @@ public class PlayScene extends BaseScene {
     public int getScore() {
         return score;
     }
+    public int getLives(){return numberOfLives;}
 
-    public void displayLife() {
+    private void displayLife() {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
-        lifeLabel.setText("LIVES : "+ Integer.toString(3));
+        lifeLabel.setText("LIVES : "+ numberOfLives);
+        System.out.println("the total number of lives"+numberOfLives);
         lifeLabel.setAlignment(Pos.TOP_LEFT);
         lifeLabel.setPadding(new Insets(35));
         lifeLabel.setFont(Font.font(20));
@@ -97,17 +93,18 @@ public class PlayScene extends BaseScene {
         }
 
         createNewPlayerShip(250, 200);
+        displayScore();
+        displayLife();
+        this.getPane().setStyle("-fx-background-color: black");
+
     }
 
-    public static void createNewPlayerShip(int x, int y) {
+    public void createNewPlayerShip(int x, int y) {
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
         // player ship should be able to move by keyboard, and can shoot bullets.
         playerShip = new PlayerShip(x, y);
-        PlayScene.getPane().getChildren().addAll(playerShip);
-//        this.playerKeyHandler = new PlayerKeyEventHandler(playerShip);
-//        this.addEventFilter(KeyEvent.KEY_PRESSED, this.playerKeyHandler);
-//        this.addEventFilter(KeyEvent.KEY_RELEASED, this.playerKeyHandler);
+        this.getPane().getChildren().addAll(playerShip);
     }
 
     private void createNewAlienShip() {
@@ -131,11 +128,11 @@ public class PlayScene extends BaseScene {
             createSceneByGameLevel();
         }
     }
-
+    // will be called when there are no lives
     public void end() {
         System.out.println("GAME OVER!");
         addRecord();
-        gameEngine.gameOver(getScore());
+        getGameEngin().gameOver(getScore());
         this.isGameContinue = false;
     }
 
@@ -156,7 +153,6 @@ public class PlayScene extends BaseScene {
                 if(! nextLIne.equals("")){
                     String[] line = nextLIne.split(" ");
                     score_time.put(Integer.parseInt(line[0]), " "+line[1] + " " + line[2]+" "+line[3]);
-                    System.out.println(line[0]+line[1]);
                 }
             }
         }
@@ -164,11 +160,11 @@ public class PlayScene extends BaseScene {
             System.out.println("failed to read in");
         }
         score_time.put(getScore(), " Date: "+getCurrentTime());
-        System.out.println("scores in the map:"+score_time.size());
         scores.addAll(score_time.keySet());
         scores.sort(Collections.reverseOrder());
     }
 
+    // write the content from score_time hashmap to the Score file
     private void writeMapToFile() {
         URL url = PlayScene.class.getClassLoader().getResource("Score.txt");
         File file = new File(url.getPath());
@@ -208,15 +204,17 @@ public class PlayScene extends BaseScene {
 
     public void pass() {
         System.err.println("Congratulation! You have passed all the levels!");
+        addRecord();
+        getGameEngin().gamePass(getScore());
         this.isGameContinue = false;
     }
 
-    public void setLifeLabel() {
-        lifeLabel.setText("LIVES : "+Integer.toString(numberOfLives));
+    private void setLifeLabel() {
+        lifeLabel.setText("LIVES : "+ numberOfLives);
     }
 
     public void setScoreLabel() {
-        scoreLabel.setText("SCORES : "+Integer.toString(score));
+        scoreLabel.setText("SCORES : "+ score );
     }
 
 
@@ -232,8 +230,16 @@ public class PlayScene extends BaseScene {
                 score += 20;
             }
         }
+        setScoreLabel();
     }
 
+    public void AddScoreShip(int addScore) {
+        if (this.isGameContinue) {
+            System.out.println("Current total score: " + score);
+            score += addScore;
+        }
+        setScoreLabel();
+    }
 
     public void decrementLives() {
         if (this.isGameContinue) {
@@ -241,9 +247,9 @@ public class PlayScene extends BaseScene {
                 end();
             }
             else if (numberOfLives > 1) {
-//                removePlayerKeyListener();
                 numberOfLives-=1;
                 createNewPlayerShip(250, 200);
+                setLifeLabel();
             }
         }
     }
@@ -254,7 +260,6 @@ public class PlayScene extends BaseScene {
      * 2. create a new pane for the scene (and disable the current pane)
      */
     private void resetScene() {
-//        removePlayerKeyListener();
         PlayScene.bullets.clear();
         this.newPane();
         this.lastSecondsAlienShipAdded = 0;
@@ -263,9 +268,6 @@ public class PlayScene extends BaseScene {
     /**
      * Remove the player key handler from event filter
      */
-//    private void removePlayerKeyListener() {
-//        this.removeEventFilter(KeyEvent.KEY_PRESSED, playerKeyHandler);
-//    }
 
     /**
      * Check in every frame if an alien ship should be added into the scene

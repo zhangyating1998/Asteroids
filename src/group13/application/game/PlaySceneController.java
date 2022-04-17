@@ -18,8 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static group13.application.common.Constants.COLLISION;
 
@@ -56,7 +55,7 @@ public class PlaySceneController extends AnimationTimer {
     @Override
     public void handle(long timeInNanoseconds) {
         // detect the collision and remove node if find any
-        detectCollision(BaseScene.getPane());
+        detectCollision(playScene.getPane());
 
         playScene.addAlienShips(timeInNanoseconds);
 
@@ -71,15 +70,34 @@ public class PlaySceneController extends AnimationTimer {
         }
         // Increase the player-ship velocity
         if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.UP, false))) {
-            PlayScene.playerShip.accelerate(0.03);
+            PlayScene.playerShip.accelerate(0.04);
         }
         // Fire a bullet from the player-ship, only 7 bullets can be alive at the one time to prevent spamming
         if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false))  && PlayScene.bullets.size() < 7) {
            PlayScene.playerShip.fire();
         }
         if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.B, false))) {
-            PlayScene.playerShip.hyperspaceJump();
+            PlayScene.playerShip.hyperspaceJump(playScene);
         }
+
+        // to remove the bullets, we should collect them in the loop then delete all at once,
+        // otherwise there will be concurrentModification issue.
+        List<Character> bulletsToRemove = new ArrayList<>();
+        // Also increments the timer for and character with lime to live limit  and removes them if this is exceeded
+        for (Node node :  playScene.getPane().getChildren()) {
+            if (node instanceof Character) {
+                Character character = (Character) node;
+                if (character.getIsTimeOut()) {
+                    character.counter += 0.01666;
+                    if (character.checkTimeOut()) {
+                        bulletsToRemove.add(character);
+                    }
+                }
+            }
+        }
+
+        playScene.bullets.removeAll(bulletsToRemove);
+        playScene.getPane().getChildren().removeAll(bulletsToRemove);
 
         // move the Characters
         for (Node node :  playScene.getPane().getChildren()) {
@@ -87,6 +105,7 @@ public class PlaySceneController extends AnimationTimer {
                 ((Character) node).move();
             }
         }
+
         // Clear the one pressed keys hashmap
         onePressKeys.clear();
     }

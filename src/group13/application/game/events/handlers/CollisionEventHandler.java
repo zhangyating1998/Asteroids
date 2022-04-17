@@ -47,9 +47,7 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
                 pane.getChildren().addAll(((Asteroid) event.getNode1()).split()[0], ((Asteroid) event.getNode1()).split()[1]);
             }
             this.playScene.AddScore((Asteroid)event.getNode1());
-            this.playScene.setScoreLabel();
             this.playScene.decrementLives();
-            this.playScene.setLifeLabel();
         }
 
         if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof Bullet) {
@@ -69,15 +67,18 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
                 pane.getChildren().addAll( asteroids[0], asteroids[1]);
             }
             this.playScene.AddScore((Asteroid)event.getNode2());
-            this.playScene.setScoreLabel();
             this.playScene.decrementLives();
-            this.playScene.setLifeLabel();
         }
 
 
         // if number of Asteroids is equal to 0, then upgrade game
         // else if number of Asteroids is greater than 1, then game continue
         for (Node node : pane.getChildren()) {
+            /* uncomment this to test the upgrade and pass game event
+            if(this.playScene.getLives() == 18 || this.playScene.getLives() == 16 || this.playScene.getLives() == 14){
+                System.out.println("LIVES"+this.playScene.getLives());
+                this.playScene.upgrade();
+            }*/
             if (node instanceof Asteroid) {
                 return;
             }
