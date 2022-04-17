@@ -25,9 +25,9 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
     public void handle(CollisionEvent event) {
         event.consume();
 
-        System.out.println("collisionEvent caught, source: " + event.getSource());
-        System.out.println("collisionEvent caught, target: " + event.getTarget());
-        System.out.format("Node 1: %s \nNode 2: %s\n", event.getNode1(), event.getNode2());
+        //System.out.println("collisionEvent caught, source: " + event.getSource());
+        //System.out.println("collisionEvent caught, target: " + event.getTarget());
+        //System.out.format("Node 1: %s \nNode 2: %s\n", event.getNode1(), event.getNode2());
         // remove the nodes that collide
         Pane pane = (Pane)event.getTarget();
         pane.getChildren().remove(event.getNode1());
@@ -35,28 +35,30 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
 
         // if either node is a PlayerShip, then decrement lives
         if (event.getNode1() instanceof PlayerShip || event.getNode2() instanceof PlayerShip) {
-            //this.playScene.decrementLives();
+            this.playScene.decrementLives();
         }
 
         //test splittable use user ship, in reality the split() should be triggered by a bullet
         if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof PlayerShip) {
             Asteroid[] asteroids = ((Asteroid) event.getNode1()).split();
+            System.out.println("split now"+event.getNode1().getClass());
             //collide with the medium or big ship
             if (asteroids != null) {
                 pane.getChildren().addAll(((Asteroid) event.getNode1()).split()[0], ((Asteroid) event.getNode1()).split()[1]);
             }
             this.playScene.AddScore((Asteroid)event.getNode1());
-            this.playScene.decrementLives();
+            //this.playScene.decrementLives();
         }
 
         else if (event.getNode2() instanceof Asteroid && event.getNode1() instanceof PlayerShip) {
             Asteroid[] asteroids = ((Asteroid) event.getNode2()).split();
+            System.out.println("split now"+event.getNode2().getClass());
             // collide with the medium or big ship
             if (asteroids != null) {
                 pane.getChildren().addAll( asteroids[0], asteroids[1]);
             }
             this.playScene.AddScore((Asteroid)event.getNode2());
-            this.playScene.decrementLives();
+            //this.playScene.decrementLives();
         }
 
 
