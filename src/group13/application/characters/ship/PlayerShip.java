@@ -21,12 +21,12 @@ public class PlayerShip extends Ship {
 
     // method to change the player-ship angle by -5 degrees
     public void turnLeft() {
-        setRotate(getRotate() - 5);
+        setRotate(getRotate() - 3);
     }
 
     // method to change the player-ship angle by +5 degrees
     public void turnRight() {
-        setRotate(getRotate() + 5);
+        setRotate(getRotate() + 3);
     }
 
     // Method to implement the hyperspaceJump, player ship can disappear and reappear at a new point on the screen.
