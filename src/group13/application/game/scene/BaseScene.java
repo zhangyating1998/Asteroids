@@ -19,7 +19,7 @@ import static group13.application.common.Constants.SCENE_WIDTH;
  * In the constructor, an abstract method createScene() is called.
  */
 public abstract class BaseScene extends Scene {
-    private Pane pane;
+    private static Pane pane;
 
     /**
      * Convenient constructor for subclasses.
@@ -37,7 +37,7 @@ public abstract class BaseScene extends Scene {
      */
     public abstract void createScene();
 
-    public Pane getPane() {
+    public static Pane getPane() {
         return pane;
     }
 

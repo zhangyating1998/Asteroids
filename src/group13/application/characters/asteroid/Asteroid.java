@@ -48,7 +48,7 @@ public class Asteroid extends Character implements Splittable  {
     }
 
     // randomly generate the start position of an asteroid
-    public Point2D start(){
+    public static Point2D start(){
         Random r = new Random();
         return new Point2D(r.nextInt(SCENE_WIDTH-100), r.nextInt(SCENE_HEIGHT-100));
     }
