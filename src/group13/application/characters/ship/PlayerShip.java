@@ -1,5 +1,9 @@
 package group13.application.characters.ship;
 
+import group13.application.characters.asteroid.Asteroid;
+import group13.application.game.scene.BaseScene;
+import group13.application.game.scene.PlayScene;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Polygon;
@@ -23,6 +27,16 @@ public class PlayerShip extends Ship {
     // method to change the player-ship angle by +5 degrees
     public void turnRight() {
         setRotate(getRotate() + 5);
+    }
+
+    // Method to implement the hyperspaceJump, player ship can disappear and reappear at a new point on the screen.
+    // TODO Implement this
+    public void hyperspaceJump() {
+        double rotate = PlayScene.playerShip.getRotate();
+        BaseScene.getPane().getChildren().remove(PlayScene.playerShip);
+        Point2D newPosition = Asteroid.start();
+        PlayScene.createNewPlayerShip((int) newPosition.getX(), (int) newPosition.getY());
+        PlayScene.playerShip.setRotate(rotate);
     }
 
 }

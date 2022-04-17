@@ -46,7 +46,7 @@ public class PlayScene extends BaseScene {
     private ArrayList<Integer> scores;
     private HashMap<Integer, String> score_time;
     private int TopScores = 10;
-    public PlayerShip playerShip;
+    public static PlayerShip playerShip;
     public static List<Bullet> bullets = new ArrayList<>();
 
 
@@ -96,16 +96,15 @@ public class PlayScene extends BaseScene {
             getPane().getChildren().add(largeAsteroid);
         }
 
-        createNewPlayerShip();
+        createNewPlayerShip(250, 200);
     }
 
-    private void createNewPlayerShip() {
+    public static void createNewPlayerShip(int x, int y) {
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
-
         // player ship should be able to move by keyboard, and can shoot bullets.
-        playerShip = new PlayerShip(250, 200);
-        this.getPane().getChildren().addAll(playerShip);
+        playerShip = new PlayerShip(x, y);
+        PlayScene.getPane().getChildren().addAll(playerShip);
 //        this.playerKeyHandler = new PlayerKeyEventHandler(playerShip);
 //        this.addEventFilter(KeyEvent.KEY_PRESSED, this.playerKeyHandler);
 //        this.addEventFilter(KeyEvent.KEY_RELEASED, this.playerKeyHandler);
@@ -244,7 +243,7 @@ public class PlayScene extends BaseScene {
             else if (numberOfLives > 1) {
                 removePlayerKeyListener();
                 numberOfLives-=1;
-                createNewPlayerShip();
+                createNewPlayerShip(250, 200);
             }
         }
     }
