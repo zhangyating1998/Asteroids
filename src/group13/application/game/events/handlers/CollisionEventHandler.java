@@ -1,5 +1,6 @@
 package group13.application.game.events.handlers;
 
+import group13.application.characters.Bullet;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.ship.PlayerShip;
 import group13.application.game.events.CollisionEvent;
@@ -38,7 +39,29 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
             this.playScene.decrementLives();
         }
 
-        //test splittable use user ship, in reality the split() should be triggered by a bullet
+        // if either of the node is an asteroid - split, if the other node is a bullet - add score
+        if (event.getNode1() instanceof Asteroid || event.getNode2() instanceof Asteroid){
+            if(event.getNode1() instanceof Asteroid){
+                Asteroid[] asteroids = ((Asteroid) event.getNode1()).split();
+                if (asteroids != null) {
+                    pane.getChildren().addAll(((Asteroid) event.getNode1()).split()[0], ((Asteroid) event.getNode1()).split()[1]);
+                }
+                if (event.getNode2() instanceof Bullet){
+                    this.playScene.AddScore((Asteroid)event.getNode1());
+                }
+            }
+            else if(event.getNode2() instanceof Asteroid){
+                Asteroid[] asteroids = ((Asteroid) event.getNode2()).split();
+                if (asteroids != null) {
+                    pane.getChildren().addAll(((Asteroid) event.getNode2()).split()[0], ((Asteroid) event.getNode2()).split()[1]);
+                }
+                if (event.getNode1() instanceof Bullet){
+                    this.playScene.AddScore((Asteroid)event.getNode2());
+                }
+            }
+        }
+
+        /*test splittable use user ship, in reality the split() should be triggered by a bullet
         if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof PlayerShip) {
             Asteroid[] asteroids = ((Asteroid) event.getNode1()).split();
             System.out.println("split now"+event.getNode1().getClass());
@@ -59,7 +82,7 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
             }
             this.playScene.AddScore((Asteroid)event.getNode2());
             //this.playScene.decrementLives();
-        }
+        }*/
 
 
         // if number of Asteroids is equal to 0, then upgrade game
