@@ -1,5 +1,6 @@
 package group13.application.game.events.handlers;
 
+import group13.application.characters.Bullet;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.ship.PlayerShip;
 import group13.application.game.events.CollisionEvent;
@@ -39,7 +40,7 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
         }
 
         //test splittable use user ship, in reality the split() should be triggered by a bullet
-        if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof PlayerShip) {
+        if (event.getNode1() instanceof Asteroid && (event.getNode2() instanceof PlayerShip)) {
             Asteroid[] asteroids = ((Asteroid) event.getNode1()).split();
             //collide with the medium or big ship
             if (asteroids != null) {
@@ -49,6 +50,16 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
             this.playScene.setScoreLabel();
             this.playScene.decrementLives();
             this.playScene.setLifeLabel();
+        }
+
+        if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof Bullet) {
+            Asteroid[] asteroids = ((Asteroid) event.getNode1()).split();
+            //collide with the medium or big ship
+            if (asteroids != null) {
+                pane.getChildren().addAll(((Asteroid) event.getNode1()).split()[0], ((Asteroid) event.getNode1()).split()[1]);
+            }
+            this.playScene.AddScore((Asteroid)event.getNode1());
+            this.playScene.setScoreLabel();
         }
 
         else if (event.getNode2() instanceof Asteroid && event.getNode1() instanceof PlayerShip) {
