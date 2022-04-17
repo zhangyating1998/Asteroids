@@ -75,13 +75,13 @@ public class Character extends Polygon {
             this.setTranslateY(-this.getLayoutBounds().getHeight());
 
         // Also increments the timer for and character with lime to live limit  and removes them if this is exceeded
-        if (isTimeOut) {
-            this.counter += 0.01666;
-            if (this.counter > timeToLive) {
-                PlayScene.bullets.remove(this);
-                playScene.getPane().getChildren().remove(this);
-            }
-        }
+//        if (isTimeOut) {
+//            this.counter += 0.01666;
+//            if (this.counter > timeToLive) {
+//                PlayScene.bullets.remove(this);
+//                playScene.getPane().getChildren().remove(this);
+//            }
+//        }
     }
 
     // Allows forward movement of object, changes the characters velocity based on cos and tan angles and applies

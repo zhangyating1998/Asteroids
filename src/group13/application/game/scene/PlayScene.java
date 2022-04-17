@@ -34,7 +34,7 @@ import static group13.application.common.Constants.*;
 public class PlayScene extends BaseScene {
     private int numberOfLives = 3;//DEFAULT_NUMBER_OF_LIVES;
     private int gameLevel = GAME_LEVEL_START;
-    private EventHandler playerKeyHandler;
+//    private EventHandler playerKeyHandler;
     private final static Random random = new Random();
     private long lastSecondsAlienShipAdded = 0;
     private PlaySceneParams playSceneParams;
@@ -241,7 +241,7 @@ public class PlayScene extends BaseScene {
                 end();
             }
             else if (numberOfLives > 1) {
-                removePlayerKeyListener();
+//                removePlayerKeyListener();
                 numberOfLives-=1;
                 createNewPlayerShip(250, 200);
             }
@@ -263,9 +263,9 @@ public class PlayScene extends BaseScene {
     /**
      * Remove the player key handler from event filter
      */
-    private void removePlayerKeyListener() {
-        this.removeEventFilter(KeyEvent.KEY_PRESSED, playerKeyHandler);
-    }
+//    private void removePlayerKeyListener() {
+//        this.removeEventFilter(KeyEvent.KEY_PRESSED, playerKeyHandler);
+//    }
 
     /**
      * Check in every frame if an alien ship should be added into the scene
