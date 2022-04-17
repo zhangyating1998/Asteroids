@@ -271,7 +271,7 @@ public class PlayScene extends BaseScene {
      * Remove the player key handler from event filter
      */
     private void removePlayerKeyListener() {
-        this.removeEventFilter(KeyEvent.KEY_PRESSED, playerKeyHandler);
+//        this.removeEventFilter(KeyEvent.KEY_PRESSED, playerKeyHandler);
     }
 
     /**
