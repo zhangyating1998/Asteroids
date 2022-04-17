@@ -1,5 +1,6 @@
 package group13.application.game.scene;
 
+import group13.application.characters.Bullet;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.asteroid.LargeAsteroid;
 import group13.application.characters.asteroid.MediumAsteroid;
@@ -12,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -42,6 +44,9 @@ public class PlayScene extends BaseScene {
     private ArrayList<Integer> scores;
     private HashMap<Integer, String> score_time;
     private int TopScores = 10;
+    public PlayerShip playerShip;
+    public static List<Bullet> bullets = new ArrayList<>();
+
 
     public PlayScene(GameEngine gameEngine) {
         super(gameEngine);
@@ -102,11 +107,11 @@ public class PlayScene extends BaseScene {
         // set the location of the player ship
 
         // player ship should be able to move by keyboard, and can shoot bullets.
-        PlayerShip playerShip = new PlayerShip(250, 200);
+        playerShip = new PlayerShip(250, 200);
         this.getPane().getChildren().addAll(playerShip);
-
-        this.playerKeyHandler = new PlayerKeyEventHandler(playerShip);
-        this.addEventFilter(KeyEvent.KEY_PRESSED, this.playerKeyHandler);
+//        this.playerKeyHandler = new PlayerKeyEventHandler(playerShip);
+//        this.addEventFilter(KeyEvent.KEY_PRESSED, this.playerKeyHandler);
+//        this.addEventFilter(KeyEvent.KEY_RELEASED, this.playerKeyHandler);
     }
 
     private void createNewAlienShip() {
@@ -256,7 +261,8 @@ public class PlayScene extends BaseScene {
      * 2. create a new pane for the scene (and disable the current pane)
      */
     private void resetScene() {
-        removePlayerKeyListener();
+//        removePlayerKeyListener();
+        PlayScene.bullets.clear();
         this.newPane();
         this.lastSecondsAlienShipAdded = 0;
     }
@@ -281,7 +287,7 @@ public class PlayScene extends BaseScene {
             if (this.isGameContinue
                     && this.lastSecondsAlienShipAdded < currentTimeInSeconds
                     && this.lastSecondsAlienShipAdded + this.playSceneParams.getFrequencyOfAlienShip()
-                        == currentTimeInSeconds) {
+                    == currentTimeInSeconds) {
                 System.out.println("Adding new alien ship.");
                 createNewAlienShip();
                 this.lastSecondsAlienShipAdded = currentTimeInSeconds;

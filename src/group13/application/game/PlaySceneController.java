@@ -3,15 +3,20 @@ package group13.application.game;
 import group13.application.characters.Bullet;
 import group13.application.characters.Character;
 import group13.application.characters.asteroid.Asteroid;
+import group13.application.characters.ship.EnemyShip;
 import group13.application.characters.ship.Ship;
 import group13.application.game.events.CollisionEvent;
 import group13.application.game.scene.PlayScene;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static group13.application.common.Constants.COLLISION;
 
@@ -23,10 +28,26 @@ import static group13.application.common.Constants.COLLISION;
  * @date 2022/3/28 22:52
  */
 public class PlaySceneController extends AnimationTimer {
-    private PlayScene playScene;
+    public static PlayScene playScene;
+
+    // Hashmaps for storing player keyboard inputs
+    public static Map<KeyCode, Boolean> pressedKeys = new HashMap<>();
+    public static Map<KeyCode, Boolean> onePressKeys = new HashMap<>();
 
     public PlaySceneController(PlayScene playScene) {
-        this.playScene = playScene;
+        PlaySceneController.playScene = playScene;
+
+        // Capture on key pressed events with checks added to handle fire rete limit for firing bullets nd update hashmap
+        PlaySceneController.playScene.setOnKeyPressed(event -> {
+            if (pressedKeys.get(KeyCode.SPACE) == Boolean.FALSE) {
+                pressedKeys.put(event.getCode(), Boolean.TRUE);
+                onePressKeys.put(event.getCode(), Boolean.TRUE);
+            } else {
+                pressedKeys.put(event.getCode(), Boolean.TRUE);
+            }
+        });
+        // Capture key released event and update hashmap
+        PlaySceneController.playScene.setOnKeyReleased(event -> pressedKeys.put(event.getCode(), Boolean.FALSE));
     }
 
     @Override
@@ -36,12 +57,32 @@ public class PlaySceneController extends AnimationTimer {
 
         playScene.addAlienShips(timeInNanoseconds);
 
+        // Control inputs for player-ship
+        // Rotate the player-ship left
+        if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.LEFT, false))) {
+            playScene.playerShip.turnLeft();
+        }
+        // Rotate the player-ship right
+        if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.RIGHT, false))) {
+            playScene.playerShip.turnRight();
+        }
+        // Increase the player-ship velocity
+        if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.UP, false))) {
+            playScene.playerShip.accelerate(0.03);
+        }
+        // Fire a bullet from the player-ship, only 7 bullets can be alive at the one time to prevent spamming
+        if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false))  && PlayScene.bullets.size() < 7) {
+           playScene.playerShip.fire();
+        }
+
         // move the Characters
-        for (Node node : playScene.getPane().getChildren()) {
+        for (Node node :  playScene.getPane().getChildren()) {
             if (node instanceof Character) {
                 ((Character) node).move();
             }
         }
+        // Clear the one pressed keys hashmap
+        onePressKeys.clear();
     }
 
     /**
@@ -77,9 +118,9 @@ public class PlaySceneController extends AnimationTimer {
                         // 3. Bullet vs asteroid
                         boolean isBulletVSAsteroid = node1 instanceof Bullet && node2 instanceof Asteroid;
                         boolean isAsteroidVSBullet = node1 instanceof Asteroid && node2 instanceof Bullet;
-                        // 4. Bullet vs ship
-                        boolean isBulletVSShip = node1 instanceof Bullet && node2 instanceof Ship;
-                        boolean isShipVSBullet = node1 instanceof Ship && node2 instanceof Bullet;
+                        // 4. Bullet vs EnemyShip
+                        boolean isBulletVSShip = node1 instanceof Bullet && node2 instanceof EnemyShip;
+                        boolean isShipVSBullet = node1 instanceof EnemyShip && node2 instanceof Bullet;
 
                         if (isShipVSAsteroid || isAsteroidVSShip
                                 || isShipVSShip
