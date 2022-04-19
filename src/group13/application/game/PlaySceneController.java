@@ -54,6 +54,7 @@ public class PlaySceneController extends AnimationTimer {
     }
 
     @Override
+    // Animation timer to display the game pane each frame
     public void handle(long timeInNanoseconds) {
         // detect the collision and remove node if any found
         long start = System.currentTimeMillis();
@@ -92,9 +93,9 @@ public class PlaySceneController extends AnimationTimer {
         int countFire = 0;
         int countRotate = 0;
         for (int k = 0; k < 5; k++) {
-            countFire += 100;
+            countFire += countFireIncrement;
             fireTimes[k] = countFire;
-            countRotate += 200;
+            countRotate += countRotateIncrement;
             rotateTimes[k] = countRotate;
         }
 

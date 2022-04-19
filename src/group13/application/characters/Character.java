@@ -84,21 +84,27 @@ public class Character extends Polygon {
         this.velocity = this.velocity.add(changeX, changeY);
     }
 
+    // Check if a character can time out, ie has time to live limit
     public boolean getIsTimeOut() {
         return isTimeOut;
     }
 
+    // Check if character time to live has timed out
     public boolean checkTimeOut() {
         return this.counter > this.timeToLive;
     }
 
+    // Getter for character time to live counter
     public double getCounter() {
         return counter;
     }
+
+    // getter for current position of charachter
     public Point2D getCurrentPosition(){
         return new Point2D(this.getTranslateX(), this.getTranslateY());
     }
 
+    // Check the future position of a character for safe positioning
     public Point2D getFuturePosition(float seconds){
         int numberOfFrames = (int) (70 * seconds);
         double futureX = this.getTranslateX() + this.velocity.getX() * numberOfFrames;
