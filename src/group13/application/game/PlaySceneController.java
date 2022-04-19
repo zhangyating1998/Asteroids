@@ -19,6 +19,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static group13.application.common.Constants.COLLISION;
 
@@ -89,11 +90,11 @@ public class PlaySceneController extends AnimationTimer {
         // otherwise there will be concurrentModification issue.
         List<Character> bulletsToRemove = new ArrayList<>();
         // Also increments the timer for and character with lime to live limit  and removes them if this is exceeded
-        for (Node node :  playScene.getPane().getChildren()) {
+        for (Node node : playScene.getPane().getChildren()) {
             if (node instanceof Character) {
                 Character character = (Character) node;
                 if (character.getIsTimeOut()) {
-                    character.counter += 0.01666;
+                    character.counter += 1;
                     if (character.checkTimeOut()) {
                         bulletsToRemove.add(character);
                     }
@@ -105,7 +106,7 @@ public class PlaySceneController extends AnimationTimer {
         playScene.getPane().getChildren().removeAll(bulletsToRemove);
 
         // move the Characters
-        for (Node node :  playScene.getPane().getChildren()) {
+        for (Node node : playScene.getPane().getChildren()) {
             if (node instanceof Character) {
                 Character character = (Character) node;
                 character.move();
@@ -113,6 +114,34 @@ public class PlaySceneController extends AnimationTimer {
 //                System.out.format("Future position:, %s\n", character.getFuturePosition());
             }
         }
+//        int [] fireTimes = {60, 120, 180, 240, 300, 360, 420, 480};
+
+
+
+
+         int [] fireTimes = new int[5];
+        int count = 0;
+        for (int k = 0; k < 5; k++){
+            count += 100;
+            fireTimes[k] = count;
+        }
+
+
+        for (int i = 0; i < playScene.enemyShips.size(); i++) {
+            int finalI = i;
+            if (IntStream.of(fireTimes).anyMatch(j -> j == playScene.enemyShips.get(finalI).getCounter())) {
+                System.out.println("!!!!!!!!!!" + playScene.enemyShips.get(i).getCounter());
+                playScene.enemyShips.get(i).fire();
+//         playScene.enemyShips.get(i).alienBulletFire();
+            }
+//        alienBulletFire();
+//        List<Character> enenysToFire = new ArrayList<>();
+//        for (Node node :  playScene.getPane().getChildren()) {
+//            if (node instanceof EnemyShip) {
+//                if ( )
+//            }
+//                ((Character) node).fire();
+//            playScene.alienShip.fire();
 
         // Clear the one pressed keys hashmap
         onePressKeys.clear();

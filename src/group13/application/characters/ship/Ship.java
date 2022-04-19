@@ -16,6 +16,11 @@ public class Ship extends Character {
         super(x, y, points);
     }
 
+    public Ship(int x, int y, boolean b, double d, double ... points) {
+        super(x, y, b, d,  points);
+    }
+
+
     // Method to fire a bullet in a straight line, speed is based on the firing ships speed and its direction of travel
     public void fire() {
         Bullet bullet = new Bullet((int)  (playScene.playerShip.getTranslateX()), (int)  (playScene.playerShip.getTranslateY()));
