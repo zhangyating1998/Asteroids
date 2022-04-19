@@ -65,7 +65,6 @@ public class PlayScene extends BaseScene {
         this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
         createSceneByGameLevel();
         this.addEventFilter(COLLISION, new CollisionEventHandler(this));
-        //System.out.println("GAMELEVEL"+gameLevel);
     }
 
     // Display the score on screen
@@ -128,10 +127,8 @@ public class PlayScene extends BaseScene {
 
     // Return new player ship
     public void createNewPlayerShip(int x, int y) {
-        // TODO the location of the player ship should be calculated based on the other objects in the scene
-        // set the location of the player ship
-        // player ship should be able to move by keyboard, and can shoot bullets.
         PlayScene.playerShip = new PlayerShip(SCENE_WIDTH / 2, SCENE_HEIGHT / 2);
+        // set a safe location for the player ship
         findASafePoint(playerShip);
         this.getPane().getChildren().addAll(playerShip);
     }
@@ -141,7 +138,6 @@ public class PlayScene extends BaseScene {
         alienShip = new EnemyShip(0, 0);
         this.getPane().getChildren().addAll(alienShip);
         PlayScene.enemyShips.add(alienShip);
-
     }
 
     public void upgrade() {
@@ -152,16 +148,15 @@ public class PlayScene extends BaseScene {
                 return;
             }
             resetScene();
-            //System.out.println("Current game level: " + this.gameLevel);
             this.gameLevel++;
             setLevelLabel();
             this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
-            //System.out.println("Upgraded game level: " + this.gameLevel);
-            // create a new scene of the next level
             System.err.println("upgraded"+gameLevel);
+            // create a new scene of the next level
             createSceneByGameLevel();
         }
     }
+
     // will be called when there are no lives
     public void end() {
         System.out.println("GAME OVER!");

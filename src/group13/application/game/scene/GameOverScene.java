@@ -32,7 +32,7 @@ public class GameOverScene extends BaseScene{
         this.getPane().getChildren().addAll(t);
     }
     private void setReturnButton() {
-        this.getPane().getChildren().add(ReturnButton(new Point2D(310, 430), "Main Hall"));
+        this.getPane().getChildren().add(ReturnButton(new Point2D(310, 430), "Main Menu"));
     }
 
     private void disPlayScore() {
