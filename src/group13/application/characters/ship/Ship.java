@@ -21,7 +21,7 @@ public class Ship extends Character {
         Bullet bullet = new Bullet((int)  (playScene.playerShip.getTranslateX()), (int)  (playScene.playerShip.getTranslateY()));
         bullet.setRotate(getRotate());
         PlayScene.bullets.add(bullet);
-        double speed = 5 + Math.abs(Math.max(this.getVelocity().getX(), this.getVelocity().getX()));
+        double speed = 10 + Math.abs(Math.max(this.getVelocity().getX(), this.getVelocity().getX()));
         bullet.accelerate(speed);
         playScene.getPane().getChildren().add(bullet);
     }

@@ -5,6 +5,8 @@ import group13.application.game.scene.BaseScene;
 import group13.application.game.scene.PlayScene;
 import javafx.geometry.Point2D;
 
+import static group13.application.common.Constants.playerTurnRate;
+
 /**
  * @author longyu
  * @date 2022/3/26 15:21
@@ -17,13 +19,13 @@ public class PlayerShip extends Ship {
     }
 
     // method to change the player-ship angle by -5 degrees
-    public void turnLeft() {
-        setRotate(getRotate() - 3);
+    public void rotateLeft() {
+        setRotate(getRotate() - playerTurnRate);
     }
 
     // method to change the player-ship angle by +5 degrees
-    public void turnRight() {
-        setRotate(getRotate() + 3);
+    public void rotateRight() {
+        setRotate(getRotate() + playerTurnRate);
     }
 
     // Method to implement the hyperspaceJump, player ship can disappear and reappear at a new point on the screen.
