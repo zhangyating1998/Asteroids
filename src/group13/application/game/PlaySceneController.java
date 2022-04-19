@@ -107,7 +107,10 @@ public class PlaySceneController extends AnimationTimer {
         // move the Characters
         for (Node node :  playScene.getPane().getChildren()) {
             if (node instanceof Character) {
-                ((Character) node).move();
+                Character character = (Character) node;
+                character.move();
+//                System.out.format("Current position:, %s\n", character.getCurrentPosition());
+//                System.out.format("Future position:, %s\n", character.getFuturePosition());
             }
         }
 
