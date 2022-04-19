@@ -58,7 +58,7 @@ public class PlaySceneController extends AnimationTimer {
         long start = System.currentTimeMillis();
         detectCollision(playScene.getPane());
         long end = System.currentTimeMillis();
-        if (end - start > 14)
+        if (end - start > 10)
             System.err.println("Time detect collision: " + (end - start));
 
 
@@ -75,7 +75,7 @@ public class PlaySceneController extends AnimationTimer {
         }
         // Increase the player-ship velocity
         if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.UP, false))) {
-            PlayScene.playerShip.accelerate(0.04);
+            PlayScene.playerShip.accelerate(0.1);
         }
         // Fire a bullet from the player-ship, only 7 bullets can be alive at the one time to prevent spamming
         if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false))  && PlayScene.bullets.size() < 14) {
@@ -113,6 +113,10 @@ public class PlaySceneController extends AnimationTimer {
 
         // Clear the one pressed keys hashmap
         onePressKeys.clear();
+
+        long endMethod = System.currentTimeMillis();
+        if (endMethod - start > 12)
+            System.err.println("Time in the frame: " + (endMethod - start));
     }
 
     /**
