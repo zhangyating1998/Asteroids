@@ -14,7 +14,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -67,7 +66,6 @@ public class PlayScene extends BaseScene {
         this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
         createSceneByGameLevel();
         this.addEventFilter(COLLISION, new CollisionEventHandler(this));
-        //System.out.println("GAMELEVEL"+gameLevel);
     }
 
     private void displayScore(){
@@ -124,23 +122,16 @@ public class PlayScene extends BaseScene {
     }
 
     public void createNewPlayerShip(int x, int y) {
-        // TODO the location of the player ship should be calculated based on the other objects in the scene
-        // set the location of the player ship
-        // player ship should be able to move by keyboard, and can shoot bullets.
         PlayScene.playerShip = new PlayerShip(SCENE_WIDTH / 2, SCENE_HEIGHT / 2);
+        // set a safe location for the player ship
         findASafePoint(playerShip);
         this.getPane().getChildren().addAll(playerShip);
     }
 
     private void createNewAlienShip() {
-
-//        int a = -20;
-//        int b = 820;
-//        int c = random.nextBoolean() ? a : b;
         alienShip = new EnemyShip(0, 0);
         this.getPane().getChildren().addAll(alienShip);
         PlayScene.enemyShips.add(alienShip);
-
     }
 
     public void upgrade() {
@@ -151,16 +142,15 @@ public class PlayScene extends BaseScene {
                 return;
             }
             resetScene();
-            //System.out.println("Current game level: " + this.gameLevel);
             this.gameLevel++;
             setLevelLabel();
             this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
-            //System.out.println("Upgraded game level: " + this.gameLevel);
-            // create a new scene of the next level
             System.err.println("upgraded"+gameLevel);
+            // create a new scene of the next level
             createSceneByGameLevel();
         }
     }
+
     // will be called when there are no lives
     public void end() {
         System.out.println("GAME OVER!");

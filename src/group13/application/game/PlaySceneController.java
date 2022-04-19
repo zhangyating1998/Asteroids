@@ -4,20 +4,21 @@ import group13.application.characters.Bullet;
 import group13.application.characters.Character;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.ship.EnemyShip;
-import group13.application.characters.ship.PlayerShip;
 import group13.application.characters.ship.Ship;
 import group13.application.game.events.CollisionEvent;
-import group13.application.game.scene.BaseScene;
 import group13.application.game.scene.PlayScene;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import static group13.application.common.Constants.*;
@@ -138,18 +139,16 @@ public class PlaySceneController extends AnimationTimer {
             if (node instanceof Character) {
                 Character character = (Character) node;
                 character.move();
-//                System.out.format("Current position:, %s\n", character.getCurrentPosition());
-//                System.out.format("Future position:, %s\n", character.getFuturePosition());
             }
         }
 
-            // Clear the one pressed keys hashmap
-            onePressKeys.clear();
+        // Clear the one pressed keys hashmap
+        onePressKeys.clear();
 
-            long endMethod = System.currentTimeMillis();
-            if (endMethod - start > 12)
-                System.err.println("Time in the frame: " + (endMethod - start));
-        }
+        long endMethod = System.currentTimeMillis();
+        if (endMethod - start > 12)
+            System.err.println("Time in the frame: " + (endMethod - start));
+    }
 
 
     /**
@@ -173,6 +172,8 @@ public class PlaySceneController extends AnimationTimer {
                 // detect collision by checking the overlap between two objects, this is based on the x and y bound
                 // only detect Characters, labels will not count
                 if (node1 instanceof Character && node2 instanceof Character) {
+
+                    // check the instance type before calling the actual intersect interface to improve performance
 
                     // 1. Ship vs asteroid
                     boolean isShipVSAsteroid = node1 instanceof Ship && node2 instanceof Asteroid;
@@ -198,6 +199,7 @@ public class PlaySceneController extends AnimationTimer {
                         if (path.getElements().size() > 0) {
                             System.out.println("Collision detected");
                             pane.fireEvent(new CollisionEvent(COLLISION, pane, node1, node2));
+                            // return immediately to avoid extract computation
                             return;
                         }
                     }

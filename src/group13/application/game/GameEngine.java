@@ -7,20 +7,22 @@ import javafx.animation.Timeline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import static group13.application.common.Constants.GAME_TITLE;
+
 /**
- * GameEngine includes all the functions of this game application, for instance, welcome page, game scenes and
- * rankings, etc.
+ * GameEngine includes all the functions of this game application, for instance,
+ * welcome page, game scenes and rankings, etc.
  *
  * @author longyu
  * @date 2022/3/28 23:53
  */
 public class GameEngine {
+
     private Stage stage;
-    private static int HIGH_SCORE;
 
     public GameEngine(Stage stage) {
         this.stage = stage;
-        stage.setTitle("Asteroids");
+        stage.setTitle(GAME_TITLE);
         stage.show();
 
         // Start the game Timeline, which is running forever
