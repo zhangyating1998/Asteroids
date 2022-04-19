@@ -37,6 +37,8 @@ public class Constants {
 
     public static final double bulletTimeToLive = 50;
 
+    public static final double enemybulletTimeToLive = 40;
+
     public static final double counterIncrement = 1;
 
     public static final int enemyTimeToLive = 900;
