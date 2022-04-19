@@ -95,11 +95,10 @@ public class Character extends Polygon {
         return new Point2D(this.getTranslateX(), this.getTranslateY());
     }
 
-    public Point2D getFuturePosition(){
-        System.out.println(getBoundsInParent());
-
-        double futureX = this.getTranslateX() + this.velocity.getX() * 70;
-        double futureY = this.getTranslateY() + this.velocity.getY() * 70;
+    public Point2D getFuturePosition(float seconds){
+        int numberOfFrames = (int) (70 * seconds);
+        double futureX = this.getTranslateX() + this.velocity.getX() * numberOfFrames;
+        double futureY = this.getTranslateY() + this.velocity.getY() * numberOfFrames;
 
         if (futureX + this.getLayoutBounds().getWidth() < 0) {
             futureX = Constants.SCENE_WIDTH;

@@ -82,7 +82,7 @@ public class PlaySceneController extends AnimationTimer {
            PlayScene.playerShip.fire();
         }
         if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.B, false))) {
-            PlayScene.playerShip.hyperspaceJump(playScene);
+            playScene.findASafePoint(PlayScene.playerShip);
         }
 
         // to remove the bullets, we should collect them in the loop then delete all at once,
