@@ -75,11 +75,6 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
         // if number of Asteroids is equal to 0, then upgrade game
         // else if number of Asteroids is greater than 1, then game continue
         for (Node node : pane.getChildren()) {
-            /* uncomment this to test the upgrade and pass game event*/
-            if(this.playScene.getLives() == 18 || this.playScene.getLives() == 16 || this.playScene.getLives() == 14){
-                System.out.println("LIVES"+this.playScene.getLives());
-                this.playScene.upgrade();
-            }
             if (node instanceof Asteroid) {
                 return;
             }
