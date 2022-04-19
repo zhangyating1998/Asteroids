@@ -14,10 +14,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -70,6 +68,7 @@ public class PlayScene extends BaseScene {
         //System.out.println("GAMELEVEL"+gameLevel);
     }
 
+    // Display the score on screen
     private void displayScore(){
         scoreLabel = new Label();
         scoreLabel.setTextFill(Color.WHITE);
@@ -79,6 +78,7 @@ public class PlayScene extends BaseScene {
         scoreLabel.setFont(Font.font(20));
         this.getPane().getChildren().addAll(scoreLabel);
     }
+    // Display the level on screen
     private void displayLevel(){
         levelLabel = new Label();
         levelLabel.setTextFill(Color.WHITE);
@@ -90,11 +90,13 @@ public class PlayScene extends BaseScene {
         this.getPane().getChildren().addAll(levelLabel);
 
     }
+    // getters  for score and lives
     public int getScore() {
         return score;
     }
     public int getLives(){return numberOfLives;}
 
+    // Display lives
     private void displayLife() {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
@@ -107,6 +109,7 @@ public class PlayScene extends BaseScene {
         this.getPane().getChildren().addAll(lifeLabel);
     }
 
+    // New scenes for new levels
     private void createSceneByGameLevel() {
         System.out.println("number of ads should be created:"+this.playSceneParams.getNumberOfAsteroids());
         for (int i = 0; i < this.playSceneParams.getNumberOfAsteroids(); i++) {
@@ -123,6 +126,7 @@ public class PlayScene extends BaseScene {
 
     }
 
+    // Return new player ship
     public void createNewPlayerShip(int x, int y) {
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
@@ -132,11 +136,8 @@ public class PlayScene extends BaseScene {
         this.getPane().getChildren().addAll(playerShip);
     }
 
+    // Add new alien ship to game
     private void createNewAlienShip() {
-
-//        int a = -20;
-//        int b = 820;
-//        int c = random.nextBoolean() ? a : b;
         alienShip = new EnemyShip(0, 0);
         this.getPane().getChildren().addAll(alienShip);
         PlayScene.enemyShips.add(alienShip);
