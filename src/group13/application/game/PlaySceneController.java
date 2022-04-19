@@ -2,8 +2,10 @@ package group13.application.game;
 
 import group13.application.characters.Bullet;
 import group13.application.characters.Character;
+import group13.application.characters.EnemyBullet;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.ship.EnemyShip;
+import group13.application.characters.ship.PlayerShip;
 import group13.application.characters.ship.Ship;
 import group13.application.game.events.CollisionEvent;
 import group13.application.game.scene.PlayScene;
@@ -187,11 +189,15 @@ public class PlaySceneController extends AnimationTimer {
                     // 4. Bullet vs EnemyShip
                     boolean isBulletVSShip = node1 instanceof Bullet && node2 instanceof EnemyShip;
                     boolean isShipVSBullet = node1 instanceof EnemyShip && node2 instanceof Bullet;
+                    // 4. enemyBullet vs PlayerShip
+                    boolean isEnemyBulletVSPlayerShip = node1 instanceof EnemyBullet && node2 instanceof PlayerShip;
+                    boolean isPlayerShipVSEnemyBullet = node1 instanceof PlayerShip && node2 instanceof EnemyBullet;
 
                     if (isShipVSAsteroid || isAsteroidVSShip
                             || isShipVSShip
                             || isBulletVSAsteroid || isAsteroidVSBullet
-                            || isBulletVSShip || isShipVSBullet) {
+                            || isBulletVSShip || isShipVSBullet ||
+                            isEnemyBulletVSPlayerShip || isPlayerShipVSEnemyBullet) {
 
                         Path path = (Path) Shape.intersect((Shape) node1, (Shape) node2);
                         // to precisely check the overlap by the shape of the node, we should count the number of common

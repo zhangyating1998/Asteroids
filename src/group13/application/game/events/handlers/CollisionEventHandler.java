@@ -1,6 +1,7 @@
 package group13.application.game.events.handlers;
 
 import group13.application.characters.Bullet;
+import group13.application.characters.EnemyBullet;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.ship.EnemyShip;
 import group13.application.characters.ship.PlayerShip;
@@ -68,6 +69,11 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
 
         // if the bullet has hit the enemyShip
         if (event.getNode1() instanceof Bullet && event.getNode2() instanceof EnemyShip || event.getNode2() instanceof Bullet && event.getNode1() instanceof EnemyShip){
+            this.playScene.AddScoreShip(20);
+        }
+
+        // if the enemybullet has hit the playerShip
+        if (event.getNode1() instanceof EnemyBullet && event.getNode2() instanceof PlayerShip || event.getNode2() instanceof EnemyBullet && event.getNode1() instanceof PlayerShip){
             this.playScene.AddScoreShip(20);
         }
 
