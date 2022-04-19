@@ -28,7 +28,7 @@ public class PassScene extends BaseScene{
     }
 
     private void setGamePass() {
-        Text t = new Text(20, 200, "Congratulations!\n    You passed");
+        Text t = new Text(20, 200, "Congratulations!\n    You Won");
         t.setFill(Color.GREEN);
         Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 80);
         t.setFont(font);
@@ -36,7 +36,7 @@ public class PassScene extends BaseScene{
     }
 
     private void setReturnButton () {
-        this.getPane().getChildren().add(ReturnButton(new Point2D(310, 430), "Main Hall"));
+        this.getPane().getChildren().add(ReturnButton(new Point2D(310, 430), "Main Menu"));
     }
 
     private void disPlayScore() {
