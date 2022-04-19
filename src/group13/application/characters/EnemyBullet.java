@@ -1,10 +1,12 @@
 package group13.application.characters;
 
+import static group13.application.common.Constants.enemybulletTimeToLive;
+
 public class EnemyBullet extends Character {
 
-    // Create a bullet based on the character class, includes time to live limit
+    // Create an enemybullet based on the character class, includes time to live limit
     public EnemyBullet(int x, int y) {
-        super(x, y, true, 50, 2, -2, 2, 2, -2, 2, -2, -2);
+        super(x, y, true, enemybulletTimeToLive, 2, -2, 2, 2, -2, 2, -2, -2);
     }
 }
 
