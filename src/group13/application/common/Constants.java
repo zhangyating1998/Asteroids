@@ -35,7 +35,7 @@ public class Constants {
 
     public static final int playerTurnRate = 4;
 
-    public static final double bulletTimeToLive = 60;
+    public static final double bulletTimeToLive = 40;
 
     public static final double counterIncrement = 1;
 
