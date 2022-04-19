@@ -19,6 +19,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static group13.application.common.Constants.*;
 
@@ -55,7 +56,12 @@ public class PlaySceneController extends AnimationTimer {
     @Override
     public void handle(long timeInNanoseconds) {
         // detect the collision and remove node if find any
+        long start = System.currentTimeMillis();
         detectCollision(playScene.getPane());
+        long end = System.currentTimeMillis();
+        if (end - start > 10)
+            System.err.println("Time detect collision: " + (end - start));
+
 
         playScene.addAlienShips(timeInNanoseconds);
 
@@ -73,22 +79,23 @@ public class PlaySceneController extends AnimationTimer {
             PlayScene.playerShip.accelerate(playerAcceleration);
         }
         // Fire a bullet from the player-ship, only 7 bullets can be alive at the one time to prevent spamming
-        if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false))  && PlayScene.bullets.size() < 7) {
-           PlayScene.playerShip.fire();
+        if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false)) && PlayScene.bullets.size() < 14) {
+            PlayScene.playerShip.fire();
         }
         if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.B, false))) {
-            PlayScene.playerShip.hyperspaceJump(playScene);
+            playScene.findASafePoint(PlayScene.playerShip);
         }
 
         // to remove the bullets, we should collect them in the loop then delete all at once,
         // otherwise there will be concurrentModification issue.
         List<Character> bulletsToRemove = new ArrayList<>();
         // Also increments the timer for and character with lime to live limit  and removes them if this is exceeded
-        for (Node node :  playScene.getPane().getChildren()) {
+        for (Node node : playScene.getPane().getChildren()) {
             if (node instanceof Character) {
                 Character character = (Character) node;
                 if (character.getIsTimeOut()) {
                     character.counter += counterIncrement;
+
                     if (character.checkTimeOut()) {
                         bulletsToRemove.add(character);
                     }
@@ -100,14 +107,48 @@ public class PlaySceneController extends AnimationTimer {
         playScene.getPane().getChildren().removeAll(bulletsToRemove);
 
         // move the Characters
-        for (Node node :  playScene.getPane().getChildren()) {
+        for (Node node : playScene.getPane().getChildren()) {
             if (node instanceof Character) {
-                ((Character) node).move();
+                Character character = (Character) node;
+                character.move();
+//                System.out.format("Current position:, %s\n", character.getCurrentPosition());
+//                System.out.format("Future position:, %s\n", character.getFuturePosition());
             }
         }
+//        int [] fireTimes = {60, 120, 180, 240, 300, 360, 420, 480};
 
-        // Clear the one pressed keys hashmap
-        onePressKeys.clear();
+
+        int[] fireTimes = new int[5];
+        int count = 0;
+        for (int k = 0; k < 5; k++) {
+            count += 100;
+            fireTimes[k] = count;
+        }
+
+
+        for (int i = 0; i < playScene.enemyShips.size(); i++) {
+            int finalI = i;
+            if (IntStream.of(fireTimes).anyMatch(j -> j == playScene.enemyShips.get(finalI).getCounter())) {
+                System.out.println("!!!!!!!!!!" + playScene.enemyShips.get(i).getCounter());
+                playScene.enemyShips.get(i).fire();
+//         playScene.enemyShips.get(i).alienBulletFire();
+            }
+//        alienBulletFire();
+//        List<Character> enenysToFire = new ArrayList<>();
+//        for (Node node :  playScene.getPane().getChildren()) {
+//            if (node instanceof EnemyShip) {
+//                if ( )
+//            }
+//                ((Character) node).fire();
+//            playScene.alienShip.fire();
+
+            // Clear the one pressed keys hashmap
+            onePressKeys.clear();
+
+            long endMethod = System.currentTimeMillis();
+            if (endMethod - start > 12)
+                System.err.println("Time in the frame: " + (endMethod - start));
+        }
     }
 
     /**
@@ -127,32 +168,36 @@ public class PlaySceneController extends AnimationTimer {
             Node node1 = observableList.get(i);
             for (int j = i + 1; j < observableList.size(); j++) {
                 Node node2 = observableList.get(j);
+
                 // detect collision by checking the overlap between two objects, this is based on the x and y bound
                 // only detect Characters, labels will not count
                 if (node1 instanceof Character && node2 instanceof Character) {
-                    Path path = (Path) Shape.intersect((Shape) node1, (Shape) node2);
-                    // to precisely check the overlap by the shape of the node, we should count the number of common
-                    // elements between the two nodes, a positive number means they overlap in shape
-                    // reference: https://gist.github.com/james-d/8149902
-                    if (path.getElements().size() > 0) {
-                        // 1. Ship vs asteroid
-                        boolean isShipVSAsteroid = node1 instanceof Ship && node2 instanceof Asteroid;
-                        boolean isAsteroidVSShip = node1 instanceof Asteroid && node2 instanceof Ship;
-                        // 2. Ship vs ship
-                        boolean isShipVSShip = node1 instanceof Ship && node2 instanceof Ship;
-                        // 3. Bullet vs asteroid
-                        boolean isBulletVSAsteroid = node1 instanceof Bullet && node2 instanceof Asteroid;
-                        boolean isAsteroidVSBullet = node1 instanceof Asteroid && node2 instanceof Bullet;
-                        // 4. Bullet vs EnemyShip
-                        boolean isBulletVSShip = node1 instanceof Bullet && node2 instanceof EnemyShip;
-                        boolean isShipVSBullet = node1 instanceof EnemyShip && node2 instanceof Bullet;
 
-                        if (isShipVSAsteroid || isAsteroidVSShip
-                                || isShipVSShip
-                                || isBulletVSAsteroid || isAsteroidVSBullet
-                                || isBulletVSShip || isShipVSBullet) {
+                    // 1. Ship vs asteroid
+                    boolean isShipVSAsteroid = node1 instanceof Ship && node2 instanceof Asteroid;
+                    boolean isAsteroidVSShip = node1 instanceof Asteroid && node2 instanceof Ship;
+                    // 2. Ship vs ship
+                    boolean isShipVSShip = node1 instanceof Ship && node2 instanceof Ship;
+                    // 3. Bullet vs asteroid
+                    boolean isBulletVSAsteroid = node1 instanceof Bullet && node2 instanceof Asteroid;
+                    boolean isAsteroidVSBullet = node1 instanceof Asteroid && node2 instanceof Bullet;
+                    // 4. Bullet vs EnemyShip
+                    boolean isBulletVSShip = node1 instanceof Bullet && node2 instanceof EnemyShip;
+                    boolean isShipVSBullet = node1 instanceof EnemyShip && node2 instanceof Bullet;
+
+                    if (isShipVSAsteroid || isAsteroidVSShip
+                            || isShipVSShip
+                            || isBulletVSAsteroid || isAsteroidVSBullet
+                            || isBulletVSShip || isShipVSBullet) {
+
+                        Path path = (Path) Shape.intersect((Shape) node1, (Shape) node2);
+                        // to precisely check the overlap by the shape of the node, we should count the number of common
+                        // elements between the two nodes, a positive number means they overlap in shape
+                        // reference: https://gist.github.com/james-d/8149902
+                        if (path.getElements().size() > 0) {
                             System.out.println("Collision detected");
                             pane.fireEvent(new CollisionEvent(COLLISION, pane, node1, node2));
+                            return;
                         }
                     }
                 }

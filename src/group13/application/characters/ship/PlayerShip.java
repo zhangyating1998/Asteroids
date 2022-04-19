@@ -37,5 +37,4 @@ public class PlayerShip extends Ship {
         playScene.createNewPlayerShip((int) newPosition.getX(), (int) newPosition.getY());
         playScene.playerShip.setRotate(rotate);
     }
-
 }
