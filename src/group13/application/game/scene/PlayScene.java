@@ -309,35 +309,61 @@ public class PlayScene extends BaseScene {
     }
 
     public void findASafePoint(Character target) {
-        for (int y = (int) SCENE_HEIGHT - 50; y > 0; y--) {
-            boolean found = true;
+        boolean found = true;
+
+        int counter = 0;
+        while (counter++ < 100) {
+
+            int randX = random.nextInt(SCENE_WIDTH);
+            int randY = random.nextInt(SCENE_HEIGHT);
+
+            target.setTranslateX(randX);
+            target.setTranslateY(randY);
+
             for (Node node : getPane().getChildren()) {
-                if (node instanceof Character) {
+                if (node != target && node instanceof Character) {
                     Character character = (Character) node;
-                    Point2D futurePosition = character.getFuturePosition();
-//                    System.out.format("Current position:, %s\n", character.getCurrentPosition());
-//                    System.out.format("Future position:, %s\n", futurePosition);
+                    for (float i = 0.5f; i < 3; i += 0.5f) {
+                        Point2D futurePosition = character.getFuturePosition(i);
+                        System.out.format("targe position:, %s\n", target.getCurrentPosition());
+                        System.out.format("Current position:, %s\n", character.getCurrentPosition());
+                        System.out.format("Future position:, %s\n", futurePosition);
 
-                    boolean currentOverlap = target.getBoundsInParent().intersects(character.getBoundsInParent());
-                    boolean futureOverlap = target.getBoundsInParent().intersects(
-                            futurePosition.getX(),
-                            futurePosition.getY(),
-                            character.getBoundsInParent().getWidth() + 50,
-                            character.getBoundsInParent().getHeight() + 50);
+                        boolean currentOverlap = target.getBoundsInParent().intersects(character.getBoundsInParent());
+                        boolean futureOverlap = target.getBoundsInParent().intersects(
+                                futurePosition.getX(),
+                                futurePosition.getY(),
+                                character.getBoundsInParent().getWidth() * 2,
+                                character.getBoundsInParent().getHeight() * 2);
 
-                    if (currentOverlap || futureOverlap) {
-                        System.out.println("overlapped");
-                        target.setTranslateY(y);
-                        found = false;
-                        break;
+                        if (currentOverlap || futureOverlap) {
+                            System.out.println("overlapped");
+                            int newRandX = random.nextInt(SCENE_WIDTH);
+                            int newRandY = random.nextInt(SCENE_HEIGHT);
+
+                            while (newRandX / 10 == randX / 10 && newRandY / 10 == randY / 10) {
+                                newRandX = random.nextInt(SCENE_WIDTH);
+                                newRandY = random.nextInt(SCENE_HEIGHT);
+                            }
+
+                            target.setTranslateX(newRandX);
+                            target.setTranslateY(newRandY);
+
+                            found = false;
+                            break;
+                        }
                     }
                 }
             }
             if (found) {
                 System.out.println("found a safe place");
+                target.setVelocity(new Point2D(0, 0));
+                System.out.println("Number of guesses: " + counter);
                 return;
             }
+            System.out.println("Error: Didn't find a safe place!!!");
         }
-        System.out.println("Error: Didn't find a safe place!!!");
+        target.setVelocity(new Point2D(0, 0));
+        System.out.println("Number of guesses: " + counter);
     }
 }
