@@ -7,6 +7,8 @@ import javafx.event.EventType;
  * @date 2022/3/25 23:30
  */
 public class Constants {
+    public static final String GAME_TITLE = "Asteroids";
+
     public static final int GAME_LEVEL_START = 1;
 
     public static final int GAME_LEVEL_MAX = 2;
