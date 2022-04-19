@@ -8,13 +8,9 @@ import group13.application.characters.ship.EnemyShip;
 import group13.application.characters.ship.PlayerShip;
 import group13.application.game.GameEngine;
 import group13.application.game.events.handlers.CollisionEventHandler;
-import group13.application.game.events.handlers.PlayerKeyEventHandler;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -31,9 +27,9 @@ import static group13.application.common.Constants.*;
  * This scene manages the life cycle of a game.
  */
 public class PlayScene extends BaseScene {
+
     private int numberOfLives;
     private int gameLevel;
-    private EventHandler playerKeyHandler;
     private final static Random random = new Random();
     private long lastSecondsAlienShipAdded = 0;
     private PlaySceneParams playSceneParams;
@@ -44,7 +40,7 @@ public class PlayScene extends BaseScene {
     private ArrayList<Integer> scores;
     private HashMap<Integer, String> score_time;
     private int TopScores = 10;
-    public PlayerShip playerShip;
+    public static PlayerShip playerShip;
     public static List<Bullet> bullets = new ArrayList<>();
 
 
@@ -95,23 +91,20 @@ public class PlayScene extends BaseScene {
             LargeAsteroid largeAsteroid = new LargeAsteroid();
             getPane().getChildren().add(largeAsteroid);
         }
-        createNewPlayerShip();
+
+        createNewPlayerShip(250, 200);
         displayScore();
         displayLife();
         this.getPane().setStyle("-fx-background-color: black");
 
     }
 
-    private void createNewPlayerShip() {
+    public void createNewPlayerShip(int x, int y) {
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
-
         // player ship should be able to move by keyboard, and can shoot bullets.
-        playerShip = new PlayerShip(250, 200);
+        playerShip = new PlayerShip(x, y);
         this.getPane().getChildren().addAll(playerShip);
-//        this.playerKeyHandler = new PlayerKeyEventHandler(playerShip);
-//        this.addEventFilter(KeyEvent.KEY_PRESSED, this.playerKeyHandler);
-//        this.addEventFilter(KeyEvent.KEY_RELEASED, this.playerKeyHandler);
     }
 
     private void createNewAlienShip() {
@@ -220,7 +213,7 @@ public class PlayScene extends BaseScene {
         lifeLabel.setText("LIVES : "+ numberOfLives);
     }
 
-    private void setScoreLabel() {
+    public void setScoreLabel() {
         scoreLabel.setText("SCORES : "+ score );
     }
 
@@ -240,6 +233,13 @@ public class PlayScene extends BaseScene {
         setScoreLabel();
     }
 
+    public void AddScoreShip(int addScore) {
+        if (this.isGameContinue) {
+            System.out.println("Current total score: " + score);
+            score += addScore;
+        }
+        setScoreLabel();
+    }
 
     public void decrementLives() {
         if (this.isGameContinue) {
@@ -247,9 +247,8 @@ public class PlayScene extends BaseScene {
                 end();
             }
             else if (numberOfLives > 1) {
-                removePlayerKeyListener();
                 numberOfLives-=1;
-                createNewPlayerShip();
+                createNewPlayerShip(250, 200);
                 setLifeLabel();
             }
         }
@@ -261,7 +260,6 @@ public class PlayScene extends BaseScene {
      * 2. create a new pane for the scene (and disable the current pane)
      */
     private void resetScene() {
-//        removePlayerKeyListener();
         PlayScene.bullets.clear();
         this.newPane();
         this.lastSecondsAlienShipAdded = 0;
@@ -270,9 +268,6 @@ public class PlayScene extends BaseScene {
     /**
      * Remove the player key handler from event filter
      */
-    private void removePlayerKeyListener() {
-//        this.removeEventFilter(KeyEvent.KEY_PRESSED, playerKeyHandler);
-    }
 
     /**
      * Check in every frame if an alien ship should be added into the scene

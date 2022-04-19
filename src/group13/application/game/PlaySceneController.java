@@ -4,11 +4,14 @@ import group13.application.characters.Bullet;
 import group13.application.characters.Character;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.ship.EnemyShip;
+import group13.application.characters.ship.PlayerShip;
 import group13.application.characters.ship.Ship;
 import group13.application.game.events.CollisionEvent;
+import group13.application.game.scene.BaseScene;
 import group13.application.game.scene.PlayScene;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -30,15 +33,15 @@ public class PlaySceneController extends AnimationTimer {
     public static PlayScene playScene;
 
     // Hashmaps for storing player keyboard inputs
-    public static Map<KeyCode, Boolean> pressedKeys = new HashMap<>();
-    public static Map<KeyCode, Boolean> onePressKeys = new HashMap<>();
+    protected Map<KeyCode, Boolean> pressedKeys = new HashMap<>();
+    protected Map<KeyCode, Boolean> onePressKeys = new HashMap<>();
 
     public PlaySceneController(PlayScene playScene) {
         PlaySceneController.playScene = playScene;
 
         // Capture on key pressed events with checks added to handle fire rete limit for firing bullets nd update hashmap
         PlaySceneController.playScene.setOnKeyPressed(event -> {
-            if (pressedKeys.get(KeyCode.SPACE) == Boolean.FALSE) {
+            if (pressedKeys.get(KeyCode.SPACE) == Boolean.FALSE || pressedKeys.get(KeyCode.B) == Boolean.FALSE) {
                 pressedKeys.put(event.getCode(), Boolean.TRUE);
                 onePressKeys.put(event.getCode(), Boolean.TRUE);
             } else {
@@ -59,19 +62,22 @@ public class PlaySceneController extends AnimationTimer {
         // Control inputs for player-ship
         // Rotate the player-ship left
         if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.LEFT, false))) {
-            playScene.playerShip.turnLeft();
+            PlayScene.playerShip.turnLeft();
         }
         // Rotate the player-ship right
         if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.RIGHT, false))) {
-            playScene.playerShip.turnRight();
+            PlayScene.playerShip.turnRight();
         }
         // Increase the player-ship velocity
         if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.UP, false))) {
-            playScene.playerShip.accelerate(0.2);
+            PlayScene.playerShip.accelerate(0.04);
         }
         // Fire a bullet from the player-ship, only 7 bullets can be alive at the one time to prevent spamming
         if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false))  && PlayScene.bullets.size() < 7) {
-           playScene.playerShip.fire();
+           PlayScene.playerShip.fire();
+        }
+        if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.B, false))) {
+            PlayScene.playerShip.hyperspaceJump(playScene);
         }
 
         // to remove the bullets, we should collect them in the loop then delete all at once,
@@ -90,7 +96,7 @@ public class PlaySceneController extends AnimationTimer {
             }
         }
 
-        PlayScene.bullets.removeAll(bulletsToRemove);
+        playScene.bullets.removeAll(bulletsToRemove);
         playScene.getPane().getChildren().removeAll(bulletsToRemove);
 
         // move the Characters
