@@ -33,7 +33,7 @@ public class InstructionScene extends BaseScene{
         controlShipTitle.setFill(Color.WHITE);
         controlShipTitle.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
         controlShipContent.setFill(Color.GREEN);
-        controlShipContent.setFont(Font.font("Verdana", FontPosture.ITALIC, 18));
+        controlShipContent.setFont(Font.font("Verdana", FontPosture.ITALIC, 16));
         controlShipContent.setTextAlignment(TextAlignment.LEFT);
         controlShipContent.setLineSpacing(7);
         getPane().getChildren().addAll(controlShipTitle, controlShipContent);
@@ -45,7 +45,7 @@ public class InstructionScene extends BaseScene{
         LifeScore.setFill(Color.WHITE);
         lifeScoreContent.setFill(Color.GREEN);
         lifeScoreContent.setTextAlignment(TextAlignment.LEFT);
-        lifeScoreContent.setFont(Font.font("Verdana", FontPosture.ITALIC, 18));
+        lifeScoreContent.setFont(Font.font("Verdana", FontPosture.ITALIC, 16));
         lifeScoreContent.setLineSpacing(7);
         LifeScore.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
         getPane().getChildren().addAll(LifeScore, lifeScoreContent);
