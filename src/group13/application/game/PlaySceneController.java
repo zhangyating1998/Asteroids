@@ -79,8 +79,8 @@ public class PlaySceneController extends AnimationTimer {
             PlayScene.playerShip.accelerate(0.1);
         }
         // Fire a bullet from the player-ship, only 7 bullets can be alive at the one time to prevent spamming
-        if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false))  && PlayScene.bullets.size() < 14) {
-           PlayScene.playerShip.fire();
+        if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false)) && PlayScene.bullets.size() < 14) {
+            PlayScene.playerShip.fire();
         }
         if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.B, false))) {
             playScene.findASafePoint(PlayScene.playerShip);
@@ -117,11 +117,9 @@ public class PlaySceneController extends AnimationTimer {
 //        int [] fireTimes = {60, 120, 180, 240, 300, 360, 420, 480};
 
 
-
-
-         int [] fireTimes = new int[5];
+        int[] fireTimes = new int[5];
         int count = 0;
-        for (int k = 0; k < 5; k++){
+        for (int k = 0; k < 5; k++) {
             count += 100;
             fireTimes[k] = count;
         }
@@ -143,12 +141,13 @@ public class PlaySceneController extends AnimationTimer {
 //                ((Character) node).fire();
 //            playScene.alienShip.fire();
 
-        // Clear the one pressed keys hashmap
-        onePressKeys.clear();
+            // Clear the one pressed keys hashmap
+            onePressKeys.clear();
 
-        long endMethod = System.currentTimeMillis();
-        if (endMethod - start > 12)
-            System.err.println("Time in the frame: " + (endMethod - start));
+            long endMethod = System.currentTimeMillis();
+            if (endMethod - start > 12)
+                System.err.println("Time in the frame: " + (endMethod - start));
+        }
     }
 
     /**
