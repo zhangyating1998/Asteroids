@@ -41,7 +41,9 @@ public class PlayScene extends BaseScene {
     private HashMap<Integer, String> score_time;
     private int TopScores = 10;
     public static PlayerShip playerShip;
+    public static EnemyShip alienShip;
     public static List<Bullet> bullets = new ArrayList<>();
+    public static List<EnemyShip> enemyShips = new ArrayList<>();
 
 
     public PlayScene(GameEngine gameEngine) {
@@ -109,13 +111,12 @@ public class PlayScene extends BaseScene {
 
     private void createNewAlienShip() {
 
-//        Random randomObj = new Random();
-//        new x = (randomObj.ints(1, 500).findFirst().getAsInt());
-        int a = -20;
-        int b = 820;
-        int c = random.nextBoolean() ? a : b;
-        EnemyShip alienShip = new EnemyShip(c, random.nextInt(SCENE_HEIGHT));
+//        int a = -20;
+//        int b = 820;
+//        int c = random.nextBoolean() ? a : b;
+        alienShip = new EnemyShip(0, 0);
         this.getPane().getChildren().addAll(alienShip);
+        PlayScene.enemyShips.add(alienShip);
 
     }
 

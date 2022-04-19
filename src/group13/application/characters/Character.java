@@ -9,7 +9,7 @@ public class Character extends Polygon {
 
     protected Polygon Character;
     private Point2D velocity;
-    public double counter;
+    public int counter;
     private boolean isTimeOut = false;
     private double timeToLive;
 
@@ -90,5 +90,9 @@ public class Character extends Polygon {
 
     public boolean checkTimeOut() {
         return this.counter > this.timeToLive;
+    }
+
+    public double getCounter() {
+        return counter;
     }
 }

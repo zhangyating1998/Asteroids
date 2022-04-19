@@ -34,6 +34,8 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
         Pane pane = (Pane)event.getTarget();
         PlayScene.bullets.remove(event.getNode1());
         PlayScene.bullets.remove(event.getNode2());
+//        PlayScene.bullets.remove(event.getNode1());
+//        PlayScene.bullets.remove(event.getNode2());
         pane.getChildren().remove(event.getNode1());
         pane.getChildren().remove(event.getNode2());
 

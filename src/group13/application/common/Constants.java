@@ -17,9 +17,9 @@ public class Constants {
 
     public static final int SCENE_HEIGHT = 600;
 
-    public static final int BASE_NUMBER_OF_ASTEROIDS = 3;
+    public static final int BASE_NUMBER_OF_ASTEROIDS = 1;
 
-    public static final int BASE_FREQ_OF_ALIEN_SHIP = 20;
+    public static final int BASE_FREQ_OF_ALIEN_SHIP = 10;
 
     public static final int MULTIPLIER_OF_ASTEROIDS = 2;
 
