@@ -28,4 +28,13 @@ public class Constants {
     public static final EventType COLLISION = new EventType("collision");
 
     public static final EventType PLAYER_SHIP_DESTROYED = new EventType("player ship destroyed");
+
+    public static final double playerAcceleration = 0.05;
+
+    public static final int playerTurnRate = 5;
+
+    public static final double bulletTimeToLive = 1;
+
 }
+
+

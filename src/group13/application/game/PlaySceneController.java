@@ -21,6 +21,7 @@ import javafx.scene.shape.Shape;
 import java.util.*;
 
 import static group13.application.common.Constants.COLLISION;
+import static group13.application.common.Constants.playerAcceleration;
 
 /**
  * This class is a timer that will be used by the stage.
@@ -62,15 +63,15 @@ public class PlaySceneController extends AnimationTimer {
         // Control inputs for player-ship
         // Rotate the player-ship left
         if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.LEFT, false))) {
-            PlayScene.playerShip.turnLeft();
+            PlayScene.playerShip.rotateLeft();
         }
         // Rotate the player-ship right
         if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.RIGHT, false))) {
-            PlayScene.playerShip.turnRight();
+            PlayScene.playerShip.rotateRight();
         }
         // Increase the player-ship velocity
         if (Boolean.TRUE.equals(pressedKeys.getOrDefault(KeyCode.UP, false))) {
-            PlayScene.playerShip.accelerate(0.04);
+            PlayScene.playerShip.accelerate(playerAcceleration);
         }
         // Fire a bullet from the player-ship, only 7 bullets can be alive at the one time to prevent spamming
         if (Boolean.TRUE.equals(onePressKeys.getOrDefault(KeyCode.SPACE, false))  && PlayScene.bullets.size() < 7) {
