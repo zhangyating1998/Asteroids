@@ -9,7 +9,8 @@ import static group13.application.game.PlaySceneController.playScene;
 public class EnemyShip extends Ship {
 
     public EnemyShip(int x, int y) {
-        super(x, y, true, 1000, -10, -10, -20, 20, 10, 10, 20, -20);
+        //defines shape and time alien ship will stay in the game
+        super(x, y, true, 800, -10, -10, -20, 20, 10, 10, 20, -20);
 
         double heightMin = 0 + this.getLayoutBounds().getHeight();
         double heightMax = SCENE_HEIGHT - this.getLayoutBounds().getHeight();
@@ -32,7 +33,7 @@ public class EnemyShip extends Ship {
         accelerate(randomALienSpeed());
     }
 
-    // Return a random speed for the alien ship
+    // Returns a random speed for the alien ship
     private double randomALienSpeed() {
         Random randomSpeed = new Random(0);
         return (.35 + (1.75 - .35) * randomSpeed.nextDouble());
@@ -52,7 +53,7 @@ public class EnemyShip extends Ship {
         this.setTranslateY(this.getTranslateY() + this.getVelocity().getY());
     }
 
-    // Override of the fire method for the enemyship, aim towards the position of the playership and ser speed based on firing ships position
+    // Override of the fire method for the enemyship, aim towards the position of the playership and sets speed based on firing ships position
     // Source for getting playership position - https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
     @Override
     public void fire() {
