@@ -17,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
-
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -55,14 +54,14 @@ public class PlaySceneController extends AnimationTimer {
 
     @Override
     public void handle(long timeInNanoseconds) {
-        // detect the collision and remove node if find any
+        // detect the collision and remove node if any found
         long start = System.currentTimeMillis();
         detectCollision(playScene.getPane());
         long end = System.currentTimeMillis();
         if (end - start > 10)
             System.err.println("Time detect collision: " + (end - start));
 
-
+        // Add new alien ship
         playScene.addAlienShips(timeInNanoseconds);
 
         // Control inputs for player-ship
@@ -86,6 +85,33 @@ public class PlaySceneController extends AnimationTimer {
             playScene.findASafePoint(PlayScene.playerShip);
         }
 
+        // Create array of time interval for controlling the enemy ship
+        int[] fireTimes = new int[5];
+        int[] rotateTimes = new int[5];
+        int countFire = 0;
+        int countRotate = 0;
+        for (int k = 0; k < 5; k++) {
+            countFire += 100;
+            fireTimes[k] = countFire;
+            countRotate += 200;
+            rotateTimes[k] = countRotate;
+        }
+
+        // Control the firing of bullets by the enemyship
+        for (int i = 0; i < playScene.enemyShips.size(); i++) {
+            int finalI = i;
+            if (IntStream.of(fireTimes).anyMatch(j -> j == playScene.enemyShips.get(finalI).getCounter())) {
+                playScene.enemyShips.get(i).fire();
+            }
+        }
+        // Control the randomized turning of the enemyship
+        for (int i = 0; i < playScene.enemyShips.size(); i++) {
+            int finalI = i;
+            if (IntStream.of(rotateTimes).anyMatch(j -> j == playScene.enemyShips.get(finalI).getCounter())) {
+                playScene.enemyShips.get(i).randomTurn();
+            }
+        }
+
         // to remove the bullets, we should collect them in the loop then delete all at once,
         // otherwise there will be concurrentModification issue.
         List<Character> bulletsToRemove = new ArrayList<>();
@@ -103,6 +129,7 @@ public class PlaySceneController extends AnimationTimer {
             }
         }
 
+        // Remove all expired bullets from array list
         playScene.bullets.removeAll(bulletsToRemove);
         playScene.getPane().getChildren().removeAll(bulletsToRemove);
 
@@ -115,32 +142,6 @@ public class PlaySceneController extends AnimationTimer {
 //                System.out.format("Future position:, %s\n", character.getFuturePosition());
             }
         }
-//        int [] fireTimes = {60, 120, 180, 240, 300, 360, 420, 480};
-
-
-        int[] fireTimes = new int[5];
-        int count = 0;
-        for (int k = 0; k < 5; k++) {
-            count += 100;
-            fireTimes[k] = count;
-        }
-
-
-        for (int i = 0; i < playScene.enemyShips.size(); i++) {
-            int finalI = i;
-            if (IntStream.of(fireTimes).anyMatch(j -> j == playScene.enemyShips.get(finalI).getCounter())) {
-                System.out.println("!!!!!!!!!!" + playScene.enemyShips.get(i).getCounter());
-                playScene.enemyShips.get(i).fire();
-//         playScene.enemyShips.get(i).alienBulletFire();
-            }
-//        alienBulletFire();
-//        List<Character> enenysToFire = new ArrayList<>();
-//        for (Node node :  playScene.getPane().getChildren()) {
-//            if (node instanceof EnemyShip) {
-//                if ( )
-//            }
-//                ((Character) node).fire();
-//            playScene.alienShip.fire();
 
             // Clear the one pressed keys hashmap
             onePressKeys.clear();
@@ -149,7 +150,7 @@ public class PlaySceneController extends AnimationTimer {
             if (endMethod - start > 12)
                 System.err.println("Time in the frame: " + (endMethod - start));
         }
-    }
+
 
     /**
      * A collision cause the objects involved to be destroyed.
