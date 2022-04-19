@@ -29,11 +29,11 @@ public class InstructionScene extends BaseScene{
         getPane().getChildren().addAll(title);
 
         Text controlShipTitle = new Text( 20, 100,"1. Control the ship ");
-        Text controlShipContent = new Text(25, 140, "Press up arrow key to speed up. \nPress Left arrow key to left-rotate the ship. \nPress Left arrow key to left-rotate the ship. \nPress the WhiteSpace key to shoot a bullet ");
+        Text controlShipContent = new Text(25, 140, "Press up arrow key to speed up. \nPress Left arrow key to left-rotate the ship. \nPress Left arrow key to left-rotate the ship. \nPress the WhiteSpace key to shoot a bullet. \nPress the B to hyperJump. ");
         controlShipTitle.setFill(Color.WHITE);
         controlShipTitle.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
         controlShipContent.setFill(Color.GREEN);
-        controlShipContent.setFont(Font.font("Verdana", FontPosture.ITALIC, 18));
+        controlShipContent.setFont(Font.font("Verdana", FontPosture.ITALIC, 16));
         controlShipContent.setTextAlignment(TextAlignment.LEFT);
         controlShipContent.setLineSpacing(7);
         getPane().getChildren().addAll(controlShipTitle, controlShipContent);
@@ -41,11 +41,12 @@ public class InstructionScene extends BaseScene{
         Text LifeScore = new Text(20, 300, "2. Lives and Scores");
         Text lifeScoreContent = new Text(25, 340, "You have three initial total lives, but if your ship collides with any of the other\nelements (bullets, asteroids or the alien ship), you will lose one life. " +
                 "The score \nyou can gain after shooting an asteroid is based on the size of it :\nBig One ------------------------- 10 points\nMedium one -------------------- 15 points\nSmall one ---------------------- 20 points\n" +
+                "Or you can earn 20 points by shooting an alien ship.\n"+
                 "The 10 best scores are recorded and you can check if your name is on the list!");
         LifeScore.setFill(Color.WHITE);
         lifeScoreContent.setFill(Color.GREEN);
         lifeScoreContent.setTextAlignment(TextAlignment.LEFT);
-        lifeScoreContent.setFont(Font.font("Verdana", FontPosture.ITALIC, 18));
+        lifeScoreContent.setFont(Font.font("Verdana", FontPosture.ITALIC, 16));
         lifeScoreContent.setLineSpacing(7);
         LifeScore.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
         getPane().getChildren().addAll(LifeScore, lifeScoreContent);
