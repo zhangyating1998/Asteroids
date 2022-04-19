@@ -16,7 +16,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -68,6 +67,7 @@ public class PlayScene extends BaseScene {
         this.addEventFilter(COLLISION, new CollisionEventHandler(this));
     }
 
+    // Display the score on screen
     private void displayScore(){
         scoreLabel = new Label();
         scoreLabel.setTextFill(Color.WHITE);
@@ -77,6 +77,7 @@ public class PlayScene extends BaseScene {
         scoreLabel.setFont(Font.font(20));
         this.getPane().getChildren().addAll(scoreLabel);
     }
+    // Display the level on screen
     private void displayLevel(){
         levelLabel = new Label();
         levelLabel.setTextFill(Color.WHITE);
@@ -88,11 +89,13 @@ public class PlayScene extends BaseScene {
         this.getPane().getChildren().addAll(levelLabel);
 
     }
+    // getters  for score and lives
     public int getScore() {
         return score;
     }
     public int getLives(){return numberOfLives;}
 
+    // Display lives
     private void displayLife() {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
@@ -105,6 +108,7 @@ public class PlayScene extends BaseScene {
         this.getPane().getChildren().addAll(lifeLabel);
     }
 
+    // New scenes for new levels
     private void createSceneByGameLevel() {
         System.out.println("number of ads should be created:"+this.playSceneParams.getNumberOfAsteroids());
         for (int i = 0; i < this.playSceneParams.getNumberOfAsteroids(); i++) {
@@ -121,6 +125,7 @@ public class PlayScene extends BaseScene {
 
     }
 
+    // Return new player ship
     public void createNewPlayerShip(int x, int y) {
         PlayScene.playerShip = new PlayerShip(SCENE_WIDTH / 2, SCENE_HEIGHT / 2);
         // set a safe location for the player ship
@@ -128,6 +133,7 @@ public class PlayScene extends BaseScene {
         this.getPane().getChildren().addAll(playerShip);
     }
 
+    // Add new alien ship to game
     private void createNewAlienShip() {
         alienShip = new EnemyShip(0, 0);
         this.getPane().getChildren().addAll(alienShip);

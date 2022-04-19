@@ -39,6 +39,24 @@ public class Constants {
 
     public static final double counterIncrement = 1;
 
+    public static final int enemyTimeToLive = 900;
+
+    public static final int enemyMoveLeft = 180;
+
+    public static final int enemyMoveRight = 0;
+
+    public static final int enemyTurnRate = 30;
+
+    public static final int enemyBulletBaseSpeed = 30;
+
+    public static final double enemySpeedMin = 0.35;
+
+    public static final double enemySpeedMax = 1.75;
+
+    public static final int countFireIncrement = 100;
+
+    public static final int countRotateIncrement = 200;
+
 }
 
 

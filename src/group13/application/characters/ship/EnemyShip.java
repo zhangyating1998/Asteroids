@@ -9,7 +9,7 @@ import static group13.application.game.PlaySceneController.playScene;
 public class EnemyShip extends Ship {
 
     public EnemyShip(int x, int y) {
-        super(x, y, true, 1000, -10, -10, -20, 20, 10, 10, 20, -20);
+        super(x, y, true, enemyTimeToLive, -10, -10, -20, 20, 10, 10, 20, -20);
 
         double heightMin = 0 + this.getLayoutBounds().getHeight();
         double heightMax = SCENE_HEIGHT - this.getLayoutBounds().getHeight();
@@ -22,12 +22,12 @@ public class EnemyShip extends Ship {
             Point2D start = new Point2D(SCENE_WIDTH, (int) (Math.random() * (heightMax - heightMin)) + heightMin);
             this.setTranslateX(start.getX());
             this.setTranslateY(start.getY());
-            setRotate(180);
+            setRotate(enemyMoveLeft);
         } else {
             Point2D start = new Point2D(0, (int) (Math.random() * (heightMax - heightMin)) + heightMin);
             this.setTranslateX(start.getX());
             this.setTranslateY(start.getY());
-            setRotate(0);
+            setRotate(enemyMoveRight);
         }
         accelerate(randomALienSpeed());
     }
@@ -35,13 +35,13 @@ public class EnemyShip extends Ship {
     // Return a random speed for the alien ship
     private double randomALienSpeed() {
         Random randomSpeed = new Random(0);
-        return (.35 + (1.75 - .35) * randomSpeed.nextDouble());
+        return (enemySpeedMin + (enemySpeedMax - enemySpeedMin) * randomSpeed.nextDouble());
     }
 
     // Turn the alien ship a random amount in a set range
     public void randomTurn() {
         setVelocity(new Point2D(0, 0));
-        setRotate(getRotate() + ((Math.random() * (30 + 30)) - 30));
+        setRotate(getRotate() + ((Math.random() * (enemyTurnRate + enemyTurnRate)) - enemyTurnRate));
         accelerate(randomALienSpeed());
     }
 
@@ -60,7 +60,7 @@ public class EnemyShip extends Ship {
                 playScene.playerShip.getTranslateX() - getTranslateX()));
         EnemyBullet enemyBullet = new EnemyBullet((int) (playScene.alienShip.getTranslateX()), (int) (playScene.alienShip.getTranslateY()));
         enemyBullet.setRotate(angle);
-        double speed = 5 + Math.abs(Math.max(this.getVelocity().getX(), this.getVelocity().getX()));
+        double speed = enemyBulletBaseSpeed + Math.abs(Math.max(this.getVelocity().getX(), this.getVelocity().getX()));
         enemyBullet.accelerate(speed);
         playScene.getPane().getChildren().add(enemyBullet);
     }
