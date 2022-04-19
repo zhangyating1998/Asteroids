@@ -1,111 +1,69 @@
 package group13.application.characters.ship;
-
-import group13.application.characters.Bullet;
 import group13.application.characters.EnemyBullet;
-import group13.application.common.Constants;
-import group13.application.game.scene.PlayScene;
 import javafx.geometry.Point2D;
-import javafx.scene.layout.Pane;
-
 import java.util.Random;
 
-import static group13.application.common.Constants.SCENE_HEIGHT;
-import static group13.application.common.Constants.SCENE_WIDTH;
+import static group13.application.common.Constants.*;
 import static group13.application.game.PlaySceneController.playScene;
 
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-
-
 public class EnemyShip extends Ship {
-    private Point2D AlienSpeed;
-    private final static Random random = new Random();
-
-//    private void createNewAlienShip() {
-//        EnemyShip alienShip = new EnemyShip(0, random.nextInt(SCENE_HEIGHT));
-//        this.getPane().getChildren().addAll(alienShip);
-//    }
-
 
     public EnemyShip(int x, int y) {
         super(x, y, true, 1000, -10, -10, -20, 20, 10, 10, 20, -20);
-//        Random random = new Random();
-//        Pane pane;
-//        Random rnd = new Random();
-        Random speed = new Random();
+
         double heightMin = 0 + this.getLayoutBounds().getHeight();
         double heightMax = SCENE_HEIGHT - this.getLayoutBounds().getHeight();
 
-        int speedAndDirection = (speed.ints(-4, 4).findFirst().getAsInt());
-        if (speedAndDirection == 0) ;
-//        System.out.println("Removed ALien Ship due speed = 0");
-        this.AlienSpeed = new Point2D(speedAndDirection, 0);
+        // Create a random bool
+        Random randomBool = new Random();
 
-        if (speedAndDirection < 0){
-            Point2D start = new Point2D(SCENE_WIDTH, random.nextInt((int) heightMax - (int) heightMin));
-
-            //set the initial position of the alienShip
+        // Based on random bool spawn enemy ship from one side of th screen at a random height and moving across the screen
+        if ( randomBool.nextBoolean()) {
+            Point2D start = new Point2D(SCENE_WIDTH, (int) (Math.random() * (heightMax - heightMin)) + heightMin);
             this.setTranslateX(start.getX());
             this.setTranslateY(start.getY());
-            setRotate(new Random().nextInt(270));
-    }
-        else {
-            Point2D start = new Point2D(0, random.nextInt(SCENE_HEIGHT));
+            setRotate(180);
+        } else {
+            Point2D start = new Point2D(0, (int) (Math.random() * (heightMax - heightMin)) + heightMin);
             this.setTranslateX(start.getX());
             this.setTranslateY(start.getY());
-            setRotate(new Random().nextInt(90));
+            setRotate(0);
         }
-        Random ra = new Random(0);
-        double randomALienSpeed = .35+(1.75 -.35) * ra.nextDouble();
-        accelerate(randomALienSpeed);
-
-//        this.getLayoutBounds().getWidth()
-
-
-
-
-
+        accelerate(randomALienSpeed());
     }
 
+    // Return a random speed for the alien ship
+    private double randomALienSpeed() {
+        Random randomSpeed = new Random(0);
+        return (.35 + (1.75 - .35) * randomSpeed.nextDouble());
+    }
+
+    // Turn the alien ship a random amount in a set range
+    public void randomTurn() {
+        setVelocity(new Point2D(0, 0));
+        setRotate(getRotate() + ((Math.random() * (30 + 30)) - 30));
+        accelerate(randomALienSpeed());
+    }
+
+    // Override of move class for the alien ship, does not return once passed out of the window
+    @Override
     public void move() {
-        this.setTranslateX(this.getTranslateX() + this.AlienSpeed.getX());
-        this.setTranslateY(this.getTranslateY() + this.AlienSpeed.getY());
-
-//        if (this.getTranslateX() + this.getLayoutBounds().getWidth() < 0)
-//            this.setTranslateX(Constants.SCENE_WIDTH);
-//
-//
-//        if (this.getTranslateX() > 820 && this.getTranslateX() < 825) {
-////            System.out.println("Remove from Pane Eastbound");
-
-//
-//        }
-//
-//        if (this.getTranslateX() < -20 && this.getTranslateX() < -21) {
-////            System.out.println("Remove from Pane Westbound");
-//
-//        }
+        this.setTranslateX(this.getTranslateX() + this.getVelocity().getX());
+        this.setTranslateY(this.getTranslateY() + this.getVelocity().getY());
     }
 
-    //        public void alienBulletFire() {
-//
-//        if ((this.getCounter() == (0.016 * 180)) || (this.getCounter() < (0.016 * 210))) {
-//            this.fire();
-//
-//
-//        }
-//    }
+    // Override of the fire method for the enemyship, aim towards the position of the playership and ser speed based on firing ships position
+    // Source for getting playership position - https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
+    @Override
     public void fire() {
         float angle = (float) Math.toDegrees(Math.atan2(playScene.playerShip.getTranslateY() - getTranslateY(),
                 playScene.playerShip.getTranslateX() - getTranslateX()));
-        Random r = new Random();
         EnemyBullet enemyBullet = new EnemyBullet((int) (playScene.alienShip.getTranslateX()), (int) (playScene.alienShip.getTranslateY()));
         enemyBullet.setRotate(angle);
         double speed = 5 + Math.abs(Math.max(this.getVelocity().getX(), this.getVelocity().getX()));
         enemyBullet.accelerate(speed);
         playScene.getPane().getChildren().add(enemyBullet);
     }
-
 }
 
 
