@@ -112,7 +112,7 @@ public class PlayScene extends BaseScene {
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
         // player ship should be able to move by keyboard, and can shoot bullets.
-        PlayerShip playerShip = new PlayerShip(SCENE_WIDTH / 2, SCENE_HEIGHT / 2);
+        PlayScene.playerShip = new PlayerShip(SCENE_WIDTH / 2, SCENE_HEIGHT / 2);
         findASafePoint(playerShip);
         this.getPane().getChildren().addAll(playerShip);
     }
