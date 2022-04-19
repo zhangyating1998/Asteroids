@@ -20,8 +20,7 @@ import javafx.scene.shape.Shape;
 
 import java.util.*;
 
-import static group13.application.common.Constants.COLLISION;
-import static group13.application.common.Constants.playerAcceleration;
+import static group13.application.common.Constants.*;
 
 /**
  * This class is a timer that will be used by the stage.
@@ -89,7 +88,7 @@ public class PlaySceneController extends AnimationTimer {
             if (node instanceof Character) {
                 Character character = (Character) node;
                 if (character.getIsTimeOut()) {
-                    character.counter += 0.01666;
+                    character.counter += counterIncrement;
                     if (character.checkTimeOut()) {
                         bulletsToRemove.add(character);
                     }
