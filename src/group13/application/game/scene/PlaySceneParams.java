@@ -22,7 +22,7 @@ public class PlaySceneParams {
      * @return
      */
     public static PlaySceneParams getConfig(int gameLevel) {
-        int numberOfAsteroids = BASE_NUMBER_OF_ASTEROIDS + gameLevel * MULTIPLIER_OF_ASTEROIDS;
+        int numberOfAsteroids = (int) (BASE_NUMBER_OF_ASTEROIDS + gameLevel * MULTIPLIER_OF_ASTEROIDS);
         int frequencyOfAlienShip = BASE_FREQ_OF_ALIEN_SHIP - gameLevel * FREQ_MULTIPLIER_OF_ALIEN_SHIP;
         return new PlaySceneParams(numberOfAsteroids, frequencyOfAlienShip);
     }

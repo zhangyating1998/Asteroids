@@ -18,22 +18,12 @@ public class PlayerShip extends Ship {
 
     // method to change the player-ship angle by -5 degrees
     public void turnLeft() {
-        setRotate(getRotate() - 3);
+        setRotate(getRotate() - 5);
     }
 
     // method to change the player-ship angle by +5 degrees
     public void turnRight() {
-        setRotate(getRotate() + 3);
-    }
-
-    // Method to implement the hyperspaceJump, player ship can disappear and reappear at a new point on the screen.
-    // TODO Implement this
-    public void hyperspaceJump(PlayScene playScene) {
-        double rotate = playScene.playerShip.getRotate();
-        playScene.getPane().getChildren().remove(playScene.playerShip);
-        Point2D newPosition = Asteroid.start();
-        playScene.createNewPlayerShip((int) newPosition.getX(), (int) newPosition.getY());
-        playScene.playerShip.setRotate(rotate);
+        setRotate(getRotate() + 5);
     }
 
 }
