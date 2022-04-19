@@ -80,8 +80,8 @@ public class Asteroid extends Character implements Splittable  {
     // resize an asteroid based on the type of it
     public Scale resize(){
         Scale s = new Scale();
-        s.setX(1);
-        s.setY(1);
+        s.setX(2);
+        s.setY(2);
         return s;
     }
 

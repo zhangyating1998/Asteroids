@@ -10,8 +10,8 @@ public class LargeAsteroid extends Asteroid {
     @Override
     public Scale resize(){
         Scale s = new Scale();
-        s.setX(4);
-        s.setY(4);
+        s.setX(5.5);
+        s.setY(5.5);
         return s;
     }
 
