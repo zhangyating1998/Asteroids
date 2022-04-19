@@ -9,7 +9,7 @@ public class Character extends Polygon {
 
     protected Polygon Character;
     private Point2D velocity;
-    public double counter;
+    public int counter;
     private boolean isTimeOut = false;
     private double timeToLive;
 
@@ -91,4 +91,32 @@ public class Character extends Polygon {
     public boolean checkTimeOut() {
         return this.counter > this.timeToLive;
     }
+
+    public double getCounter() {
+        return counter;
+    }
+    public Point2D getCurrentPosition(){
+        return new Point2D(this.getTranslateX(), this.getTranslateY());
+    }
+
+    public Point2D getFuturePosition(float seconds){
+        int numberOfFrames = (int) (70 * seconds);
+        double futureX = this.getTranslateX() + this.velocity.getX() * numberOfFrames;
+        double futureY = this.getTranslateY() + this.velocity.getY() * numberOfFrames;
+
+        if (futureX + this.getLayoutBounds().getWidth() < 0) {
+            futureX = Constants.SCENE_WIDTH;
+        }
+
+        if (futureX > Constants.SCENE_WIDTH)
+            futureX = -this.getLayoutBounds().getWidth();
+
+        if (futureY + this.getLayoutBounds().getHeight() < 0)
+            futureY = Constants.SCENE_HEIGHT;
+
+        if (futureY > Constants.SCENE_HEIGHT)
+            futureY = -this.getLayoutBounds().getHeight();
+        return new Point2D(futureX, futureY);
+    }
+
 }

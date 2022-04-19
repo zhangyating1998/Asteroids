@@ -1,6 +1,7 @@
 package group13.application.game.scene;
 
 import group13.application.characters.Bullet;
+import group13.application.characters.Character;
 import group13.application.characters.asteroid.Asteroid;
 import group13.application.characters.asteroid.LargeAsteroid;
 import group13.application.characters.asteroid.MediumAsteroid;
@@ -11,10 +12,16 @@ import group13.application.game.events.handlers.CollisionEventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,7 +49,9 @@ public class PlayScene extends BaseScene {
     private HashMap<Integer, String> score_time;
     private int TopScores = 10;
     public static PlayerShip playerShip;
+    public static EnemyShip alienShip;
     public static List<Bullet> bullets = new ArrayList<>();
+    public static List<EnemyShip> enemyShips = new ArrayList<>();
 
 
     public PlayScene(GameEngine gameEngine) {
@@ -118,19 +127,19 @@ public class PlayScene extends BaseScene {
         // TODO the location of the player ship should be calculated based on the other objects in the scene
         // set the location of the player ship
         // player ship should be able to move by keyboard, and can shoot bullets.
-        playerShip = new PlayerShip(x, y);
+        PlayScene.playerShip = new PlayerShip(SCENE_WIDTH / 2, SCENE_HEIGHT / 2);
+        findASafePoint(playerShip);
         this.getPane().getChildren().addAll(playerShip);
     }
 
     private void createNewAlienShip() {
 
-//        Random randomObj = new Random();
-//        new x = (randomObj.ints(1, 500).findFirst().getAsInt());
-        int a = -20;
-        int b = 820;
-        int c = random.nextBoolean() ? a : b;
-        EnemyShip alienShip = new EnemyShip(c, random.nextInt(SCENE_HEIGHT));
+//        int a = -20;
+//        int b = 820;
+//        int c = random.nextBoolean() ? a : b;
+        alienShip = new EnemyShip(0, 0);
         this.getPane().getChildren().addAll(alienShip);
+        PlayScene.enemyShips.add(alienShip);
 
     }
 
@@ -314,5 +323,64 @@ public class PlayScene extends BaseScene {
                 this.lastSecondsAlienShipAdded = currentTimeInSeconds;
             }
         }
+    }
+
+    public void findASafePoint(Character target) {
+        boolean found = true;
+
+        int counter = 0;
+        while (counter++ < 100) {
+
+            int randX = random.nextInt(SCENE_WIDTH);
+            int randY = random.nextInt(SCENE_HEIGHT);
+
+            target.setTranslateX(randX);
+            target.setTranslateY(randY);
+
+            for (Node node : getPane().getChildren()) {
+                if (node != target && node instanceof Character) {
+                    Character character = (Character) node;
+                    for (float i = 0.5f; i < 3; i += 0.5f) {
+                        Point2D futurePosition = character.getFuturePosition(i);
+                        System.out.format("targe position:, %s\n", target.getCurrentPosition());
+                        System.out.format("Current position:, %s\n", character.getCurrentPosition());
+                        System.out.format("Future position:, %s\n", futurePosition);
+
+                        boolean currentOverlap = target.getBoundsInParent().intersects(character.getBoundsInParent());
+                        boolean futureOverlap = target.getBoundsInParent().intersects(
+                                futurePosition.getX(),
+                                futurePosition.getY(),
+                                character.getBoundsInParent().getWidth() * 2,
+                                character.getBoundsInParent().getHeight() * 2);
+
+                        if (currentOverlap || futureOverlap) {
+                            System.out.println("overlapped");
+                            int newRandX = random.nextInt(SCENE_WIDTH);
+                            int newRandY = random.nextInt(SCENE_HEIGHT);
+
+                            while (newRandX / 10 == randX / 10 && newRandY / 10 == randY / 10) {
+                                newRandX = random.nextInt(SCENE_WIDTH);
+                                newRandY = random.nextInt(SCENE_HEIGHT);
+                            }
+
+                            target.setTranslateX(newRandX);
+                            target.setTranslateY(newRandY);
+
+                            found = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (found) {
+                System.out.println("found a safe place");
+                target.setVelocity(new Point2D(0, 0));
+                System.out.println("Number of guesses: " + counter);
+                return;
+            }
+            System.out.println("Error: Didn't find a safe place!!!");
+        }
+        target.setVelocity(new Point2D(0, 0));
+        System.out.println("Number of guesses: " + counter);
     }
 }
