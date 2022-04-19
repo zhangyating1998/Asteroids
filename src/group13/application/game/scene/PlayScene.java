@@ -37,6 +37,7 @@ public class PlayScene extends BaseScene {
     private int score=0;
     private Label scoreLabel;
     private Label lifeLabel;
+    private Label levelLabel;
     private ArrayList<Integer> scores;
     private HashMap<Integer, String> score_time;
     private int TopScores = 10;
@@ -69,7 +70,17 @@ public class PlayScene extends BaseScene {
         scoreLabel.setFont(Font.font(20));
         this.getPane().getChildren().addAll(scoreLabel);
     }
+    private void displayLevel(){
+        levelLabel = new Label();
+        levelLabel.setTextFill(Color.WHITE);
+        levelLabel.setText("GAME LEVEL : "+ gameLevel);
+        levelLabel.setAlignment(Pos.TOP_LEFT);
+        levelLabel.setLayoutX(10);
+        levelLabel.setLayoutY(60);
+        levelLabel.setFont(Font.font(20));
+        this.getPane().getChildren().addAll(levelLabel);
 
+    }
     public int getScore() {
         return score;
     }
@@ -79,9 +90,10 @@ public class PlayScene extends BaseScene {
         lifeLabel = new Label();
         lifeLabel.setTextFill(Color.WHITE);
         lifeLabel.setText("LIVES : "+ numberOfLives);
-        System.out.println("the total number of lives"+numberOfLives);
+        //System.out.println("the total number of lives"+numberOfLives);
         lifeLabel.setAlignment(Pos.TOP_LEFT);
-        lifeLabel.setPadding(new Insets(35));
+        lifeLabel.setLayoutX(10);
+        lifeLabel.setLayoutY(35);
         lifeLabel.setFont(Font.font(20));
         this.getPane().getChildren().addAll(lifeLabel);
     }
@@ -97,6 +109,7 @@ public class PlayScene extends BaseScene {
         createNewPlayerShip(250, 200);
         displayScore();
         displayLife();
+        displayLevel();
         this.getPane().setStyle("-fx-background-color: black");
 
     }
@@ -131,6 +144,7 @@ public class PlayScene extends BaseScene {
             resetScene();
             //System.out.println("Current game level: " + this.gameLevel);
             this.gameLevel++;
+            setLevelLabel();
             this.playSceneParams = PlaySceneParams.getConfig(this.gameLevel);
             //System.out.println("Upgraded game level: " + this.gameLevel);
             // create a new scene of the next level
@@ -226,6 +240,8 @@ public class PlayScene extends BaseScene {
     public void setScoreLabel() {
         scoreLabel.setText("SCORES : "+ score );
     }
+
+    public void setLevelLabel(){levelLabel.setText("GAME LEVEL : "+gameLevel); }
 
 
     // add score according to the level of the asteroid that the user has destroyed
