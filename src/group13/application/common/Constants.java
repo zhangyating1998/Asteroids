@@ -47,7 +47,7 @@ public class Constants {
 
     public static final int enemyTurnRate = 30;
 
-    public static final int enemyBulletBaseSpeed = 30;
+    public static final int enemyBulletBaseSpeed = 5;
 
     public static final double enemySpeedMin = 0.35;
 
