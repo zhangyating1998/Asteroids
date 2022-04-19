@@ -22,6 +22,7 @@ import static group13.application.common.Constants.SCENE_WIDTH;
  * In the constructor, an abstract method createScene() is called.
  */
 public abstract class BaseScene extends Scene {
+
     private Pane pane;
     private GameEngine gameEngine;
 
