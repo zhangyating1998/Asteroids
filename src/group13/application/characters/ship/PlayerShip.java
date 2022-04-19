@@ -1,7 +1,6 @@
 package group13.application.characters.ship;
 
 import group13.application.characters.asteroid.Asteroid;
-import group13.application.game.scene.BaseScene;
 import group13.application.game.scene.PlayScene;
 import javafx.geometry.Point2D;
 
@@ -29,7 +28,6 @@ public class PlayerShip extends Ship {
     }
 
     // Method to implement the hyperspaceJump, player ship can disappear and reappear at a new point on the screen.
-    // TODO Implement this
     public void hyperspaceJump(PlayScene playScene) {
         double rotate = playScene.playerShip.getRotate();
         playScene.getPane().getChildren().remove(playScene.playerShip);
