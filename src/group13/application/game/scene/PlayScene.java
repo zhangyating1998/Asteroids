@@ -108,8 +108,15 @@ public class PlayScene extends BaseScene {
     }
 
     private void createNewAlienShip() {
-        EnemyShip alienShip = new EnemyShip(random.nextInt(SCENE_WIDTH), random.nextInt(SCENE_HEIGHT));
+
+//        Random randomObj = new Random();
+//        new x = (randomObj.ints(1, 500).findFirst().getAsInt());
+        int a = -20;
+        int b = 820;
+        int c = random.nextBoolean() ? a : b;
+        EnemyShip alienShip = new EnemyShip(c, random.nextInt(SCENE_HEIGHT));
         this.getPane().getChildren().addAll(alienShip);
+
     }
 
     public void upgrade() {
