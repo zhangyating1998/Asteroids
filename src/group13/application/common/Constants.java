@@ -35,6 +35,8 @@ public class Constants {
 
     public static final double bulletTimeToLive = 1;
 
+    public static final double counterIncrement = 0.016;
+
 }
 
 
