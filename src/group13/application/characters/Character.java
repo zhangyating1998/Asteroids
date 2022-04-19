@@ -99,7 +99,7 @@ public class Character extends Polygon {
         return counter;
     }
 
-    // getter for current position of charachter
+    // getter for current position of character
     public Point2D getCurrentPosition(){
         return new Point2D(this.getTranslateX(), this.getTranslateY());
     }

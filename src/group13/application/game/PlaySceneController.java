@@ -36,6 +36,7 @@ public class PlaySceneController extends AnimationTimer {
     public static PlayScene playScene;
 
     // Hashmaps for storing player keyboard inputs
+    // Use of hashmap based controls inspired by https://java-programming.mooc.fi/part-14/3-larger-application-asteroids
     protected Map<KeyCode, Boolean> pressedKeys = new HashMap<>();
     protected Map<KeyCode, Boolean> onePressKeys = new HashMap<>();
 
