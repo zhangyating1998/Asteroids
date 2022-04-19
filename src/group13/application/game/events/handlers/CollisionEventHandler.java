@@ -64,15 +64,19 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
             }
         }
 
+        // if the bullet has hit the enemyShip
+        if (event.getNode1() instanceof Bullet && event.getNode2() instanceof EnemyShip || event.getNode2() instanceof Bullet && event.getNode1() instanceof EnemyShip){
+            this.playScene.AddScoreShip(20);
+        }
 
         // if number of Asteroids is equal to 0, then upgrade game
         // else if number of Asteroids is greater than 1, then game continue
         for (Node node : pane.getChildren()) {
-            /* uncomment this to test the upgrade and pass game event
+            /* uncomment this to test the upgrade and pass game event*/
             if(this.playScene.getLives() == 18 || this.playScene.getLives() == 16 || this.playScene.getLives() == 14){
                 System.out.println("LIVES"+this.playScene.getLives());
                 this.playScene.upgrade();
-            }*/
+            }
             if (node instanceof Asteroid) {
                 return;
             }
