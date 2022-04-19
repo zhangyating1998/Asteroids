@@ -17,8 +17,8 @@ public class MediumAsteroid extends Asteroid {
     @Override
     public Scale resize(){
         Scale s = new Scale();
-        s.setX(2);
-        s.setY(2);
+        s.setX(3.5);
+        s.setY(3.5);
         return s;
     }
 }

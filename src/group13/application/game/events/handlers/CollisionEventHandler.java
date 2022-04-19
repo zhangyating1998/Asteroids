@@ -61,28 +61,6 @@ public class CollisionEventHandler implements EventHandler<CollisionEvent> {
             }
         }
 
-        /*test splittable use user ship, in reality the split() should be triggered by a bullet
-        if (event.getNode1() instanceof Asteroid && event.getNode2() instanceof PlayerShip) {
-            Asteroid[] asteroids = ((Asteroid) event.getNode1()).split();
-            System.out.println("split now"+event.getNode1().getClass());
-            //collide with the medium or big ship
-            if (asteroids != null) {
-                pane.getChildren().addAll(((Asteroid) event.getNode1()).split()[0], ((Asteroid) event.getNode1()).split()[1]);
-            }
-            this.playScene.AddScore((Asteroid)event.getNode1());
-            //this.playScene.decrementLives();
-        }
-
-        else if (event.getNode2() instanceof Asteroid && event.getNode1() instanceof PlayerShip) {
-            Asteroid[] asteroids = ((Asteroid) event.getNode2()).split();
-            System.out.println("split now"+event.getNode2().getClass());
-            // collide with the medium or big ship
-            if (asteroids != null) {
-                pane.getChildren().addAll( asteroids[0], asteroids[1]);
-            }
-            this.playScene.AddScore((Asteroid)event.getNode2());
-            //this.playScene.decrementLives();
-        }*/
 
 
         // if number of Asteroids is equal to 0, then upgrade game
